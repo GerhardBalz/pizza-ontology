@@ -1,0 +1,27 @@
+id: pizza
+title: Pizza Ontology
+description: >
+  An ontology about pizzas and their toppings.
+  Originally developed as the example ontology for the
+  Manchester University Protégé OWL tutorial.
+
+license: https://creativecommons.org/licenses/by/3.0/
+
+repo: semantic-modeling-pizza
+github_org: GerhardBalz
+git_main_branch: main
+
+create_obo_metadata: false
+
+edit_format: owl
+
+export_formats:
+  - owl
+
+reasoner: hermit
+
+release_artefacts:
+  - full
+
+namespaces:
+  - http://www.co-ode.org/ontologies/pizza/pizza.owl#
