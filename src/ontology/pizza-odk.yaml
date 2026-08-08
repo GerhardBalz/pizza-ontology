@@ -21,7 +21,11 @@ export_formats:
 reasoner: hermit
 
 release_artefacts:
-  - full
+  - non-classified
+
+primary_release: non-classified
 
 namespaces:
   - http://www.co-ode.org/ontologies/pizza/pizza.owl#
+
+manage_import_declarations: false

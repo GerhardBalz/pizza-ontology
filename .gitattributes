@@ -1,0 +1,12 @@
+*.sh       text eol=lf
+Makefile   text eol=lf
+*.Makefile text eol=lf
+*.yaml     text eol=lf
+*.yml      text eol=lf
+*.owl      text eol=lf
+*.ofn      text eol=lf
+*.ttl      text eol=lf
+*.sparql   text eol=lf
+*.ru       text eol=lf
+*.xml      text eol=lf
+*.bat      text eol=crlf
