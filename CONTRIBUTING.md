@@ -1,86 +1,78 @@
 # Contributing to Pizza Ontology
 
-:+1: First of all: Thank you for taking the time to contribute!
+Thank you for contributing to the Pizza Ontology reference project.
 
-The following is a set of guidelines for contributing to PIZZA. 
-These guidelines are not strict rules. Use your best judgment, and feel free to propose 
-changes to this document in a pull request.
+This repository preserves the historical Pizza 2.0 ontology while using it as a reference environment for ontology engineering, access, publication, semantic modeling, and executable knowledge experiments.
 
-## Table Of Contents
+## Contribution workflow
 
-- [Guidelines for Contributions and Requests](#contributions)
-    * [Reporting problems with the ontology](#reporting-bugs)
-    * [Requesting new terms](#requesting-terms)
-    * [Adding new terms by yourself](#adding-terms)
-- [Best practices](#best-practices)
-    * [How to write a great issue?](#great-issues)
-    * [How to create a great pull/merge request?](#great-pulls)
+All changes must go through a branch and pull request. Do not commit or push changes directly to `main`.
 
-<a id="contributions"></a>
+1. Start from an up-to-date `main` branch.
+2. Create a focused branch for one logical change.
+3. Make and validate the change.
+4. Commit with a concise, descriptive message.
+5. Push the branch.
+6. Open a pull request against `main`.
+7. Let the automated checks run and review the diff.
+8. Merge through the pull request, preferably using squash merge for focused changes.
 
-## Guidelines for Contributions and Requests
+Keep branches and pull requests small enough to review comfortably.
 
-<a id="reporting-bugs"></a>
+## Validation
 
-### Reporting problems with the ontology
+For ontology, ODK, build, or semantic-test changes, run from `src/ontology`:
 
-Please use our [Issue Tracker](https://github.com/GerhardBalz/semantic-modeling-pizza/issues/) for reporting problems with the ontology. 
-To learn how to write a good issue [see here](#great-issues).
+```bash
+odkrun make test
+```
 
-<a id="requesting-terms"></a>
+The Pizza 2.0 baseline intentionally contains two unsatisfiable tutorial classes. The repository's custom semantic regression test verifies that these remain exactly:
 
-### Requesting new terms
+- `CheeseyVegetableTopping`
+- `IceCream`
 
-Before you write a new request, please consider the following: 
+A reasoning error mentioning those two classes is therefore expected inside that regression test; the overall test target must still complete successfully.
 
-- **Does the term already exist?** Before submitting suggestions for new ontology terms, check whether the term exist, 
-either as a primary term or a synonym term. You can search for your term using [OLS](http://www.ebi.ac.uk/ols/ontologies/pizza).
-- **Can you provide a definition for the term?** It should be very clear what the term means, and you should be
-able to provide a concise definition, ideally with a scientific reference.
-- **Is the ontology in scope for the term?** Sometimes, it is hard to tell whether a term "belongs" in
-and ontology. A rule of thumb is "if a similar term already exists, the new term is probably in scope."
-It can be very helpful to mention a very similar concept as part of the term request!
+For documentation-only changes, inspect rendered Markdown and verify links and paths.
 
-#### Who can request a term?
+## Ontology changes
 
-Anyone can request new terms. However, there is not guarantee that your term will be added automatically. Since this is a 
-community resource, it is often necessary to do at least some of the work of adding the term yourself, see below.
+`src/ontology/pizza-edit.owl` is the editor source.
 
-#### How to write a new term request
+The current repository is preservation-oriented: it keeps the historical Pizza 2.0 ontology IRI, version IRI, entity IRIs, and teaching semantics. Changes to the preserved ontology should therefore be deliberate and should state whether they are:
 
-Request a new term _via_ the GitHub [Issue Tracker](https://github.com/GerhardBalz/semantic-modeling-pizza/issues/).
+- a correction to the preservation/migration environment,
+- a documentation or metadata improvement,
+- a non-breaking publication improvement,
+- or a proposed semantic change that may belong in a future successor ontology instead.
 
-It is important to remember that it takes a lot of time for curators to process issues submitted to the tracker.
-To make this work easier, please always use issue templates if they are available (https://github.com/GerhardBalz/semantic-modeling-pizza/issues/new/choose).
+Do not silently replace historical identifiers or alter the meaning of historical Pizza entities.
 
-For how to write a good term request, please read the [best practices carefully](#great-issues).
+For provenance and identity decisions, see:
 
-<a id="adding-terms"></a>
+- [`docs/identity-publication-model.md`](docs/identity-publication-model.md)
+- [`docs/pizza-provenance.md`](docs/pizza-provenance.md)
 
-### How to add a new term
+## ODK-managed files
 
-If you have never editted this ontology before, first follow a [general tutorial](https://oboacademy.github.io/obook/lesson/contributing-to-obo-ontologies)
+The repository is managed with the Ontology Development Kit (ODK).
 
-**Process**:
+Do not edit the generated `src/ontology/Makefile` for project-specific behavior. Put custom Make rules in `src/ontology/pizza.Makefile`.
 
-1. Clone the repository (In case you are not an offical team member, create a fork first)
-1. Create new branch in git, for example `git checkout -b issue123`
-1. Open src/ontology/pizza-edit.owl in your favourite editor, i.e. [Protege](https://protege.stanford.edu/). **Careful:** double check you are editing the correct file. There are many ontology files in this repository, but only one _editors file_!
-1. Perform your edit and save your changes
-1. Commit changes to branch
-1. Push changes upstream
-1. Create pull request
+When changing `src/ontology/pizza-odk.yaml`, regenerate ODK-managed files with:
 
-## Best Practices
+```bash
+cd src/ontology
+odkrun odk.py update
+```
 
-<a id="great-issues"></a>
+Review the generated diff before committing it.
 
-### How to write great issues?
+## Issues
 
-Please refer to the [OBO Academy term request guide](https://oboacademy.github.io/obook/howto/term-request/).
+Use the repository issue tracker for ontology problems, documentation issues, tooling problems, provenance questions, or ideas for new examples:
 
-<a id="great-pulls"></a>
+https://github.com/GerhardBalz/pizza-ontology/issues
 
-### How to create a great pull/merge request?
-
-Please refer to the [OBO Academy best practices](https://oboacademy.github.io/obook/howto/github-create-pull-request/)
+This project is not currently an OBO Foundry ontology and does not use OLS or OBO term-request governance as its contribution model.
