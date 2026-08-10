@@ -81,11 +81,16 @@ def main() -> None:
         "NamedPizza must be reachable as an is-a ancestor of AmericanHot",
     )
 
-    metadata = adapter.ontology_metadata_map()
+    ontologies = list(adapter.ontologies())
+    require(ontologies, "OAK did not expose an ontology identifier for the Pizza source")
+    require(len(ontologies) == 1, f"expected one Pizza ontology, got {ontologies!r}")
+    ontology_id = ontologies[0]
+    metadata = adapter.ontology_metadata_map(ontology_id)
     require(metadata is not None, "OAK ontology metadata access returned no result")
 
     result = {
         "ontology": str(ontology_path),
+        "ontologyId": str(ontology_id),
         "entity": AMERICAN_HOT,
         "entityIri": adapter.curie_to_uri(AMERICAN_HOT),
         "preferredLanguage": PREFERRED_LANGUAGE,
