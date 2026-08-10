@@ -117,14 +117,14 @@ Rather than removing them, this repository preserves them as part of the teachin
 
 ### 5. Publish and Govern
 
-Use Pizza as a concrete case study for ontology identity, publication, provenance, and governance.
+Use Pizza as a concrete case study for ontology identity, publication, provenance, versioning, release, and governance.
 
 Important distinctions include:
 
 ```text
 Ontology ≠ OWL file
 Ontology ≠ Git repository
-Version ≠ Release
+Ontology version ≠ Repository release
 Release ≠ Distribution
 Identifier ≠ Location
 Host ≠ Authority
@@ -135,6 +135,9 @@ The architecture behind these distinctions is documented in:
 
 - [Ontology Identity and Publication Model](docs/identity-publication-model.md)
 - [Pizza Ontology Provenance](docs/pizza-provenance.md)
+- [Versioning and Release Model](docs/versioning-release-model.md)
+
+The current repository is the **preservation/stewardship line** for Pizza Ontology 2.0. Repository releases use a separate preservation release series and do not change the historical ontology version merely because engineering artifacts evolve.
 
 ### 6. Project — Semantic Projections
 
@@ -186,7 +189,19 @@ Rules / decisions
 Agents / actions
 ```
 
-This provides a small reference domain for exploring **Executable Knowledge** and **Executable Knowledge Architecture**.
+The companion [Executable Semantic Knowledge Architecture (ESKA)](https://github.com/GerhardBalz/executable-semantic-knowledge-architecture) project uses Pizza as its initial semantic reference domain. The repository boundary is intentional:
+
+```text
+pizza-ontology
+    owns and engineers Pizza semantic artifacts
+        │
+        ▼
+ESKA
+    operationalizes semantic knowledge as executable capabilities,
+    services, agents, verification, and provenance
+```
+
+This repository should provide stable and traceable Pizza semantic artifacts for executable use rather than duplicate the ESKA architecture inside the Pizza project.
 
 ### 9. Architect — Semantic Modeling
 
@@ -202,7 +217,7 @@ Use the complete project as a case study for broader Semantic Modeling concepts:
 
 ## Current Status
 
-The current baseline is a preservation-oriented migration of **Pizza 2.0** into an ODK-managed repository.
+The current baseline is a preservation-oriented migration of **Pizza Ontology 2.0** into an ODK-managed repository.
 
 The migration preserves:
 
@@ -212,6 +227,9 @@ http://www.co-ode.org/ontologies/pizza
 
 Version IRI
 http://www.co-ode.org/ontologies/pizza/2.0.0
+
+owl:versionInfo
+2.0
 
 Entity namespace
 http://www.co-ode.org/ontologies/pizza/pizza.owl#
@@ -223,7 +241,35 @@ The editor ontology is:
 
 The current project intentionally does **not** claim authority over the historical `co-ode.org` identifier space.
 
-Whether future work remains a preservation/stewardship environment or establishes a new successor ontology is an explicit architectural decision that remains open. See [Pizza Ontology Provenance](docs/pizza-provenance.md).
+### Preservation line and repository releases
+
+This repository is now explicitly treated as the **preservation, stewardship, engineering, and learning line** for the historical Pizza Ontology 2.0 baseline.
+
+The semantic ontology version and repository release version are independent:
+
+```text
+Historical semantic version
+    Pizza Ontology 2.0
+
+Repository preservation release
+    preservation-v0.x.y
+```
+
+The planned first repository release is:
+
+```text
+preservation-v0.1.0
+```
+
+A repository release may add OAK examples, alternative distributions, SHACL shapes, semantic projections, UX examples, or ESKA integration while the preserved ontology continues to declare version `2.0`.
+
+See [Versioning and Release Model](docs/versioning-release-model.md). The first preservation release is tracked by [issue #3](https://github.com/GerhardBalz/pizza-ontology/issues/3).
+
+### Possible successor ontology
+
+A future modernized Pizza ontology may coexist with this preservation line. If created, it should be treated as a **separate successor lineage** with an explicit authority model, a new ontology identity and governed namespace, a separate repository, and its own version series.
+
+Unless authority over the historical Pizza identifier space is established, a successor should not silently become `Pizza 2.1`, `Pizza 3.0`, or issue new version IRIs beneath the historical `co-ode.org` ontology IRI.
 
 ## Provenance
 
@@ -253,7 +299,8 @@ pizza-ontology/
 │   └── workflows/
 ├── docs/
 │   ├── identity-publication-model.md
-│   └── pizza-provenance.md
+│   ├── pizza-provenance.md
+│   └── versioning-release-model.md
 ├── src/
 │   ├── ontology/
 │   │   ├── pizza-edit.owl
@@ -291,7 +338,13 @@ Defines the generic concepts used by this project, including ontology and entity
 
 [`docs/pizza-provenance.md`](docs/pizza-provenance.md)
 
-Applies the generic model to the historical Pizza ontology and documents its lineage, upstream source, contributors, hosting, authority uncertainty, migration provenance, and preservation-versus-successor options.
+Applies the generic model to the historical Pizza ontology and documents its lineage, upstream source, contributors, hosting, authority uncertainty, migration provenance, and preservation-versus-successor analysis.
+
+### Versioning and Release Model
+
+[`docs/versioning-release-model.md`](docs/versioning-release-model.md)
+
+Defines the adopted distinction between the immutable historical Pizza Ontology 2.0 semantic baseline, repository preservation releases, artifact/distribution types, toolchain versions, and a possible separate successor ontology lineage.
 
 ## Roadmap
 
@@ -302,14 +355,17 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 - [x] Establish semantic regression tests
 - [x] Document ontology identity and publication concepts
 - [x] Document Pizza provenance
-- [ ] Refine publication and release strategy
+- [x] Establish preservation/repository versioning model
+- [ ] Cut the first `preservation-v0.1.0` repository release
+- [ ] Refine publication and distribution strategy
 - [ ] Add OAK access examples
 - [ ] Add ontology exploration and query examples
 - [ ] Add alternative distributions such as Turtle
 - [ ] Explore semantic projections into schemas and APIs
 - [ ] Explore ontology-informed user experience
-- [ ] Explore executable knowledge examples
-- [ ] Relate the case study to broader Semantic Modeling and Executable Knowledge Architecture concepts
+- [ ] Integrate stable Pizza semantic artifacts with ESKA
+- [ ] Relate the case study to broader Semantic Modeling concepts
+- [ ] Evaluate a separate successor Pizza ontology when semantic modernization is required
 
 ## Acknowledgements
 
