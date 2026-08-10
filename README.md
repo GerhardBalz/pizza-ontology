@@ -104,9 +104,9 @@ Use the [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-
 - ontology metadata where supported by the selected adapter,
 - use from scripts and applications.
 
-The first executable OAK slice is implemented in [`examples/oak`](examples/oak). Starting from `pizza:AmericanHot`, it demonstrates English label lookup, explicit Pizza CURIE-prefix registration, projected OWL relationships, and is-a ancestry through both the OAK Python API and CLI.
+The first executable OAK slice is implemented in [`examples/oak`](examples/oak). Starting from `pizza:AmericanHot`, it demonstrates preserved multilingual label access, explicit Pizza CURIE-prefix registration, projected OWL relationships, and is-a ancestry through both the OAK Python API and CLI.
 
-The example also makes an important OAK boundary visible: the common interface spans multiple adapters, but individual backends do not necessarily implement every operation. The local Functional-Syntax adapter used by the first slice supports the selected entity/relationship/traversal operations but does not currently implement ontology enumeration/metadata access. That capability is therefore recorded as backend-dependent rather than treated as a Pizza-data defect.
+The example also makes important OAK backend boundaries visible: the common interface spans multiple adapters, but individual backends do not necessarily implement every operation or optional behavior. The local Functional-Syntax `FunOwlImplementation` supports the selected label/relationship/traversal operations, but its `label(..., lang=...)` implementation does not currently enforce language filtering, and ontology enumeration/metadata access is not implemented. Those are recorded as adapter capabilities rather than treated as Pizza-data defects.
 
 ### 4. Reason and Validate
 
@@ -406,7 +406,7 @@ python -m pip install -r examples/oak/requirements.txt
 bash examples/oak/run.sh
 ```
 
-See [`examples/oak/README.md`](examples/oak/README.md) for the CLI, Python API, prefix, language, and adapter-capability details.
+See [`examples/oak/README.md`](examples/oak/README.md) for the CLI, Python API, prefix, multilingual-label, and adapter-capability details.
 
 ### OWL reasoning artifact
 
