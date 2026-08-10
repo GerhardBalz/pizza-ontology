@@ -117,7 +117,7 @@ Rather than removing them, this repository preserves them as part of the teachin
 
 ### 5. Publish and Govern
 
-Use Pizza as a concrete case study for ontology identity, publication, provenance, versioning, release, and governance.
+Use Pizza as a concrete case study for ontology identity, publication, provenance, versioning, release, licensing, and governance.
 
 Important distinctions include:
 
@@ -129,6 +129,7 @@ Release ≠ Distribution
 Identifier ≠ Location
 Host ≠ Authority
 Repository Owner ≠ Ontology Authority
+Upstream semantic license ≠ Repository-authored material license
 ```
 
 The architecture behind these distinctions is documented in:
@@ -136,6 +137,8 @@ The architecture behind these distinctions is documented in:
 - [Ontology Identity and Publication Model](docs/identity-publication-model.md)
 - [Pizza Ontology Provenance](docs/pizza-provenance.md)
 - [Versioning and Release Model](docs/versioning-release-model.md)
+- [Licensing](LICENSE.md)
+- [Attribution and Provenance Notice](NOTICE.md)
 
 The current repository is the **preservation/stewardship line** for Pizza Ontology 2.0. Repository releases use a separate preservation release series and do not change the historical ontology version merely because engineering artifacts evolve.
 
@@ -263,7 +266,7 @@ preservation-v0.1.0
 
 A repository release may add OAK examples, alternative distributions, SHACL shapes, semantic projections, UX examples, or ESKA integration while the preserved ontology continues to declare version `2.0`.
 
-See [Versioning and Release Model](docs/versioning-release-model.md). The first preservation release is tracked by [issue #3](https://github.com/GerhardBalz/pizza-ontology/issues/3).
+See [Versioning and Release Model](docs/versioning-release-model.md). The first preservation release is tracked by [issue #7](https://github.com/GerhardBalz/pizza-ontology/issues/7).
 
 ### Possible successor ontology
 
@@ -301,6 +304,8 @@ pizza-ontology/
 │   ├── identity-publication-model.md
 │   ├── pizza-provenance.md
 │   └── versioning-release-model.md
+├── LICENSES/
+│   └── MIT.txt
 ├── src/
 │   ├── ontology/
 │   │   ├── pizza-edit.owl
@@ -310,6 +315,8 @@ pizza-ontology/
 │   ├── scripts/
 │   └── sparql/
 ├── CONTRIBUTING.md
+├── LICENSE.md
+├── NOTICE.md
 └── README.md
 ```
 
@@ -356,6 +363,7 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 - [x] Document ontology identity and publication concepts
 - [x] Document Pizza provenance
 - [x] Establish preservation/repository versioning model
+- [x] Establish repository licensing and attribution boundary
 - [ ] Cut the first `preservation-v0.1.0` repository release
 - [ ] Refine publication and distribution strategy
 - [ ] Add OAK access examples
@@ -375,6 +383,11 @@ This engineering repository uses the [Ontology Development Kit (ODK)](https://gi
 
 ## License
 
-The upstream Pizza 2.0 ontology declares **CC BY 3.0**.
+This repository has an explicit licensing boundary rather than one blanket license:
 
-Licensing of newly created documentation, code, examples, and other repository artifacts will be specified separately so that the provenance and licensing of the historical ontology are not silently conflated with the licensing of new work.
+- historical **Pizza Ontology 2.0 semantic content** and distributions containing it retain **CC BY 3.0** and the upstream attribution;
+- newly created **repository software and engineering material** is licensed under the **MIT License** unless stated otherwise;
+- newly created original **repository documentation** is licensed under **CC BY 4.0** unless stated otherwise;
+- third-party material retains its own license.
+
+See [LICENSE.md](LICENSE.md) for the licensing model and [NOTICE.md](NOTICE.md) for Pizza attribution and provenance.
