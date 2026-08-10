@@ -110,7 +110,7 @@ The example also makes an important OAK boundary visible: the common interface s
 
 ### 4. Reason and Validate
 
-Explore the distinction between asserted knowledge, inferred knowledge, and validation using tools such as ROBOT, HermiT, SPARQL, and OWL profile validation.
+Explore the distinction between **asserted knowledge**, **inferred knowledge**, **logical coherence**, and **data conformance** using ROBOT, HermiT, SPARQL, SHACL, and pySHACL.
 
 The historical Pizza ontology deliberately contains two unsatisfiable classes:
 
@@ -118,6 +118,26 @@ The historical Pizza ontology deliberately contains two unsatisfiable classes:
 - `IceCream`
 
 Rather than removing them, this repository preserves them as part of the teaching ontology and explicitly verifies them as expected semantic behavior.
+
+For reusable reasoning, the repository now owns a canonical coherent module in [`artifacts/reasoning`](artifacts/reasoning). It demonstrates that:
+
+```text
+AmericanHot SubClassOf SpicyPizza
+```
+
+is **not asserted** in the module but is **inferred** by HermiT, verified by SPARQL, and explainable from the selected Pizza axioms. The module is pinned to the preserved Pizza source blob and carries machine-readable provenance.
+
+For explicit RDF instance-data validation, [`artifacts/validation`](artifacts/validation) defines a repository-owned SHACL profile plus conforming and non-conforming examples. The validation profile is deliberately not presented as an automatic translation of OWL semantics:
+
+```text
+OWL / HermiT
+    What follows logically from the semantic model?
+
+SHACL / pySHACL
+    Does explicit RDF data satisfy a validation profile?
+```
+
+The two concerns are tested independently in CI.
 
 ### 5. Publish and Govern
 
@@ -208,7 +228,7 @@ ESKA
     services, agents, verification, and provenance
 ```
 
-This repository should provide stable and traceable Pizza semantic artifacts for executable use rather than duplicate the ESKA architecture inside the Pizza project.
+The repository-owned artifacts under [`artifacts/`](artifacts/) establish the source side of that boundary. ESKA integration remains a separate Track 8 step so the executable architecture can consume these artifacts instead of maintaining independent Pizza-domain copies.
 
 ### 9. Architect — Semantic Modeling
 
@@ -304,6 +324,15 @@ For the detailed lineage and authority analysis, see [docs/pizza-provenance.md](
 pizza-ontology/
 ├── .github/
 │   └── workflows/
+├── artifacts/
+│   ├── reasoning/
+│   │   ├── spicy-pizza.ofn
+│   │   ├── provenance.ttl
+│   │   └── ...
+│   └── validation/
+│       ├── pizza-instance-shapes.ttl
+│       ├── data/
+│       └── ...
 ├── docs/
 │   ├── identity-publication-model.md
 │   ├── pizza-provenance.md
@@ -326,7 +355,7 @@ pizza-ontology/
 └── README.md
 ```
 
-Additional examples will be introduced as the reasoning/validation, API/projection, UX, knowledge-graph, and executable-knowledge tracks are developed.
+Additional examples will be introduced as the API/projection, UX, knowledge-graph, and executable-knowledge tracks are developed.
 
 ## Working with the Ontology
 
@@ -351,6 +380,27 @@ bash examples/oak/run.sh
 ```
 
 See [`examples/oak/README.md`](examples/oak/README.md) for the CLI, Python API, prefix, language, and adapter-capability details.
+
+### OWL reasoning artifact
+
+Run the canonical coherent reasoning module:
+
+```bash
+bash artifacts/reasoning/run.sh
+```
+
+The regression proves that `AmericanHot SubClassOf SpicyPizza` is not asserted, is inferred by HermiT, and can be explained. See [`artifacts/reasoning/README.md`](artifacts/reasoning/README.md).
+
+### SHACL validation artifact
+
+Install the pinned validator and test both explicit data cases:
+
+```bash
+python -m pip install -r artifacts/validation/requirements.txt
+python artifacts/validation/validate_examples.py
+```
+
+The conforming graph must pass; the non-conforming graph must fail on the expected `hasBase` and `hasTopping` paths. See [`artifacts/validation/README.md`](artifacts/validation/README.md).
 
 ## Architecture Documents
 
@@ -386,6 +436,7 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 - [ ] Cut the first `preservation-v0.1.0` repository release
 - [ ] Refine publication and distribution strategy
 - [x] Add first OAK access vertical slice
+- [x] Add canonical coherent reasoning and SHACL validation artifacts
 - [ ] Add broader ontology exploration and query examples
 - [ ] Add alternative distributions such as Turtle
 - [ ] Explore semantic projections into schemas and APIs
@@ -398,7 +449,7 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 
 The ontology used by this repository is derived from the classic Pizza ontology and its Manchester / Protégé tutorial tradition.
 
-This engineering repository uses the [Ontology Development Kit (ODK)](https://github.com/INCATools/ontology-development-kit), [ROBOT](https://robot.obolibrary.org/), and related ontology tooling. It also uses [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/) as the programmatic access layer demonstrated in Track 3.
+This engineering repository uses the [Ontology Development Kit (ODK)](https://github.com/INCATools/ontology-development-kit), [ROBOT](https://robot.obolibrary.org/), [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/), HermiT, SHACL, and pySHACL across their respective tracks.
 
 ## License
 
