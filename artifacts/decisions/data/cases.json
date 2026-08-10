@@ -1,0 +1,29 @@
+{
+  "decision": "pizzaDietarySuitabilityDecision",
+  "cases": [
+    {
+      "id": "urn:pizza-ontology:decision:data:meatyPizza",
+      "inputs": {
+        "containsMeat": true,
+        "containsFish": false
+      },
+      "expected": "urn:pizza-ontology:decision:NotVegetarian"
+    },
+    {
+      "id": "urn:pizza-ontology:decision:data:fishPizza",
+      "inputs": {
+        "containsMeat": false,
+        "containsFish": true
+      },
+      "expected": "urn:pizza-ontology:decision:PescatarianOnly"
+    },
+    {
+      "id": "urn:pizza-ontology:decision:data:vegetarianPizza",
+      "inputs": {
+        "containsMeat": false,
+        "containsFish": false
+      },
+      "expected": "urn:pizza-ontology:decision:Vegetarian"
+    }
+  ]
+}
