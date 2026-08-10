@@ -23,6 +23,9 @@ EXPECTED = {
     "artifacts/rules/vegetarian-warning.rq",
     "artifacts/rules/rule-vocabulary.ttl",
     "artifacts/rules/data/menu-pizzas.ttl",
+    "artifacts/decisions/pizza-dietary-suitability.dmn",
+    "artifacts/decisions/decision-vocabulary.ttl",
+    "artifacts/decisions/data/cases.json",
 }
 
 
@@ -35,7 +38,7 @@ def main() -> None:
     graph = Graph().parse(MANIFEST, format="turtle")
 
     distributions = set(graph.objects(ART.PizzaSemanticArtifactSet, DCAT["distribution"]))
-    require(len(distributions) == 7, f"expected seven published distributions, got {len(distributions)}")
+    require(len(distributions) == 10, f"expected ten published distributions, got {len(distributions)}")
 
     paths: set[str] = set()
     for distribution in distributions:
@@ -71,6 +74,9 @@ def main() -> None:
         ART.PizzaVegetarianWarningRule,
         ART.PizzaRuleVocabulary,
         ART.PizzaRuleData,
+        ART.PizzaDietarySuitabilityDecision,
+        ART.PizzaDecisionVocabulary,
+        ART.PizzaDecisionCases,
     ):
         require(
             (authored, DCTERMS["license"], URIRef("https://opensource.org/license/mit")) in graph,
@@ -84,6 +90,28 @@ def main() -> None:
     require(
         (ART.PizzaRuleData, DCTERMS["requires"], ART.PizzaRuleVocabulary) in graph,
         "Pizza rule data must require the published rule vocabulary",
+    )
+
+    require(
+        (
+            ART.PizzaDietarySuitabilityDecision,
+            DCTERMS["conformsTo"],
+            URIRef("https://www.omg.org/spec/DMN/1.5/"),
+        )
+        in graph,
+        "Pizza decision model must identify DMN 1.5 conformance",
+    )
+    require(
+        (ART.PizzaDietarySuitabilityDecision, DCTERMS["requires"], ART.PizzaDecisionVocabulary) in graph,
+        "Pizza decision model must require the published decision vocabulary",
+    )
+    require(
+        (ART.PizzaDecisionCases, DCTERMS["requires"], ART.PizzaDietarySuitabilityDecision) in graph,
+        "Pizza decision cases must require the published DMN decision model",
+    )
+    require(
+        (ART.PizzaDecisionCases, DCTERMS["requires"], ART.PizzaDecisionVocabulary) in graph,
+        "Pizza decision cases must require the published decision vocabulary",
     )
 
     print("SUCCESS: Pizza semantic artifact consumer contract is complete and resolves to repository-owned files.")
