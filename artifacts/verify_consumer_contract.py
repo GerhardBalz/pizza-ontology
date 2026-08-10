@@ -26,6 +26,9 @@ EXPECTED = {
     "artifacts/decisions/pizza-dietary-suitability.dmn",
     "artifacts/decisions/decision-vocabulary.ttl",
     "artifacts/decisions/data/cases.json",
+    "artifacts/calculations/pizza-area.openmath.xml",
+    "artifacts/calculations/calculation-vocabulary.ttl",
+    "artifacts/calculations/data/cases.json",
 }
 
 
@@ -38,7 +41,7 @@ def main() -> None:
     graph = Graph().parse(MANIFEST, format="turtle")
 
     distributions = set(graph.objects(ART.PizzaSemanticArtifactSet, DCAT["distribution"]))
-    require(len(distributions) == 10, f"expected ten published distributions, got {len(distributions)}")
+    require(len(distributions) == 13, f"expected thirteen published distributions, got {len(distributions)}")
 
     paths: set[str] = set()
     for distribution in distributions:
@@ -62,10 +65,7 @@ def main() -> None:
         (reasoning, DCTERMS["license"], URIRef("https://creativecommons.org/licenses/by/3.0/")) in graph,
         "reasoning module must retain CC BY 3.0",
     )
-    require(
-        any(graph.objects(reasoning, PROV["wasDerivedFrom"])),
-        "reasoning module must retain explicit derivation provenance",
-    )
+    require(any(graph.objects(reasoning, PROV["wasDerivedFrom"])), "reasoning module must retain explicit derivation provenance")
 
     for authored in (
         ART.PizzaInstanceShapes,
@@ -77,42 +77,33 @@ def main() -> None:
         ART.PizzaDietarySuitabilityDecision,
         ART.PizzaDecisionVocabulary,
         ART.PizzaDecisionCases,
+        ART.PizzaAreaCalculationFormula,
+        ART.PizzaCalculationVocabulary,
+        ART.PizzaCalculationCases,
     ):
         require(
             (authored, DCTERMS["license"], URIRef("https://opensource.org/license/mit")) in graph,
             f"{authored}: repository-authored engineering artifact must identify the MIT license",
         )
 
-    require(
-        (ART.PizzaVegetarianWarningRule, DCTERMS["requires"], ART.PizzaRuleVocabulary) in graph,
-        "Pizza rule must require the published rule vocabulary",
-    )
-    require(
-        (ART.PizzaRuleData, DCTERMS["requires"], ART.PizzaRuleVocabulary) in graph,
-        "Pizza rule data must require the published rule vocabulary",
-    )
+    require((ART.PizzaVegetarianWarningRule, DCTERMS["requires"], ART.PizzaRuleVocabulary) in graph, "Pizza rule must require the published rule vocabulary")
+    require((ART.PizzaRuleData, DCTERMS["requires"], ART.PizzaRuleVocabulary) in graph, "Pizza rule data must require the published rule vocabulary")
 
     require(
-        (
-            ART.PizzaDietarySuitabilityDecision,
-            DCTERMS["conformsTo"],
-            URIRef("https://www.omg.org/spec/DMN/1.5/"),
-        )
-        in graph,
+        (ART.PizzaDietarySuitabilityDecision, DCTERMS["conformsTo"], URIRef("https://www.omg.org/spec/DMN/1.5/")) in graph,
         "Pizza decision model must identify DMN 1.5 conformance",
     )
+    require((ART.PizzaDietarySuitabilityDecision, DCTERMS["requires"], ART.PizzaDecisionVocabulary) in graph, "Pizza decision model must require the published decision vocabulary")
+    require((ART.PizzaDecisionCases, DCTERMS["requires"], ART.PizzaDietarySuitabilityDecision) in graph, "Pizza decision cases must require the published DMN decision model")
+    require((ART.PizzaDecisionCases, DCTERMS["requires"], ART.PizzaDecisionVocabulary) in graph, "Pizza decision cases must require the published decision vocabulary")
+
     require(
-        (ART.PizzaDietarySuitabilityDecision, DCTERMS["requires"], ART.PizzaDecisionVocabulary) in graph,
-        "Pizza decision model must require the published decision vocabulary",
+        (ART.PizzaAreaCalculationFormula, DCTERMS["conformsTo"], URIRef("https://openmath.org/standard/om20-2019-07-01/omstd20.html")) in graph,
+        "Pizza calculation formula must identify OpenMath 2.0 Revision 2 conformance",
     )
-    require(
-        (ART.PizzaDecisionCases, DCTERMS["requires"], ART.PizzaDietarySuitabilityDecision) in graph,
-        "Pizza decision cases must require the published DMN decision model",
-    )
-    require(
-        (ART.PizzaDecisionCases, DCTERMS["requires"], ART.PizzaDecisionVocabulary) in graph,
-        "Pizza decision cases must require the published decision vocabulary",
-    )
+    require((ART.PizzaAreaCalculationFormula, DCTERMS["requires"], ART.PizzaCalculationVocabulary) in graph, "Pizza calculation formula must require the published calculation vocabulary")
+    require((ART.PizzaCalculationCases, DCTERMS["requires"], ART.PizzaAreaCalculationFormula) in graph, "Pizza calculation cases must require the published OpenMath formula")
+    require((ART.PizzaCalculationCases, DCTERMS["requires"], ART.PizzaCalculationVocabulary) in graph, "Pizza calculation cases must require the published calculation vocabulary")
 
     print("SUCCESS: Pizza semantic artifact consumer contract is complete and resolves to repository-owned files.")
     for path in sorted(paths):
