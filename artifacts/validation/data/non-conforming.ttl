@@ -1,0 +1,9 @@
+@prefix ex: <urn:pizza-ontology:validation:example:> .
+@prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+
+ex:invalidPizza
+    a pizza:Pizza ;
+    pizza:hasTopping ex:notATopping .
+
+ex:notATopping
+    a pizza:PizzaBase .
