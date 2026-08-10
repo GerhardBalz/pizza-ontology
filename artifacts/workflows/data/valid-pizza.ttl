@@ -1,0 +1,16 @@
+@prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix wfdata: <urn:pizza-ontology:workflow:data:> .
+
+wfdata:workflowPizza
+    a pizza:Pizza ;
+    rdfs:label "Workflow Margherita"@en ;
+    pizza:hasBase wfdata:workflowBase ;
+    pizza:hasTopping wfdata:workflowMozzarella .
+
+wfdata:workflowBase
+    a pizza:PizzaBase .
+
+wfdata:workflowMozzarella
+    a pizza:PizzaTopping ;
+    rdfs:label "Mozzarella"@en .
