@@ -1,0 +1,26 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix val: <urn:pizza-ontology:validation:> .
+
+val:PizzaInstanceShape
+    a sh:NodeShape ;
+    dcterms:title "Pizza instance validation profile"@en ;
+    dcterms:description "A repository-defined SHACL profile for explicit Pizza instance data. It complements but is not equivalent to OWL reasoning over Pizza Ontology 2.0."@en ;
+    dcterms:license <https://spdx.org/licenses/MIT.html> ;
+    sh:targetClass pizza:Pizza ;
+    sh:property [
+        sh:path pizza:hasBase ;
+        sh:name "pizza base"@en ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pizza:PizzaBase ;
+        sh:message "A Pizza instance must explicitly reference exactly one value typed as PizzaBase."@en
+    ] ;
+    sh:property [
+        sh:path pizza:hasTopping ;
+        sh:name "pizza topping"@en ;
+        sh:minCount 1 ;
+        sh:class pizza:PizzaTopping ;
+        sh:message "A Pizza instance must explicitly reference at least one value typed as PizzaTopping."@en
+    ] .

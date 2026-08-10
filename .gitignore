@@ -71,3 +71,8 @@ src/patterns/all_pattern_terms.txt
 # Project-specific generated release artifacts
 /pizza-non-classified.*
 src/ontology/pizza-non-classified.*
+
+# Generated semantic-artifact test outputs
+artifacts/reasoning/.work/
+artifacts/reasoning/results/
+artifacts/validation/results/

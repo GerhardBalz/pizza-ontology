@@ -1,0 +1,8 @@
+PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?problem
+WHERE {
+  pizza:AmericanHot rdfs:subClassOf pizza:SpicyPizza .
+  BIND("AmericanHot SubClassOf SpicyPizza must remain inferred rather than asserted in the coherent module" AS ?problem)
+}

@@ -1,0 +1,21 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix art: <urn:pizza-ontology:artifact:> .
+
+art:SpicyPizzaReasoningModule
+    a prov:Entity ;
+    dcterms:title "Pizza SpicyPizza coherent reasoning module"@en ;
+    dcterms:description "A curated coherent OWL module derived from the preserved Pizza Ontology 2.0 source for reasoning, verification, explanation, and downstream semantic consumption."@en ;
+    dcterms:identifier "artifacts/reasoning/spicy-pizza.ofn" ;
+    dcterms:source <https://github.com/GerhardBalz/pizza-ontology/blob/079e80da896315483cad611dd0f3439449dfa722/src/ontology/pizza-edit.owl> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> ;
+    dcterms:license <https://creativecommons.org/licenses/by/3.0/> ;
+    prov:wasDerivedFrom <https://github.com/GerhardBalz/pizza-ontology/blob/079e80da896315483cad611dd0f3439449dfa722/src/ontology/pizza-edit.owl> .
+
+art:Pizza2SourceBlob
+    a prov:Entity ;
+    dcterms:identifier "git-blob:397492e484de5560f8a7e048ce8999b707d94388" ;
+    dcterms:source <https://github.com/GerhardBalz/pizza-ontology/blob/079e80da896315483cad611dd0f3439449dfa722/src/ontology/pizza-edit.owl> .
+
+art:SpicyPizzaReasoningModule
+    prov:wasDerivedFrom art:Pizza2SourceBlob .
