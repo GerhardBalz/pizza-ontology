@@ -7,6 +7,7 @@ WORK="${HERE}/.work"
 RESULTS="${HERE}/results"
 SOURCE="${ROOT}/src/ontology/pizza-edit.owl"
 OAK_INPUT="${WORK}/pizza-edit.ofn"
+PIZZA_NS="http://www.co-ode.org/ontologies/pizza/pizza.owl#"
 
 mkdir -p "${WORK}" "${RESULTS}"
 rm -f "${RESULTS}"/*
@@ -22,15 +23,15 @@ printf '\n1/4 Python OAK access example...\n'
 python "${HERE}/access_pizza.py" "${OAK_INPUT}" | tee "${RESULTS}/python-access.txt"
 
 printf '\n2/4 OAK CLI entity lookup...\n'
-runoak -i "${OAK_INPUT}" info "American Hot" | tee "${RESULTS}/info.txt"
+runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" info pizza:AmericanHot | tee "${RESULTS}/info.txt"
 grep -qi "American.*Hot" "${RESULTS}/info.txt"
 
 printf '\n3/4 OAK CLI relationship projection...\n'
-runoak -i "${OAK_INPUT}" relationships "American Hot" | tee "${RESULTS}/relationships.txt"
-grep -q "JalapenoPepperTopping" "${RESULTS}/relationships.txt"
+runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" relationships pizza:AmericanHot | tee "${RESULTS}/relationships.txt"
+grep -q "pizza:JalapenoPepperTopping" "${RESULTS}/relationships.txt"
 
 printf '\n4/4 OAK CLI is-a traversal...\n'
-runoak -i "${OAK_INPUT}" ancestors -p i "American Hot" | tee "${RESULTS}/ancestors.txt"
-grep -q "NamedPizza" "${RESULTS}/ancestors.txt"
+runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" ancestors -p i pizza:AmericanHot | tee "${RESULTS}/ancestors.txt"
+grep -q "pizza:NamedPizza" "${RESULTS}/ancestors.txt"
 
 printf '\nSUCCESS: OAK CLI and Python examples access the repository-owned Pizza semantic model.\n'
