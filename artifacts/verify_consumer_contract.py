@@ -29,6 +29,10 @@ EXPECTED = {
     "artifacts/calculations/pizza-area.openmath.xml",
     "artifacts/calculations/calculation-vocabulary.ttl",
     "artifacts/calculations/data/cases.json",
+    "artifacts/mappings/pizza-to-menu.rq",
+    "artifacts/mappings/menu-vocabulary.ttl",
+    "artifacts/mappings/data/source-pizzas.ttl",
+    "artifacts/mappings/data/expected-menu.ttl",
 }
 
 
@@ -41,7 +45,7 @@ def main() -> None:
     graph = Graph().parse(MANIFEST, format="turtle")
 
     distributions = set(graph.objects(ART.PizzaSemanticArtifactSet, DCAT["distribution"]))
-    require(len(distributions) == 13, f"expected thirteen published distributions, got {len(distributions)}")
+    require(len(distributions) == 17, f"expected seventeen published distributions, got {len(distributions)}")
 
     paths: set[str] = set()
     for distribution in distributions:
@@ -80,6 +84,10 @@ def main() -> None:
         ART.PizzaAreaCalculationFormula,
         ART.PizzaCalculationVocabulary,
         ART.PizzaCalculationCases,
+        ART.PizzaMenuProjectionMapping,
+        ART.PizzaMenuVocabulary,
+        ART.PizzaMappingSourceData,
+        ART.PizzaMappingExpectedOutput,
     ):
         require(
             (authored, DCTERMS["license"], URIRef("https://opensource.org/license/mit")) in graph,
@@ -104,6 +112,15 @@ def main() -> None:
     require((ART.PizzaAreaCalculationFormula, DCTERMS["requires"], ART.PizzaCalculationVocabulary) in graph, "Pizza calculation formula must require the published calculation vocabulary")
     require((ART.PizzaCalculationCases, DCTERMS["requires"], ART.PizzaAreaCalculationFormula) in graph, "Pizza calculation cases must require the published OpenMath formula")
     require((ART.PizzaCalculationCases, DCTERMS["requires"], ART.PizzaCalculationVocabulary) in graph, "Pizza calculation cases must require the published calculation vocabulary")
+
+    require(
+        (ART.PizzaMenuProjectionMapping, DCTERMS["conformsTo"], URIRef("https://www.w3.org/TR/sparql11-query/")) in graph,
+        "Pizza mapping must identify SPARQL 1.1 Query conformance",
+    )
+    require((ART.PizzaMenuProjectionMapping, DCTERMS["requires"], ART.PizzaMenuVocabulary) in graph, "Pizza mapping must require the target Menu vocabulary")
+    require((ART.PizzaMappingExpectedOutput, DCTERMS["conformsTo"], ART.PizzaMenuVocabulary) in graph, "expected mapping output must conform to the target Menu vocabulary")
+    require((ART.PizzaMappingExpectedOutput, DCTERMS["requires"], ART.PizzaMenuProjectionMapping) in graph, "expected mapping output must require the mapping specification")
+    require((ART.PizzaMappingExpectedOutput, DCTERMS["requires"], ART.PizzaMappingSourceData) in graph, "expected mapping output must require the canonical source data")
 
     print("SUCCESS: Pizza semantic artifact consumer contract is complete and resolves to repository-owned files.")
     for path in sorted(paths):
