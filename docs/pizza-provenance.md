@@ -2,11 +2,17 @@
 
 ## Status
 
-Draft provenance case study.
+Provenance case study with an adopted preservation-line decision.
 
 This document applies the concepts defined in `identity-publication-model.md` to the historical Pizza ontology and to this repository.
 
-Its purpose is to establish provenance, authority, and lineage before deciding whether future work should preserve the historical Pizza 2.0 identity or establish a successor ontology with a new governed identifier space.
+Its purpose is to establish provenance, authority, and lineage and to document the current architectural decision:
+
+> **`GerhardBalz/pizza-ontology` is the preservation, stewardship, engineering, and learning line for the historical Pizza Ontology 2.0 baseline.**
+
+A future successor ontology remains possible, but if created it should be a separate ontology lineage with its own authority, identity, governed namespace, repository, and version series.
+
+The corresponding repository release model is documented in [`versioning-release-model.md`](versioning-release-model.md).
 
 ## 1. Preservation Baseline
 
@@ -143,6 +149,8 @@ Several projects maintain copies, tutorials, test fixtures, implementations, or 
 
 Repository activity alone does not establish stewardship of the historical ontology identity.
 
+This repository therefore uses the more limited role **technical steward of its own preservation and engineering environment** rather than claiming stewardship authority over the historical identifier space itself.
+
 ### Rights Holder
 
 **Not established from the ontology metadata.**
@@ -267,6 +275,10 @@ Manchester / Protégé OWL tutorial collaboration
                      │
                      ▼
       GerhardBalz/pizza-ontology
+                     │
+                     │ preservation / engineering releases
+                     ▼
+          preservation-v0.x.y
 ```
 
 The current repository is therefore derived from the upstream Pizza 2.0 artifact.
@@ -323,7 +335,7 @@ https://github.com/GerhardBalz/pizza-ontology
 
 Current role:
 
-> **A preservation, migration, engineering, and learning environment based on the historical Pizza ontology.**
+> **A preservation, stewardship, migration, engineering, and learning environment based on the historical Pizza ontology.**
 
 The repository is intended to support multiple uses of the same semantic artifact, including examples for:
 
@@ -337,24 +349,26 @@ The repository is intended to support multiple uses of the same semantic artifac
 * ontology-informed user experiences,
 * knowledge graphs,
 * executable knowledge,
-* and Executable Knowledge Architecture.
+* and Executable Semantic Knowledge Architecture.
 
-These uses do not change the provenance of the historical Pizza ontology.
+These uses do not change the provenance or semantic version of the historical Pizza ontology.
 
 ## 8. Current Project Role
 
-At this stage, `GerhardBalz/pizza-ontology` should not claim to be:
+`GerhardBalz/pizza-ontology` should not claim to be:
 
 * the original Pizza ontology authority,
 * the original source repository,
 * the legal owner of Pizza,
 * or an official continuation sanctioned by the historical contributors.
 
-The project can currently be described as a:
+The project is described as a:
 
 > **Technical steward of a preservation and engineering repository derived from Pizza 2.0.**
 
 This stewardship is distinct from semantic authority over the historical `co-ode.org` identifier space.
+
+The repository may create versioned preservation and engineering releases without claiming that those releases are new semantic versions of the historical Pizza ontology.
 
 ## 9. Licence and Attribution
 
@@ -374,88 +388,114 @@ Derived engineering work
     semantic regression tests
     documentation
     examples
-    future publication infrastructure
-    future executable-knowledge demonstrations
+    publication infrastructure
+    executable-knowledge integrations
 ```
 
 Licensing of newly created repository infrastructure, examples, code, and documentation should be made deliberately rather than silently replacing the provenance or licensing of the upstream ontology.
 
-## 10. Preservation vs Successor
+## 10. Preservation Line and Possible Successor
 
-The major architectural decision remains open.
+The current repository role is now resolved:
 
-### Preservation / Stewardship Path
+### Adopted Preservation / Stewardship Line
 
 ```text
-Pizza 2.0
+Pizza Ontology 2.0
    │
-   └── preserved and republished
-       with historical semantic IRIs
+   └── preserved and engineered in
+       GerhardBalz/pizza-ontology
+             │
+             └── repository releases
+                 preservation-v0.x.y
 ```
 
-Under this path:
+Under this line:
 
 * historical ontology identity remains unchanged,
 * historical entity IRIs remain unchanged,
+* Pizza Ontology 2.0 remains the semantic baseline,
 * new engineering and publication infrastructure surrounds the existing ontology,
+* repository releases are versioned independently from the ontology,
 * provenance clearly identifies the project as a preservation and stewardship environment.
 
-### Successor Ontology Path
+The detailed release model is defined in [`versioning-release-model.md`](versioning-release-model.md).
+
+### Possible Successor Ontology Lineage
+
+Semantic modernization remains possible as a separate lineage:
 
 ```text
-Pizza 2.0
+Pizza Ontology 2.0
    │
-   │ prov:wasDerivedFrom
+   │ prov:wasDerivedFrom / explicit mappings
    ▼
-Modernized Pizza Ontology
+Successor Pizza Ontology
    │
-   ├── new authority
+   ├── separate repository
+   ├── explicit authority / stewardship
    ├── new ontology identity
    ├── new governed identifier namespace
-   └── explicit mappings to historical Pizza entities
+   └── independent version series
 ```
 
-Under this path, the project would establish a genuinely new ontology lineage rather than silently taking over the historical Pizza identifier space.
+A successor would not replace the preservation line. Both may coexist.
 
-## 11. Open Questions
+Unless authority over the historical Pizza identifier space is established, a successor should not silently adopt new version IRIs beneath:
+
+```text
+http://www.co-ode.org/ontologies/pizza
+```
+
+or assume the names `Pizza 2.1` or `Pizza 3.0` imply official continuity.
+
+## 11. Open Questions and Decisions
 
 ### Q1. Should this repository remain a preservation/stewardship project?
 
-If yes, historical semantic identity should remain unchanged.
+**Decided: yes.**
+
+Historical semantic identity remains unchanged. Repository engineering evolves through a separate `preservation-v0.x.y` release line.
 
 ### Q2. Should a successor Pizza ontology be created?
 
-If yes, its semantic authority and identifier namespace must be explicitly established.
+**Open.**
+
+A successor should be created only when there is a concrete need for semantic modernization that should not be represented as part of the immutable Pizza 2.0 preservation baseline.
 
 ### Q3. Who would be the authority for a successor ontology?
 
-The answer must precede the choice of new IRIs.
+**Open.**
+
+The answer must precede the choice of successor ontology and entity IRIs.
 
 ### Q4. Should historical Pizza entity IRIs remain unchanged?
 
-For preservation: yes.
+For the preservation repository: **yes**.
 
 For a successor: mappings between historical and successor entities should be explicit and evaluated individually.
 
 ### Q5. How should historical version 2.0 relate to future project releases?
 
-A new engineering release of this repository should not pretend to be another official historical Pizza 2.0 release.
+**Decided.**
 
-The model must distinguish:
-
-```text
-historical semantic version
-```
-
-from:
+The repository uses an independent preservation release series:
 
 ```text
-new repository / preservation release
+Historical semantic version
+    Pizza Ontology 2.0
+
+Repository release
+    preservation-v0.x.y
 ```
+
+A repository release must not pretend to be a new official semantic release of historical Pizza 2.0.
 
 ### Q6. How should ontology knowledge become executable?
 
-Future work may explore semantic projections from the ontology into:
+This remains an incremental engineering question.
+
+The repository can provide stable semantic artifacts and projections for:
 
 * query interfaces,
 * APIs,
@@ -467,11 +507,13 @@ Future work may explore semantic projections from the ontology into:
 * agents,
 * and executable knowledge systems.
 
-These derived artifacts should remain traceable to the underlying semantic model without assuming that all implementation knowledge belongs directly in OWL.
+The companion ESKA project can operationalize those artifacts as semantic capabilities, services, agents, verification, and provenance.
+
+Derived artifacts should remain traceable to the underlying semantic model without assuming that all implementation knowledge belongs directly in OWL.
 
 ## 12. Current Conclusion
 
-The current conservative interpretation is:
+The current interpretation is:
 
 ```text
 Creator community:
@@ -481,7 +523,7 @@ Historical semantic artifact:
     Pizza ontology
 
 Preservation baseline:
-    Pizza 2.0
+    Pizza Ontology 2.0
 
 Current upstream host used by this project:
     Stanford Protégé
@@ -496,14 +538,17 @@ Licence:
     CC BY 3.0
 
 Current project role:
-    Preservation / migration / engineering steward
+    Preservation / stewardship / migration / engineering line
+
+Repository release series:
+    preservation-v0.x.y
 ```
 
-The next architectural decision is therefore:
+The preservation-versus-successor question is therefore no longer a binary decision for this repository:
 
-> **Does `pizza-ontology` remain a preservation and stewardship environment for Pizza 2.0, or does it eventually establish a new successor ontology?**
+> **`pizza-ontology` preserves Pizza Ontology 2.0. A separate successor ontology may be created later if semantic modernization requires a new lineage.**
 
-That decision should determine future ontology IRIs and entity identifier spaces—not the other way around.
+The remaining architectural decision is whether and when such a successor should be created. That future decision should determine its authority, ontology IRI, entity namespace, mappings, and version series—not the other way around.
 
 ## References
 
@@ -514,3 +559,4 @@ That decision should determine future ontology IRIs and entity identifier spaces
 * Tawny Pizza: https://github.com/phillord/tawny-pizza
 * Yasen/Xiaoqi Zhao Pizza project: https://github.com/yasenstar/protege_pizza
 * Current preservation/engineering repository: https://github.com/GerhardBalz/pizza-ontology
+* Versioning and Release Model: `docs/versioning-release-model.md`
