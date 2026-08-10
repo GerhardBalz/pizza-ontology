@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+    xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+    id="pizzaDietarySuitabilityDefinitions"
+    name="Pizza Dietary Suitability"
+    namespace="urn:pizza-ontology:decision:model:">
+
+  <inputData id="containsMeatInput" name="containsMeat">
+    <variable id="containsMeatVariable" name="containsMeat" typeRef="boolean" />
+  </inputData>
+
+  <inputData id="containsFishInput" name="containsFish">
+    <variable id="containsFishVariable" name="containsFish" typeRef="boolean" />
+  </inputData>
+
+  <decision id="pizzaDietarySuitabilityDecision" name="Pizza Dietary Suitability">
+    <variable id="pizzaDietarySuitabilityVariable" name="dietarySuitability" typeRef="string" />
+
+    <informationRequirement id="requiresContainsMeat">
+      <requiredInput href="#containsMeatInput" />
+    </informationRequirement>
+    <informationRequirement id="requiresContainsFish">
+      <requiredInput href="#containsFishInput" />
+    </informationRequirement>
+
+    <decisionTable id="pizzaDietarySuitabilityTable" hitPolicy="UNIQUE">
+      <input id="containsMeatClause" label="containsMeat">
+        <inputExpression id="containsMeatExpression" typeRef="boolean">
+          <text>containsMeat</text>
+        </inputExpression>
+      </input>
+      <input id="containsFishClause" label="containsFish">
+        <inputExpression id="containsFishExpression" typeRef="boolean">
+          <text>containsFish</text>
+        </inputExpression>
+      </input>
+      <output
+          id="dietarySuitabilityClause"
+          label="dietarySuitability"
+          name="dietarySuitability"
+          typeRef="string" />
+
+      <rule id="notVegetarianRule">
+        <inputEntry id="notVegetarianMeatEntry"><text>true</text></inputEntry>
+        <inputEntry id="notVegetarianFishEntry"><text>-</text></inputEntry>
+        <outputEntry id="notVegetarianOutput"><text>"urn:pizza-ontology:decision:NotVegetarian"</text></outputEntry>
+      </rule>
+
+      <rule id="pescatarianRule">
+        <inputEntry id="pescatarianMeatEntry"><text>false</text></inputEntry>
+        <inputEntry id="pescatarianFishEntry"><text>true</text></inputEntry>
+        <outputEntry id="pescatarianOutput"><text>"urn:pizza-ontology:decision:PescatarianOnly"</text></outputEntry>
+      </rule>
+
+      <rule id="vegetarianRule">
+        <inputEntry id="vegetarianMeatEntry"><text>false</text></inputEntry>
+        <inputEntry id="vegetarianFishEntry"><text>false</text></inputEntry>
+        <outputEntry id="vegetarianOutput"><text>"urn:pizza-ontology:decision:Vegetarian"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
