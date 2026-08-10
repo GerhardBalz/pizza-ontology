@@ -12,7 +12,10 @@ art:PizzaSemanticArtifactSet
         art:SpicyPizzaReasoningModule,
         art:PizzaInstanceShapes,
         art:ConformingPizzaData,
-        art:NonConformingPizzaData .
+        art:NonConformingPizzaData,
+        art:PizzaVegetarianWarningRule,
+        art:PizzaRuleVocabulary,
+        art:PizzaRuleData .
 
 art:SpicyPizzaReasoningModule
     a dcat:Distribution, prov:Entity ;
@@ -49,6 +52,35 @@ art:NonConformingPizzaData
     dcterms:format "text/turtle" ;
     dcterms:license <https://opensource.org/license/mit> ;
     dcterms:relation art:PizzaInstanceShapes .
+
+art:PizzaVegetarianWarningRule
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza vegetarian warning SPARQL rule"@en ;
+    dcterms:description "Repository-authored SPARQL 1.1 CONSTRUCT rule that derives a vegetarian-warning result when explicit Pizza data references a topping typed as pizza:MeatTopping."@en ;
+    dcterms:identifier "artifacts/rules/vegetarian-warning.rq" ;
+    dcterms:format "application/sparql-query" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:requires art:PizzaRuleVocabulary ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaRuleVocabulary
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza rule result vocabulary"@en ;
+    dcterms:description "Repository-authored RDF vocabulary defining the machine-readable result relation produced by the Pizza vegetarian warning rule."@en ;
+    dcterms:identifier "artifacts/rules/rule-vocabulary.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaRuleData
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza rule evaluation data"@en ;
+    dcterms:description "Repository-authored RDF input containing a matching MeatTopping Pizza and a non-matching vegetable Pizza control case."@en ;
+    dcterms:identifier "artifacts/rules/data/menu-pizzas.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:requires art:PizzaRuleVocabulary ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
 
 art:Pizza2SourceBlob
     a prov:Entity ;
