@@ -5,27 +5,30 @@ This example demonstrates **Track 3 — Access** using the [Ontology Access Kit 
 The goal is deliberately small:
 
 ```text
-AmericanHot
-    │ lookup / label
+pizza:AmericanHot
+    │ lookup / English label
     ▼
 American Hot
     │ relationships
-    ├── rdfs:subClassOf → NamedPizza
-    └── hasTopping → JalapenoPepperTopping
+    ├── rdfs:subClassOf → pizza:NamedPizza
+    └── pizza:hasTopping → pizza:JalapenoPepperTopping
     │
     ▼
-is-a ancestry + ontology metadata
+is-a ancestry
 ```
 
 This is ontology **access**, not OWL reasoning. OAK projects common OWL axioms such as named `SubClassOf` axioms and simple existential restrictions into graph relationships. Reasoning remains a separate concern in Track 4.
 
-## Version
+## Versions
 
 The example pins:
 
 ```text
 oaklib 0.7.1
+pronto 2.7.3
 ```
+
+The explicit Pronto pin prevents the Python dependency resolver from selecting an old Pronto release that is incompatible with Python 3.12.
 
 ## Why the temporary `.ofn` file?
 
@@ -40,10 +43,32 @@ src/ontology/pizza-edit.owl
 examples/oak/.work/pizza-edit.ofn
         │ runtime only
         ▼
-OAK horned-OWL-backed adapter
+OAK Functional-Syntax adapter
 ```
 
 The temporary file is not a new semantic artifact and is never committed.
+
+## Pizza prefix
+
+OAK's common interface uses CURIE-style identifiers. The historical Pizza namespace is therefore registered explicitly:
+
+```text
+pizza = http://www.co-ode.org/ontologies/pizza/pizza.owl#
+```
+
+This changes only how the OAK client refers to entities. It does **not** change the Pizza ontology IRIs.
+
+## Multilingual labels
+
+Pizza 2.0 contains multilingual labels. The examples explicitly request English (`en`) rather than relying on an arbitrary first label.
+
+That makes the access contract clear:
+
+```text
+pizza:AmericanHot
+    ├── English → American Hot
+    └── other language labels remain in the ontology
+```
 
 ## Run
 
@@ -61,34 +86,62 @@ The runner exercises both the Python API and CLI.
 Entity lookup:
 
 ```bash
-runoak -i examples/oak/.work/pizza-edit.ofn info "American Hot"
+runoak \
+  --prefix 'pizza=http://www.co-ode.org/ontologies/pizza/pizza.owl#' \
+  -l en \
+  -i examples/oak/.work/pizza-edit.ofn \
+  info pizza:AmericanHot
 ```
 
 Projected relationships:
 
 ```bash
-runoak -i examples/oak/.work/pizza-edit.ofn relationships "American Hot"
+runoak \
+  --prefix 'pizza=http://www.co-ode.org/ontologies/pizza/pizza.owl#' \
+  -l en \
+  -i examples/oak/.work/pizza-edit.ofn \
+  relationships pizza:AmericanHot
 ```
 
 Is-a ancestors:
 
 ```bash
-runoak -i examples/oak/.work/pizza-edit.ofn ancestors -p i "American Hot"
+runoak \
+  --prefix 'pizza=http://www.co-ode.org/ontologies/pizza/pizza.owl#' \
+  -l en \
+  -i examples/oak/.work/pizza-edit.ofn \
+  ancestors -p i pizza:AmericanHot
 ```
 
-The global `-i` / `--input` option intentionally appears **before** the command, following OAK's CLI contract.
+The global prefix, language, and input options intentionally appear **before** the command.
 
 ## Python API
 
 [`access_pizza.py`](access_pizza.py) uses the common OAK interface:
 
 - `get_adapter(...)`
+- `prefix_map()`
 - `label(...)`
 - `relationships(...)`
 - `ancestors(...)`
-- `ontology_metadata_map()`
 
-The example verifies that OAK can access the Pizza entity label, its asserted superclass, the `hasTopping some JalapenoPepperTopping` relationship projection, is-a ancestry, and ontology metadata without embedding those domain facts as application rules.
+The example verifies that OAK can access the English Pizza entity label, its asserted superclass, the `hasTopping some JalapenoPepperTopping` relationship projection, and is-a ancestry without embedding those domain facts as application rules.
+
+## Adapter capability boundary
+
+OAK defines common interfaces across multiple adapters, but not every backend implements every operation.
+
+For the local Functional-Syntax adapter used by this first slice, ontology enumeration / ontology-metadata access is not implemented. The Python example records this capability boundary explicitly instead of treating it as a Pizza-data failure.
+
+```text
+common OAK interface
+        │
+        ├── labels / relationships / ancestry  ✓ local adapter
+        │
+        └── ontology metadata                 backend-dependent
+```
+
+A later access/distribution example can introduce a metadata-capable backend when that capability has a concrete use case.
 
 ## Architectural boundary
 
