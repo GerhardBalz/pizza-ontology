@@ -73,3 +73,6 @@ jobs:
 
       - name: Validate canonical Pizza instance examples
         run: python artifacts/validation/validate_examples.py
+
+      - name: Verify semantic artifact consumer contract
+        run: python artifacts/verify_consumer_contract.py
