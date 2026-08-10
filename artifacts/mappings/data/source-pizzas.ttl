@@ -1,0 +1,21 @@
+@prefix mapdata: <urn:pizza-ontology:mapping:data:> .
+@prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+mapdata:americanHotMenuPizza
+    a pizza:Pizza ;
+    rdfs:label "American Hot"@en ;
+    pizza:hasTopping mapdata:jalapenoTopping .
+
+mapdata:jalapenoTopping
+    a pizza:PizzaTopping ;
+    rdfs:label "Jalapeno Pepper"@en .
+
+mapdata:margheritaMenuPizza
+    a pizza:Pizza ;
+    rdfs:label "Margherita"@en ;
+    pizza:hasTopping mapdata:mozzarellaTopping .
+
+mapdata:mozzarellaTopping
+    a pizza:PizzaTopping ;
+    rdfs:label "Mozzarella"@en .
