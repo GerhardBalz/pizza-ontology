@@ -1,0 +1,19 @@
+PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>
+PREFIX menu: <urn:pizza-ontology:menu:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT {
+  ?pizza a menu:MenuItem ;
+         menu:displayName ?pizzaLabel ;
+         menu:ingredientName ?toppingLabel .
+}
+WHERE {
+  ?pizza a pizza:Pizza ;
+         rdfs:label ?pizzaLabel ;
+         pizza:hasTopping ?topping .
+
+  ?topping rdfs:label ?toppingLabel .
+
+  FILTER(LANG(?pizzaLabel) = "en")
+  FILTER(LANG(?toppingLabel) = "en")
+}
