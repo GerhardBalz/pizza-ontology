@@ -1,0 +1,41 @@
+@prefix art: <urn:pizza-ontology:artifact:> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix wf: <urn:pizza-ontology:workflow:> .
+
+wf:WorkflowOutcome
+    a owl:Class ;
+    rdfs:label "Workflow outcome"@en ;
+    dcterms:description "A semantic outcome selected by the Pizza menu-publication workflow."@en .
+
+wf:SemanticWorkflowOperation
+    a owl:Class ;
+    rdfs:label "Semantic workflow operation"@en ;
+    dcterms:description "A workflow operation whose behavior is bound to separately published semantic artifacts."@en .
+
+wf:workflowOutcome
+    a owl:ObjectProperty ;
+    rdfs:range wf:WorkflowOutcome ;
+    rdfs:label "workflow outcome"@en .
+
+wf:Published
+    a wf:WorkflowOutcome ;
+    rdfs:label "Published"@en .
+
+wf:Rejected
+    a wf:WorkflowOutcome ;
+    rdfs:label "Rejected"@en .
+
+wf:ValidatePizzaData
+    a wf:SemanticWorkflowOperation ;
+    rdfs:label "Validate Pizza data"@en ;
+    dcterms:description "Validate explicit Pizza RDF against the repository-owned Pizza instance SHACL profile."@en ;
+    dcterms:requires art:PizzaInstanceShapes .
+
+wf:TransformPizzaToMenu
+    a wf:SemanticWorkflowOperation ;
+    rdfs:label "Transform Pizza to Menu"@en ;
+    dcterms:description "Transform conforming Pizza RDF into the repository-owned Menu projection semantic model."@en ;
+    dcterms:requires art:PizzaMenuMapping, art:PizzaMenuVocabulary .

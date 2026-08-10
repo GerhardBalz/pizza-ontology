@@ -25,7 +25,13 @@ art:PizzaSemanticArtifactSet
         art:PizzaMenuProjectionMapping,
         art:PizzaMenuVocabulary,
         art:PizzaMappingSourceData,
-        art:PizzaMappingExpectedOutput .
+        art:PizzaMappingExpectedOutput,
+        art:PizzaMenuPublicationWorkflow,
+        art:PizzaWorkflowVocabulary,
+        art:PizzaWorkflowValidData,
+        art:PizzaWorkflowInvalidData,
+        art:PizzaWorkflowExpectedTarget,
+        art:PizzaWorkflowCases .
 
 art:SpicyPizzaReasoningModule
     a dcat:Distribution, prov:Entity ;
@@ -187,6 +193,62 @@ art:PizzaMappingExpectedOutput
     dcterms:license <https://opensource.org/license/mit> ;
     dcterms:conformsTo art:PizzaMenuVocabulary ;
     dcterms:requires art:PizzaMenuProjectionMapping, art:PizzaMappingSourceData .
+
+art:PizzaMenuPublicationWorkflow
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza menu publication BPMN workflow"@en ;
+    dcterms:description "Repository-authored BPMN 2.0.2 process that validates Pizza RDF and conditionally transforms conforming data into the Menu projection."@en ;
+    dcterms:identifier "artifacts/workflows/pizza-menu-publication.bpmn" ;
+    dcterms:format "application/xml" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:conformsTo <https://www.omg.org/spec/BPMN/2.0.2/> ;
+    dcterms:requires art:PizzaWorkflowVocabulary, art:PizzaInstanceShapes, art:PizzaMenuProjectionMapping, art:PizzaMenuVocabulary .
+
+art:PizzaWorkflowVocabulary
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza workflow vocabulary"@en ;
+    dcterms:description "Repository-authored semantic vocabulary defining workflow operations, their required artifact roles, and Published/Rejected outcomes."@en ;
+    dcterms:identifier "artifacts/workflows/workflow-vocabulary.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:requires art:PizzaInstanceShapes, art:PizzaMenuProjectionMapping, art:PizzaMenuVocabulary .
+
+art:PizzaWorkflowValidData
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Valid Pizza workflow input"@en ;
+    dcterms:description "Repository-authored Pizza RDF input expected to validate, execute the mapping step, and finish Published."@en ;
+    dcterms:identifier "artifacts/workflows/data/valid-pizza.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaWorkflowInvalidData
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Invalid Pizza workflow input"@en ;
+    dcterms:description "Repository-authored Pizza RDF input intentionally missing a required base so the workflow stops after validation and finishes Rejected."@en ;
+    dcterms:identifier "artifacts/workflows/data/invalid-pizza.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaWorkflowExpectedTarget
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Expected valid Pizza workflow Menu graph"@en ;
+    dcterms:description "Repository-authored Menu projection expected when the valid Pizza workflow case reaches the mapping step."@en ;
+    dcterms:identifier "artifacts/workflows/data/expected-valid-menu.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:conformsTo art:PizzaMenuVocabulary ;
+    dcterms:requires art:PizzaMenuProjectionMapping, art:PizzaWorkflowValidData .
+
+art:PizzaWorkflowCases
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza menu-publication workflow cases"@en ;
+    dcterms:description "Repository-authored workflow case contract covering the Published valid path and Rejected invalid path with expected step sequences."@en ;
+    dcterms:identifier "artifacts/workflows/data/cases.json" ;
+    dcterms:format "application/json" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:requires art:PizzaMenuPublicationWorkflow, art:PizzaWorkflowVocabulary, art:PizzaWorkflowValidData, art:PizzaWorkflowInvalidData, art:PizzaWorkflowExpectedTarget .
 
 art:Pizza2SourceBlob
     a prov:Entity ;

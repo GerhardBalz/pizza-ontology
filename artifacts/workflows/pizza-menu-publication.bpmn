@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:wf="urn:pizza-ontology:workflow:"
+    id="PizzaWorkflowDefinitions"
+    targetNamespace="urn:pizza-ontology:workflow:bpmn"
+    expressionLanguage="urn:pizza-ontology:workflow:expression:simple-boolean">
+  <bpmn:process id="PizzaMenuPublicationProcess" name="Pizza Menu Publication" isExecutable="true">
+    <bpmn:startEvent id="Start" name="Start"/>
+
+    <bpmn:serviceTask id="ValidatePizzaData" name="Validate Pizza RDF" implementation="urn:pizza-ontology:workflow:ValidatePizzaData">
+      <bpmn:extensionElements>
+        <wf:semanticOperation ref="urn:pizza-ontology:workflow:ValidatePizzaData"/>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+
+    <bpmn:exclusiveGateway id="ValidationGateway" name="Validation conforms?" default="FlowRejected"/>
+
+    <bpmn:serviceTask id="TransformPizzaToMenu" name="Transform Pizza to Menu" implementation="urn:pizza-ontology:workflow:TransformPizzaToMenu">
+      <bpmn:extensionElements>
+        <wf:semanticOperation ref="urn:pizza-ontology:workflow:TransformPizzaToMenu"/>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+
+    <bpmn:endEvent id="Published" name="Published">
+      <bpmn:extensionElements>
+        <wf:workflowOutcome ref="urn:pizza-ontology:workflow:Published"/>
+      </bpmn:extensionElements>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="Rejected" name="Rejected">
+      <bpmn:extensionElements>
+        <wf:workflowOutcome ref="urn:pizza-ontology:workflow:Rejected"/>
+      </bpmn:extensionElements>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="FlowStartValidate" sourceRef="Start" targetRef="ValidatePizzaData"/>
+    <bpmn:sequenceFlow id="FlowValidateGateway" sourceRef="ValidatePizzaData" targetRef="ValidationGateway"/>
+    <bpmn:sequenceFlow id="FlowPublished" sourceRef="ValidationGateway" targetRef="TransformPizzaToMenu">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">validationConforms</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="FlowRejected" sourceRef="ValidationGateway" targetRef="Rejected"/>
+    <bpmn:sequenceFlow id="FlowTransformPublished" sourceRef="TransformPizzaToMenu" targetRef="Published"/>
+  </bpmn:process>
+</bpmn:definitions>

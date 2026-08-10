@@ -1,0 +1,23 @@
+{
+  "workflow": "PizzaMenuPublicationProcess",
+  "cases": [
+    {
+      "id": "valid-publication",
+      "input": "artifacts/workflows/data/valid-pizza.ttl",
+      "expectedOutcome": "urn:pizza-ontology:workflow:Published",
+      "expectedSteps": [
+        "urn:pizza-ontology:workflow:ValidatePizzaData",
+        "urn:pizza-ontology:workflow:TransformPizzaToMenu"
+      ],
+      "expectedTarget": "artifacts/workflows/data/expected-valid-menu.ttl"
+    },
+    {
+      "id": "invalid-rejection",
+      "input": "artifacts/workflows/data/invalid-pizza.ttl",
+      "expectedOutcome": "urn:pizza-ontology:workflow:Rejected",
+      "expectedSteps": [
+        "urn:pizza-ontology:workflow:ValidatePizzaData"
+      ]
+    }
+  ]
+}
