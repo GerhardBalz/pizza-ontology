@@ -20,6 +20,9 @@ EXPECTED = {
     "artifacts/validation/pizza-instance-shapes.ttl",
     "artifacts/validation/data/conforming.ttl",
     "artifacts/validation/data/non-conforming.ttl",
+    "artifacts/rules/vegetarian-warning.rq",
+    "artifacts/rules/rule-vocabulary.ttl",
+    "artifacts/rules/data/menu-pizzas.ttl",
 }
 
 
@@ -32,7 +35,7 @@ def main() -> None:
     graph = Graph().parse(MANIFEST, format="turtle")
 
     distributions = set(graph.objects(ART.PizzaSemanticArtifactSet, DCAT["distribution"]))
-    require(len(distributions) == 4, f"expected four published distributions, got {len(distributions)}")
+    require(len(distributions) == 7, f"expected seven published distributions, got {len(distributions)}")
 
     paths: set[str] = set()
     for distribution in distributions:
@@ -61,11 +64,27 @@ def main() -> None:
         "reasoning module must retain explicit derivation provenance",
     )
 
-    for authored in (ART.PizzaInstanceShapes, ART.ConformingPizzaData, ART.NonConformingPizzaData):
+    for authored in (
+        ART.PizzaInstanceShapes,
+        ART.ConformingPizzaData,
+        ART.NonConformingPizzaData,
+        ART.PizzaVegetarianWarningRule,
+        ART.PizzaRuleVocabulary,
+        ART.PizzaRuleData,
+    ):
         require(
             (authored, DCTERMS["license"], URIRef("https://opensource.org/license/mit")) in graph,
             f"{authored}: repository-authored engineering artifact must identify the MIT license",
         )
+
+    require(
+        (ART.PizzaVegetarianWarningRule, DCTERMS["requires"], ART.PizzaRuleVocabulary) in graph,
+        "Pizza rule must require the published rule vocabulary",
+    )
+    require(
+        (ART.PizzaRuleData, DCTERMS["requires"], ART.PizzaRuleVocabulary) in graph,
+        "Pizza rule data must require the published rule vocabulary",
+    )
 
     print("SUCCESS: Pizza semantic artifact consumer contract is complete and resolves to repository-owned files.")
     for path in sorted(paths):

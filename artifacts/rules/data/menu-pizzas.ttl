@@ -1,0 +1,16 @@
+@prefix ex: <urn:pizza-ontology:rule:example:> .
+@prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+
+ex:meatyPizza
+    a pizza:Pizza ;
+    pizza:hasTopping ex:hamTopping .
+
+ex:hamTopping
+    a pizza:MeatTopping .
+
+ex:vegetablePizza
+    a pizza:Pizza ;
+    pizza:hasTopping ex:tomatoTopping .
+
+ex:tomatoTopping
+    a pizza:VegetableTopping .

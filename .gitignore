@@ -76,3 +76,4 @@ src/ontology/pizza-non-classified.*
 artifacts/reasoning/.work/
 artifacts/reasoning/results/
 artifacts/validation/results/
+artifacts/rules/results/
