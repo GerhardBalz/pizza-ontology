@@ -4,7 +4,7 @@
 
 A modern **ontology engineering and executable knowledge reference project** based on the classic Pizza OWL ontology.
 
-The Pizza domain is deliberately small and understandable. It provides one stable semantic subject for exploring ontology modeling, engineering, access, reasoning, validation, publication, rules, decisions, calculations, projections, user experience, and executable semantic knowledge.
+The Pizza domain is deliberately small and understandable. It provides one stable semantic subject for exploring ontology modeling, engineering, access, reasoning, validation, publication, rules, decisions, calculations, mappings, projections, user experience, and executable semantic knowledge.
 
 ## Why Pizza?
 
@@ -40,16 +40,16 @@ The **ontology is the semantic center**. Tools and executable artifacts remain s
                               ▼
                     Semantic Knowledge
                               │
-     ┌──────────┬──────────┬──┼───────┬────────────┐
-     ▼          ▼          ▼  ▼       ▼            ▼
- Reasoning  Validation   Rules Decisions Calculations Projections
-     │          │          │      │       │            │
-     └──────────┴──────────┴──────┴───────┴──────┬─────┘
-                                                  ▼
-                                       Executable Knowledge
-                                                  │
-                                                  ▼
-                             Executable Semantic Knowledge Architecture
+ ┌──────────┬──────────┬──────┼───────┬────────────┬───────────┐
+ ▼          ▼          ▼      ▼       ▼            ▼           ▼
+Reasoning Validation Rules Decisions Calculations Mappings Projections
+ │          │          │      │       │            │           │
+ └──────────┴──────────┴──────┴───────┴────────────┴─────┬─────┘
+                                                         ▼
+                                              Executable Knowledge
+                                                         │
+                                                         ▼
+                                    Executable Semantic Knowledge Architecture
 ```
 
 ## Nine Tracks
@@ -143,7 +143,7 @@ ESKA
     Results, Verification, provenance, Services and Agents
 ```
 
-[`artifacts/manifest.ttl`](artifacts/manifest.ttl) is the machine-readable consumer contract. It currently publishes **thirteen semantic distributions** covering five execution semantics:
+[`artifacts/manifest.ttl`](artifacts/manifest.ttl) is the machine-readable consumer contract. It currently publishes **seventeen semantic distributions** covering six execution semantics:
 
 ```text
 Ontology    → reason
@@ -151,6 +151,7 @@ Constraint  → validate
 Rule        → evaluate
 Decision    → decide
 Calculation → calculate
+Mapping     → transform
 ```
 
 The published set contains:
@@ -159,12 +160,29 @@ The published set contains:
 - one SHACL validation profile and two RDF validation cases;
 - one SPARQL rule, rule-result vocabulary, and RDF rule data;
 - one DMN 1.5 decision table, decision vocabulary, and decision cases;
-- one OpenMath area formula, calculation vocabulary, and calculation cases.
+- one OpenMath area formula, calculation vocabulary, and calculation cases;
+- one SPARQL semantic mapping, target Menu vocabulary, source RDF graph, and expected target RDF graph.
+
+The Mapping artifact is deliberately different from the Rule artifact even though both use SPARQL `CONSTRUCT`:
+
+```text
+Rule
+    Pizza source semantic model
+        ↓ derive
+    Pizza-domain statement
+
+Mapping
+    Pizza source semantic model
+        ↓ mapping semantics
+    Menu target semantic model
+        ↓
+    transformed target graph
+```
 
 ESKA pins the semantic artifact contract to immutable source commit:
 
 ```text
-fcefdc7acddf2ca9a9dc4dad9e410cea992011ff
+ef05531c5a362d8d1454e94e59a44f750515dd1c
 ```
 
 and materializes declared artifacts at runtime rather than maintaining independent Pizza-domain semantic copies.
@@ -173,7 +191,7 @@ and materializes declared artifacts at runtime rather than maintaining independe
 
 ### 9. Architect — Semantic Modeling
 
-Use the project as a case study for semantic identity, provenance, authority/stewardship, lifecycle, semantic projections, executable artifacts, knowledge-driven systems, and the relationship between conceptual, semantic, logical, and executable models.
+Use the project as a case study for semantic identity, provenance, authority/stewardship, lifecycle, semantic projections, executable artifacts, source/target semantic roles, knowledge-driven systems, and the relationship between conceptual, semantic, logical, and executable models.
 
 ## Preservation Baseline
 
@@ -209,7 +227,7 @@ Repository preservation release
 
 The planned first repository release is `preservation-v0.1.0`, tracked by [issue #7](https://github.com/GerhardBalz/pizza-ontology/issues/7).
 
-A preservation release can add engineering, access, validation, rule, decision, calculation, projection, UX, or integration artifacts while the preserved ontology continues to declare version `2.0`.
+A preservation release can add engineering, access, validation, rule, decision, calculation, mapping, projection, UX, or integration artifacts while the preserved ontology continues to declare version `2.0`.
 
 ### Possible successor ontology
 
@@ -237,7 +255,8 @@ pizza-ontology/
 │   ├── validation/
 │   ├── rules/
 │   ├── decisions/
-│   └── calculations/
+│   ├── calculations/
+│   └── mappings/
 ├── docs/
 ├── examples/oak/
 ├── LICENSES/
@@ -299,13 +318,14 @@ OpenMath calculation evaluation:
 python artifacts/calculations/evaluate_calculation.py
 ```
 
-The calculation evaluates the source-owned formula:
+Semantic mapping evaluation:
 
-```text
-areaSquareCentimetres = π × (diameterCm / 2)²
+```bash
+python -m pip install -r artifacts/mappings/requirements.txt
+python artifacts/mappings/evaluate_mapping.py
 ```
 
-for the canonical 20, 30, and 40 cm Pizza cases.
+The mapping transforms explicit Pizza RDF into the repository-owned Menu target vocabulary and verifies the result against the canonical target graph.
 
 Semantic artifact consumer contract:
 
@@ -314,20 +334,21 @@ python -m pip install -r artifacts/validation/requirements.txt
 python artifacts/verify_consumer_contract.py
 ```
 
-The verifier requires exactly the expected **thirteen** distributions and checks their paths, formats, dependencies, provenance/conformance metadata, and licensing boundaries.
+The verifier requires exactly the expected **seventeen** distributions and checks their paths, formats, dependencies, provenance/conformance metadata, and licensing boundaries.
 
 ## CI Concerns
 
-Seven independent concerns remain intentionally separate:
+Eight independent concerns remain intentionally separate:
 
 ```text
-ODK       → preserve / engineer / ontology QC
-OAK       → access / navigate
-HermiT    → reason / infer
-SHACL     → validate / conform
-SPARQL    → evaluate rule / derive
-DMN       → decide / select outcome
-OpenMath  → calculate / numeric result
+ODK        → preserve / engineer / ontology QC
+OAK        → access / navigate
+HermiT     → reason / infer
+SHACL      → validate / conform
+SPARQL     → evaluate rule / derive
+DMN        → decide / select outcome
+OpenMath   → calculate / numeric result
+Mapping    → transform / target graph
 ```
 
 ## Roadmap
@@ -346,6 +367,7 @@ OpenMath  → calculate / numeric result
 - [x] Add source-owned SPARQL rule-evaluation artifacts
 - [x] Add source-owned DMN decision artifacts
 - [x] Add source-owned OpenMath calculation artifacts
+- [x] Add source-owned semantic Mapping artifacts
 - [x] Integrate stable Pizza semantic artifacts with ESKA through immutable source bindings
 - [ ] Add broader ontology exploration and query examples
 - [ ] Add alternative distributions such as Turtle
@@ -356,7 +378,7 @@ OpenMath  → calculate / numeric result
 
 ## Acknowledgements
 
-The ontology is derived from the classic Pizza ontology and its Manchester / Protégé tutorial tradition. This engineering repository uses ODK, ROBOT, OAK, HermiT, SHACL/pySHACL, RDFLib/SPARQL, DMN, and OpenMath across their respective tracks.
+The ontology is derived from the classic Pizza ontology and its Manchester / Protégé tutorial tradition. This engineering repository uses ODK, ROBOT, OAK, HermiT, SHACL/pySHACL, RDFLib/SPARQL, DMN, OpenMath, and SPARQL-based semantic transformation across their respective tracks.
 
 ## License
 
