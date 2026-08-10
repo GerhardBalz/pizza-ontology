@@ -21,7 +21,11 @@ art:PizzaSemanticArtifactSet
         art:PizzaDecisionCases,
         art:PizzaAreaCalculationFormula,
         art:PizzaCalculationVocabulary,
-        art:PizzaCalculationCases .
+        art:PizzaCalculationCases,
+        art:PizzaMenuProjectionMapping,
+        art:PizzaMenuVocabulary,
+        art:PizzaMappingSourceData,
+        art:PizzaMappingExpectedOutput .
 
 art:SpicyPizzaReasoningModule
     a dcat:Distribution, prov:Entity ;
@@ -145,6 +149,44 @@ art:PizzaCalculationCases
     dcterms:format "application/json" ;
     dcterms:license <https://opensource.org/license/mit> ;
     dcterms:requires art:PizzaAreaCalculationFormula, art:PizzaCalculationVocabulary .
+
+art:PizzaMenuProjectionMapping
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza to Menu SPARQL mapping"@en ;
+    dcterms:description "Repository-authored SPARQL 1.1 CONSTRUCT transformation mapping Pizza RDF assertions into a separate Menu projection semantic model."@en ;
+    dcterms:identifier "artifacts/mappings/pizza-to-menu.rq" ;
+    dcterms:format "application/sparql-query" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:conformsTo <https://www.w3.org/TR/sparql11-query/> ;
+    dcterms:requires art:PizzaMenuVocabulary ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaMenuVocabulary
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza Menu projection vocabulary"@en ;
+    dcterms:description "Repository-authored target semantic model defining MenuItem, displayName, and ingredientName for the canonical mapping example."@en ;
+    dcterms:identifier "artifacts/mappings/menu-vocabulary.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> .
+
+art:PizzaMappingSourceData
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza semantic mapping source data"@en ;
+    dcterms:description "Repository-authored source RDF graph using the Pizza vocabulary for the canonical semantic mapping example."@en ;
+    dcterms:identifier "artifacts/mappings/data/source-pizzas.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaMappingExpectedOutput
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Expected Pizza Menu projection"@en ;
+    dcterms:description "Repository-authored canonical target RDF graph expected from the Pizza to Menu semantic mapping."@en ;
+    dcterms:identifier "artifacts/mappings/data/expected-menu.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:conformsTo art:PizzaMenuVocabulary ;
+    dcterms:requires art:PizzaMenuProjectionMapping, art:PizzaMappingSourceData .
 
 art:Pizza2SourceBlob
     a prov:Entity ;
