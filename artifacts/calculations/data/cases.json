@@ -1,0 +1,22 @@
+{
+  "calculation": "urn:pizza-ontology:calculation:PizzaAreaCalculation",
+  "inputRelation": "urn:pizza-ontology:calculation:diameterCentimetres",
+  "outputRelation": "urn:pizza-ontology:calculation:areaSquareCentimetres",
+  "cases": [
+    {
+      "id": "urn:pizza-ontology:calculation:example:smallPizza",
+      "diameterCm": 20,
+      "expectedAreaSquareCentimetres": 314.159265
+    },
+    {
+      "id": "urn:pizza-ontology:calculation:example:mediumPizza",
+      "diameterCm": 30,
+      "expectedAreaSquareCentimetres": 706.858347
+    },
+    {
+      "id": "urn:pizza-ontology:calculation:example:largePizza",
+      "diameterCm": 40,
+      "expectedAreaSquareCentimetres": 1256.637061
+    }
+  ]
+}
