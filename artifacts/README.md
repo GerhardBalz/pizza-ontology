@@ -12,9 +12,13 @@ src/ontology/pizza-edit.owl
             │       ▼
             │   artifacts/reasoning/
             │
-            └── vocabulary / semantic reference
+            ├── vocabulary / semantic reference
+            │       ▼
+            │   artifacts/validation/
+            │
+            └── explicit rule semantics + input data
                     ▼
-                artifacts/validation/
+                artifacts/rules/
 ```
 
 ## Consumer contract
@@ -40,8 +44,11 @@ The currently published semantic artifact set is:
 | Pizza instance SHACL profile | `artifacts/validation/pizza-instance-shapes.ttl` | MIT |
 | conforming validation data | `artifacts/validation/data/conforming.ttl` | MIT |
 | non-conforming validation data | `artifacts/validation/data/non-conforming.ttl` | MIT |
+| vegetarian-warning SPARQL rule | `artifacts/rules/vegetarian-warning.rq` | MIT |
+| rule result vocabulary | `artifacts/rules/rule-vocabulary.ttl` | MIT |
+| rule evaluation data | `artifacts/rules/data/menu-pizzas.ttl` | MIT |
 
-The reasoning module reproduces selected historical Pizza semantic content and therefore retains the upstream CC BY 3.0 boundary. The SHACL profile and RDF validation examples are newly authored semantic-engineering artifacts and fall under the repository's MIT engineering-material license unless a more specific notice is added later.
+The reasoning module reproduces selected historical Pizza semantic content and therefore retains the upstream CC BY 3.0 boundary. The SHACL, rule, vocabulary, and RDF example artifacts are newly authored semantic-engineering material and fall under the repository's MIT engineering-material license unless a more specific notice is added later.
 
 `verify_consumer_contract.py` parses the catalog, verifies the required metadata, and fails if a published relative path no longer resolves to a repository-owned file.
 
@@ -57,9 +64,21 @@ The selected Pizza semantic content retains the upstream CC BY 3.0 licensing and
 
 These are engineering artifacts, not a replacement for OWL semantics and not an automatic translation of the ontology.
 
+## Rule evaluation
+
+[`rules/`](rules/) contains a SPARQL 1.1 `CONSTRUCT` rule, its result vocabulary, and explicit Pizza RDF input data.
+
+The first rule derives:
+
+```text
+requiresVegetarianWarning true
+```
+
+for a Pizza whose explicit input graph references a topping typed as `pizza:MeatTopping`. It deliberately performs neither OWL reasoning nor SHACL validation, giving downstream architecture a third execution semantic to test.
+
 ## Downstream use
 
-These artifacts establish the source-ownership boundary needed by Track 8:
+These artifacts establish the source-ownership boundary needed by ESKA and other consumers:
 
 ```text
 pizza-ontology
