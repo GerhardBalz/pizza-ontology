@@ -1,0 +1,7 @@
+@prefix menu: <urn:pizza-ontology:menu:> .
+@prefix wfdata: <urn:pizza-ontology:workflow:data:> .
+
+wfdata:workflowPizza
+    a menu:MenuItem ;
+    menu:displayName "Workflow Margherita"@en ;
+    menu:ingredientName "Mozzarella"@en .
