@@ -104,6 +104,8 @@ describes an artifact type, not a version of Pizza.
 
 Distributions should be associated with a repository preservation release and remain traceable to the Pizza 2.0 semantic baseline from which they are produced or derived.
 
+Generated distributions containing historical Pizza semantic content retain the applicable upstream semantic-content license. Repository-authored tooling used to produce them may have a separate software license. See [../LICENSE.md](../LICENSE.md).
+
 ## 4. Toolchain Versions
 
 Tool versions are another independent dimension. Examples include:
@@ -137,7 +139,7 @@ Minimum scope:
 - ontology identity and publication model;
 - Pizza provenance and authority analysis;
 - this versioning and release model;
-- clear attribution and licensing boundaries;
+- clear attribution and licensing boundaries as defined in [LICENSE.md](../LICENSE.md) and [NOTICE.md](../NOTICE.md);
 - release notes that explicitly distinguish repository release version from ontology version.
 
 Later preservation releases can add OAK examples, alternative distributions, SHACL shapes, semantic projections, UX examples, and ESKA integration without changing the historical ontology version.
@@ -207,4 +209,6 @@ The current repository role is:
 
 A future successor ontology may coexist with this preservation line. Creating such a successor is a separate architecture and governance decision and does not replace the responsibility to preserve the historical Pizza 2.0 artifact accurately.
 
-The first preservation release is tracked in GitHub issue #3.
+Licensing follows the same separation of concerns as versioning: historical Pizza semantic content retains its upstream license, while newly authored repository software and documentation use separately declared licenses. See [LICENSE.md](../LICENSE.md).
+
+The versioning strategy is tracked in GitHub issue #3. The first release checklist is tracked in issue #7.
