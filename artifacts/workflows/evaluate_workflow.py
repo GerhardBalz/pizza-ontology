@@ -91,7 +91,7 @@ def parse_workflow() -> dict[str, object]:
 def verify_operation_bindings() -> None:
     graph = Graph().parse(VOCAB, format="turtle")
     require((WF.ValidatePizzaData, DCTERMS.requires, ART.PizzaInstanceShapes) in graph, "validation workflow operation must require PizzaInstanceShapes")
-    require((WF.TransformPizzaToMenu, DCTERMS.requires, ART.PizzaMenuMapping) in graph, "mapping workflow operation must require PizzaMenuMapping")
+    require((WF.TransformPizzaToMenu, DCTERMS.requires, ART.PizzaMenuProjectionMapping) in graph, "mapping workflow operation must require PizzaMenuProjectionMapping")
     require((WF.TransformPizzaToMenu, DCTERMS.requires, ART.PizzaMenuVocabulary) in graph, "mapping workflow operation must require PizzaMenuVocabulary")
     require((WF.Published, None, None) in graph and (WF.Rejected, None, None) in graph, "workflow outcomes must be defined in the source vocabulary")
 
