@@ -38,4 +38,4 @@ wf:TransformPizzaToMenu
     a wf:SemanticWorkflowOperation ;
     rdfs:label "Transform Pizza to Menu"@en ;
     dcterms:description "Transform conforming Pizza RDF into the repository-owned Menu projection semantic model."@en ;
-    dcterms:requires art:PizzaMenuMapping, art:PizzaMenuVocabulary .
+    dcterms:requires art:PizzaMenuProjectionMapping, art:PizzaMenuVocabulary .
