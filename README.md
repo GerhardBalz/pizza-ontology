@@ -101,8 +101,12 @@ Use the [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-
 - ancestors and descendants,
 - relationships and graph traversal,
 - queries and mappings,
-- ontology metadata,
+- ontology metadata where supported by the selected adapter,
 - use from scripts and applications.
+
+The first executable OAK slice is implemented in [`examples/oak`](examples/oak). Starting from `pizza:AmericanHot`, it demonstrates English label lookup, explicit Pizza CURIE-prefix registration, projected OWL relationships, and is-a ancestry through both the OAK Python API and CLI.
+
+The example also makes an important OAK boundary visible: the common interface spans multiple adapters, but individual backends do not necessarily implement every operation. The local Functional-Syntax adapter used by the first slice supports the selected entity/relationship/traversal operations but does not currently implement ontology enumeration/metadata access. That capability is therefore recorded as backend-dependent rather than treated as a Pizza-data defect.
 
 ### 4. Reason and Validate
 
@@ -304,6 +308,8 @@ pizza-ontology/
 │   ├── identity-publication-model.md
 │   ├── pizza-provenance.md
 │   └── versioning-release-model.md
+├── examples/
+│   └── oak/
 ├── LICENSES/
 │   └── MIT.txt
 ├── src/
@@ -320,9 +326,11 @@ pizza-ontology/
 └── README.md
 ```
 
-Additional examples will be introduced as the OAK, API, UX, knowledge-graph, and executable-knowledge tracks are developed.
+Additional examples will be introduced as the reasoning/validation, API/projection, UX, knowledge-graph, and executable-knowledge tracks are developed.
 
 ## Working with the Ontology
+
+### ODK lifecycle and QC
 
 The project uses ODK containers. With [ODK Runner](https://github.com/INCATools/odkrunner) installed:
 
@@ -332,6 +340,17 @@ odkrun make test
 ```
 
 The test suite includes a Pizza-specific semantic regression test that verifies the two intentionally unsatisfiable tutorial classes.
+
+### OAK access
+
+Install the pinned OAK dependencies and run the first access slice:
+
+```bash
+python -m pip install -r examples/oak/requirements.txt
+bash examples/oak/run.sh
+```
+
+See [`examples/oak/README.md`](examples/oak/README.md) for the CLI, Python API, prefix, language, and adapter-capability details.
 
 ## Architecture Documents
 
@@ -366,8 +385,8 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 - [x] Establish repository licensing and attribution boundary
 - [ ] Cut the first `preservation-v0.1.0` repository release
 - [ ] Refine publication and distribution strategy
-- [ ] Add OAK access examples
-- [ ] Add ontology exploration and query examples
+- [x] Add first OAK access vertical slice
+- [ ] Add broader ontology exploration and query examples
 - [ ] Add alternative distributions such as Turtle
 - [ ] Explore semantic projections into schemas and APIs
 - [ ] Explore ontology-informed user experience
@@ -379,7 +398,7 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 
 The ontology used by this repository is derived from the classic Pizza ontology and its Manchester / Protégé tutorial tradition.
 
-This engineering repository uses the [Ontology Development Kit (ODK)](https://github.com/INCATools/ontology-development-kit), [ROBOT](https://robot.obolibrary.org/), and related ontology tooling. It also intends to explore [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/) as a programmatic access layer.
+This engineering repository uses the [Ontology Development Kit (ODK)](https://github.com/INCATools/ontology-development-kit), [ROBOT](https://robot.obolibrary.org/), and related ontology tooling. It also uses [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/) as the programmatic access layer demonstrated in Track 3.
 
 ## License
 
