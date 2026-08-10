@@ -15,24 +15,15 @@ from pathlib import Path
 from oaklib import get_adapter
 
 PIZZA_NS = "http://www.co-ode.org/ontologies/pizza/pizza.owl#"
-AMERICAN_HOT = f"{PIZZA_NS}AmericanHot"
-NAMED_PIZZA = f"{PIZZA_NS}NamedPizza"
-HAS_TOPPING = f"{PIZZA_NS}hasTopping"
-JALAPENO = f"{PIZZA_NS}JalapenoPepperTopping"
+AMERICAN_HOT = "pizza:AmericanHot"
+NAMED_PIZZA = "pizza:NamedPizza"
+HAS_TOPPING = "pizza:hasTopping"
+JALAPENO = "pizza:JalapenoPepperTopping"
 
 
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
-
-
-def local_name(identifier: object) -> str:
-    value = str(identifier)
-    if "#" in value:
-        return value.rsplit("#", 1)[1]
-    if ":" in value:
-        return value.rsplit(":", 1)[1]
-    return value
 
 
 def main() -> None:
@@ -44,6 +35,11 @@ def main() -> None:
 
     adapter = get_adapter(str(ontology_path))
 
+    # Pizza uses a semantic URI namespace that is not part of OAK's default
+    # OBO-oriented prefix map. Register it explicitly and use CURIEs through
+    # the OAK interface while retaining the historical IRIs in the ontology.
+    adapter.prefix_map()["pizza"] = PIZZA_NS
+
     label = adapter.label(AMERICAN_HOT)
     require(label is not None, "OAK could not resolve the AmericanHot label")
     require("American" in label and "Hot" in label, f"unexpected AmericanHot label: {label!r}")
@@ -52,13 +48,13 @@ def main() -> None:
     require(relationships, "OAK returned no relationships for AmericanHot")
 
     named_parent = any(
-        local_name(predicate) == "subClassOf" and local_name(obj) == "NamedPizza"
+        predicate == "rdfs:subClassOf" and obj == NAMED_PIZZA
         for _, predicate, obj in relationships
     )
     require(named_parent, "AmericanHot must expose NamedPizza as an asserted superclass")
 
     jalapeno_topping = any(
-        local_name(predicate) == "hasTopping" and local_name(obj) == "JalapenoPepperTopping"
+        predicate == HAS_TOPPING and obj == JALAPENO
         for _, predicate, obj in relationships
     )
     require(
@@ -74,7 +70,7 @@ def main() -> None:
         )
     )
     require(
-        any(local_name(ancestor) == "NamedPizza" for ancestor in ancestors),
+        NAMED_PIZZA in ancestors,
         "NamedPizza must be reachable as an is-a ancestor of AmericanHot",
     )
 
@@ -84,6 +80,7 @@ def main() -> None:
     result = {
         "ontology": str(ontology_path),
         "entity": AMERICAN_HOT,
+        "entityIri": adapter.curie_to_uri(AMERICAN_HOT),
         "label": label,
         "relationships": [
             {
