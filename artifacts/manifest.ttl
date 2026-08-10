@@ -18,7 +18,10 @@ art:PizzaSemanticArtifactSet
         art:PizzaRuleData,
         art:PizzaDietarySuitabilityDecision,
         art:PizzaDecisionVocabulary,
-        art:PizzaDecisionCases .
+        art:PizzaDecisionCases,
+        art:PizzaAreaCalculationFormula,
+        art:PizzaCalculationVocabulary,
+        art:PizzaCalculationCases .
 
 art:SpicyPizzaReasoningModule
     a dcat:Distribution, prov:Entity ;
@@ -113,6 +116,35 @@ art:PizzaDecisionCases
     dcterms:format "application/json" ;
     dcterms:license <https://opensource.org/license/mit> ;
     dcterms:requires art:PizzaDietarySuitabilityDecision, art:PizzaDecisionVocabulary .
+
+art:PizzaAreaCalculationFormula
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza circular-area OpenMath formula"@en ;
+    dcterms:description "Repository-authored OpenMath formula calculating circular Pizza area as pi times the square of half the diameter."@en ;
+    dcterms:identifier "artifacts/calculations/pizza-area.openmath.xml" ;
+    dcterms:format "application/xml" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:conformsTo <https://openmath.org/standard/om20-2019-07-01/omstd20.html> ;
+    dcterms:requires art:PizzaCalculationVocabulary ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaCalculationVocabulary
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza calculation vocabulary"@en ;
+    dcterms:description "Repository-authored RDF vocabulary grounding the OpenMath diameter input and area result in centimetres and square centimetres."@en ;
+    dcterms:identifier "artifacts/calculations/calculation-vocabulary.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaCalculationCases
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza area calculation cases"@en ;
+    dcterms:description "Repository-authored JSON diameter inputs and expected square-centimetre area results for the canonical Pizza OpenMath calculation."@en ;
+    dcterms:identifier "artifacts/calculations/data/cases.json" ;
+    dcterms:format "application/json" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:requires art:PizzaAreaCalculationFormula, art:PizzaCalculationVocabulary .
 
 art:Pizza2SourceBlob
     a prov:Entity ;

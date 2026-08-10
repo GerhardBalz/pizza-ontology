@@ -20,9 +20,13 @@ src/ontology/pizza-edit.owl
             │       ▼
             │   artifacts/rules/
             │
-            └── explicit decision semantics + input cases
+            ├── explicit decision semantics + input cases
+            │       ▼
+            │   artifacts/decisions/
+            │
+            └── mathematical formula + domain grounding + cases
                     ▼
-                artifacts/decisions/
+                artifacts/calculations/
 ```
 
 ## Consumer contract
@@ -54,8 +58,11 @@ The currently published semantic artifact set is:
 | dietary-suitability DMN decision | `artifacts/decisions/pizza-dietary-suitability.dmn` | MIT |
 | decision outcome vocabulary | `artifacts/decisions/decision-vocabulary.ttl` | MIT |
 | canonical decision input cases | `artifacts/decisions/data/cases.json` | MIT |
+| Pizza circular-area OpenMath formula | `artifacts/calculations/pizza-area.openmath.xml` | MIT |
+| calculation vocabulary | `artifacts/calculations/calculation-vocabulary.ttl` | MIT |
+| canonical calculation cases | `artifacts/calculations/data/cases.json` | MIT |
 
-The reasoning module reproduces selected historical Pizza semantic content and therefore retains the upstream CC BY 3.0 boundary. The SHACL, rule, decision, vocabulary, and example-data artifacts are newly authored semantic-engineering material and fall under the repository's MIT engineering-material license unless a more specific notice is added later.
+The reasoning module reproduces selected historical Pizza semantic content and therefore retains the upstream CC BY 3.0 boundary. The SHACL, rule, decision, calculation, vocabulary, and example-data artifacts are newly authored semantic-engineering material and fall under the repository's MIT engineering-material license unless a more specific notice is added later.
 
 `verify_consumer_contract.py` parses the catalog, verifies the required metadata, and fails if a published relative path no longer resolves to a repository-owned file.
 
@@ -96,6 +103,18 @@ Vegetarian
 ```
 
 from the explicit boolean inputs `containsMeat` and `containsFish`. It is intentionally distinct from rule evaluation: the decision chooses one outcome from an explicit decision context rather than constructing RDF from a matched graph pattern.
+
+## Calculation
+
+[`calculations/`](calculations/) contains an OpenMath formula, a small Pizza calculation vocabulary, and canonical numeric cases.
+
+The first calculation evaluates:
+
+```text
+areaSquareCentimetres = π × (diameterCm / 2)²
+```
+
+The OpenMath artifact carries the mathematical structure; the RDF vocabulary grounds the input and output in centimetres and square centimetres. The regression evaluator executes only the small OpenMath subset used by this formula and verifies all published cases.
 
 ## Downstream use
 

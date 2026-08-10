@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath"
+       version="2.0"
+       cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="arith1" name="times"/>
+    <OMS cd="nums1" name="pi"/>
+    <OMA>
+      <OMS cd="arith1" name="power"/>
+      <OMA>
+        <OMS cd="arith1" name="divide"/>
+        <OMV name="diameterCm"/>
+        <OMI>2</OMI>
+      </OMA>
+      <OMI>2</OMI>
+    </OMA>
+  </OMA>
+</OMOBJ>

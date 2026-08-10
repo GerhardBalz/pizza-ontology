@@ -1,0 +1,22 @@
+@prefix calc: <urn:pizza-ontology:calculation:> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+calc:PizzaAreaCalculation
+    a rdfs:Class ;
+    rdfs:label "Pizza area calculation"@en ;
+    dcterms:description "A calculation that determines circular Pizza area in square centimetres from a diameter supplied in centimetres."@en .
+
+calc:diameterCentimetres
+    a rdf:Property ;
+    rdfs:label "diameter centimetres"@en ;
+    rdfs:range xsd:decimal ;
+    dcterms:description "Pizza diameter measured in centimetres."@en .
+
+calc:areaSquareCentimetres
+    a rdf:Property ;
+    rdfs:label "area square centimetres"@en ;
+    rdfs:range xsd:decimal ;
+    dcterms:description "Calculated circular Pizza area measured in square centimetres."@en .
