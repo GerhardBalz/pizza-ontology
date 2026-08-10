@@ -4,7 +4,7 @@
 
 A modern **ontology engineering and executable knowledge reference project** based on the classic Pizza OWL ontology.
 
-The Pizza domain is deliberately small and understandable. That makes it a useful common example for exploring the lifecycle of semantic knowledge — from ontology modeling and engineering to programmatic access, publication, semantic projections, APIs, user experience, and executable knowledge.
+The Pizza domain is deliberately small and understandable. That makes it a useful common example for exploring the lifecycle of semantic knowledge — from ontology modeling and engineering to programmatic access, publication, reasoning, validation, rules, decisions, semantic projections, APIs, user experience, and executable knowledge.
 
 ## Why Pizza?
 
@@ -25,7 +25,7 @@ This repository uses Pizza as a stable semantic subject around which different o
 
 ## Project Direction
 
-The **ontology is the semantic center** of the project. Tools, representations, APIs, and applications are engineering or operational layers around that semantic model.
+The **ontology is the semantic center** of the project. Tools, derived artifacts, APIs, decisions, and applications are engineering or operational layers around that semantic model.
 
 ```text
                          Pizza Ontology
@@ -43,27 +43,19 @@ The **ontology is the semantic center** of the project. Tools, representations, 
                               ▼
                     Semantic Knowledge
                               │
-        ┌─────────────────────┼─────────────────────┐
-        ▼                     ▼                     ▼
-     Reasoning          Semantic Projections     Knowledge Graph
-    Validation             / Schemas
-        │                     │
-        │              ┌──────┴──────┐
-        │              ▼             ▼
-        │             APIs           UX
-        │
-        └─────────────────────┬─────────────────────
-                              ▼
-                    Executable Knowledge
-                              │
-                    rules / decisions /
-                    agents / actions
-                              │
-                              ▼
-               Executable Knowledge Architecture
+       ┌──────────────┬───────┼──────────┬───────────┐
+       ▼              ▼       ▼          ▼           ▼
+   Reasoning      Validation  Rules    Decisions   Projections
+       │              │       │          │           │
+       └──────────────┴───────┴──────────┴─────┬─────┘
+                                               ▼
+                                    Executable Knowledge
+                                               │
+                                               ▼
+                              Executable Semantic Knowledge Architecture
 ```
 
-The project is intended to evolve across complementary tracks.
+The project evolves across nine complementary tracks.
 
 ### 1. Model — Protégé and OWL
 
@@ -94,10 +86,10 @@ The historical Pizza 2.0 ontology has been migrated into the ODK editor ontology
 
 ### 3. Access — Ontology Access Kit
 
-Use the [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/) to explore programmatic ontology access, including:
+Use the [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/) to explore programmatic ontology access:
 
 - entity lookup,
-- labels and definitions,
+- labels,
 - ancestors and descendants,
 - relationships and graph traversal,
 - queries and mappings,
@@ -106,28 +98,28 @@ Use the [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-
 
 The first executable OAK slice is implemented in [`examples/oak`](examples/oak). Starting from `pizza:AmericanHot`, it demonstrates preserved multilingual label access, explicit Pizza CURIE-prefix registration, projected OWL relationships, and is-a ancestry through both the OAK Python API and CLI.
 
-The example also makes important OAK backend boundaries visible: the common interface spans multiple adapters, but individual backends do not necessarily implement every operation or optional behavior. The local Functional-Syntax `FunOwlImplementation` supports the selected label/relationship/traversal operations, but its `label(..., lang=...)` implementation does not currently enforce language filtering, and ontology enumeration/metadata access is not implemented. Those are recorded as adapter capabilities rather than treated as Pizza-data defects.
+The example also records backend boundaries rather than hiding them. The local Functional-Syntax `FunOwlImplementation` supports the selected label/relationship/traversal operations, but language filtering and ontology metadata capabilities remain adapter-dependent.
 
 ### 4. Reason and Validate
 
 Explore the distinction between **asserted knowledge**, **inferred knowledge**, **logical coherence**, and **data conformance** using ROBOT, HermiT, SPARQL, SHACL, and pySHACL.
 
-The historical Pizza ontology deliberately contains two unsatisfiable classes:
+The historical Pizza ontology deliberately contains two unsatisfiable teaching classes:
 
 - `CheeseyVegetableTopping`
 - `IceCream`
 
-Rather than removing them, this repository preserves them as part of the teaching ontology and explicitly verifies them as expected semantic behavior.
+They are preserved and tested as expected historical behavior.
 
-For reusable reasoning, the repository now owns a canonical coherent module in [`artifacts/reasoning`](artifacts/reasoning). It demonstrates that:
+For reusable reasoning, [`artifacts/reasoning`](artifacts/reasoning) contains a canonical coherent module demonstrating that:
 
 ```text
 AmericanHot SubClassOf SpicyPizza
 ```
 
-is **not asserted** in the module but is **inferred** by HermiT, verified by SPARQL, and explainable from the selected Pizza axioms. The module is pinned to the preserved Pizza source blob and carries machine-readable provenance.
+is **not asserted** but is **inferred** by HermiT, verified by SPARQL, and explainable from the selected Pizza axioms.
 
-For explicit RDF instance-data validation, [`artifacts/validation`](artifacts/validation) defines a repository-owned SHACL profile plus conforming and non-conforming examples. The validation profile is deliberately not presented as an automatic translation of OWL semantics:
+For explicit RDF data validation, [`artifacts/validation`](artifacts/validation) contains a repository-authored SHACL profile plus conforming and non-conforming examples.
 
 ```text
 OWL / HermiT
@@ -136,8 +128,6 @@ OWL / HermiT
 SHACL / pySHACL
     Does explicit RDF data satisfy a validation profile?
 ```
-
-The two concerns are tested independently in CI.
 
 ### 5. Publish and Govern
 
@@ -156,7 +146,7 @@ Repository Owner ≠ Ontology Authority
 Upstream semantic license ≠ Repository-authored material license
 ```
 
-The architecture behind these distinctions is documented in:
+See:
 
 - [Ontology Identity and Publication Model](docs/identity-publication-model.md)
 - [Pizza Ontology Provenance](docs/pizza-provenance.md)
@@ -164,11 +154,11 @@ The architecture behind these distinctions is documented in:
 - [Licensing](LICENSE.md)
 - [Attribution and Provenance Notice](NOTICE.md)
 
-The current repository is the **preservation/stewardship line** for Pizza Ontology 2.0. Repository releases use a separate preservation release series and do not change the historical ontology version merely because engineering artifacts evolve.
+This repository is the **preservation/stewardship line** for Pizza Ontology 2.0. Repository releases use a separate preservation release series and do not change the historical ontology version merely because engineering artifacts evolve.
 
 ### 6. Project — Semantic Projections
 
-Explore how selected structures can be derived from or informed by the semantic model, for example:
+Explore structures derived from or informed by the semantic model, for example:
 
 - JSON representations,
 - JSON Schema,
@@ -178,11 +168,11 @@ Explore how selected structures can be derived from or informed by the semantic 
 - search indexes,
 - validation schemas.
 
-The goal is not to assume that every implementation artifact should be generated automatically from OWL. Derived artifacts should remain **traceable to the semantic model** while adding concerns appropriate to their own architectural layer.
+Derived artifacts need not be automatically generated from OWL, but they should remain **traceable to the semantic model** while adding concerns appropriate to their own architectural layer.
 
 ### 7. Experience — Ontology-Informed UX
 
-Explore how semantic knowledge can inform user interaction, including:
+Explore how semantic knowledge can inform user interaction:
 
 - semantic navigation,
 - search and filtering,
@@ -192,31 +182,13 @@ Explore how semantic knowledge can inform user interaction, including:
 - validation messages,
 - vocabulary-aware interfaces.
 
-User experience contains additional knowledge that does not naturally belong in the ontology itself, but can remain connected to it.
+UX contains knowledge that does not naturally belong in the ontology itself, but can remain connected to it.
 
 ### 8. Execute — Executable Knowledge
 
-Explore the progression from representing knowledge to using knowledge operationally:
+The companion [Executable Semantic Knowledge Architecture (ESKA)](https://github.com/GerhardBalz/executable-semantic-knowledge-architecture) project uses Pizza as its initial semantic reference domain.
 
-```text
-Ontology
-   ↓
-Reasoning
-   ↓
-Queries
-   ↓
-Validation
-   ↓
-Semantic projections
-   ↓
-APIs / UX
-   ↓
-Rules / decisions
-   ↓
-Agents / actions
-```
-
-The companion [Executable Semantic Knowledge Architecture (ESKA)](https://github.com/GerhardBalz/executable-semantic-knowledge-architecture) project uses Pizza as its initial semantic reference domain. The repository boundary is intentional:
+The repository boundary is intentional:
 
 ```text
 pizza-ontology
@@ -225,13 +197,34 @@ pizza-ontology
         ▼
 ESKA
     operationalizes semantic knowledge as executable capabilities,
-    services, agents, verification, and provenance
+    executions, services, agents, verification, and provenance
 ```
 
-That boundary is now executable rather than merely documented. [`artifacts/manifest.ttl`](artifacts/manifest.ttl) publishes the machine-readable consumer contract for the canonical reasoning module, SHACL profile, and validation data. ESKA pins this repository to immutable commit:
+[`artifacts/manifest.ttl`](artifacts/manifest.ttl) is the machine-readable consumer contract. It currently publishes **ten** semantic distributions covering four different execution semantics:
 
 ```text
-613ff0b6e615cbb2eac7cd92358eca9f885fbc7d
+Ontology   → reason
+Constraint → validate
+Rule       → evaluate
+Decision   → decide
+```
+
+The published artifacts include:
+
+- coherent OWL reasoning module,
+- SHACL validation profile,
+- conforming and non-conforming RDF validation data,
+- SPARQL vegetarian-warning rule,
+- rule-result vocabulary,
+- rule-evaluation RDF data,
+- DMN 1.5 dietary-suitability decision table,
+- decision outcome vocabulary,
+- canonical decision-input cases.
+
+ESKA currently pins this repository to immutable commit:
+
+```text
+983b691d9d2102ffad97a3ec31aa9b1435b3e547
 ```
 
 and runtime-materializes the declared artifacts instead of maintaining independent Pizza-domain semantic copies.
@@ -240,7 +233,7 @@ and runtime-materializes the declared artifacts instead of maintaining independe
 pizza-ontology
     owns semantic artifacts
         ↓ artifacts/manifest.ttl
-    immutable commit 613ff0...
+    immutable commit 983b691...
         ↓
 ESKA
     runtime materializes semantic inputs
@@ -249,9 +242,7 @@ ESKA
     Verification / Provenance
 ```
 
-The ESKA integration was completed in ESKA PR #19, merged as `7dbbdf0a1ae39a7bdb3c9af0fb410d5899acbc5a`. Both repositories verify their side of the contract in CI: this repository verifies the published artifact paths and metadata, while ESKA verifies the immutable source binding, forbids reintroduction of its former semantic copies, and executes reasoning, validation, Service, and Agent behavior over the source-owned artifacts.
-
-Track 8 is therefore complete. The key principle is:
+The key principle is:
 
 > **Execution must not sever semantics — and execution architecture should not become the accidental owner of domain semantics.**
 
@@ -264,6 +255,7 @@ Use the complete project as a case study for broader Semantic Modeling concepts:
 - authority and stewardship,
 - versioning and lifecycle,
 - semantic projections,
+- executable semantic artifacts,
 - model-driven and knowledge-driven systems,
 - relationships between conceptual, semantic, logical, and executable models.
 
@@ -287,15 +279,11 @@ Entity namespace
 http://www.co-ode.org/ontologies/pizza/pizza.owl#
 ```
 
-The editor ontology is:
+The editor ontology is [`src/ontology/pizza-edit.owl`](src/ontology/pizza-edit.owl).
 
-[`src/ontology/pizza-edit.owl`](src/ontology/pizza-edit.owl)
-
-The current project intentionally does **not** claim authority over the historical `co-ode.org` identifier space.
+The project intentionally does **not** claim authority over the historical `co-ode.org` identifier space.
 
 ### Preservation line and repository releases
-
-This repository is now explicitly treated as the **preservation, stewardship, engineering, and learning line** for the historical Pizza Ontology 2.0 baseline.
 
 The semantic ontology version and repository release version are independent:
 
@@ -313,7 +301,7 @@ The planned first repository release is:
 preservation-v0.1.0
 ```
 
-A repository release may add OAK examples, alternative distributions, SHACL shapes, semantic projections, UX examples, or ESKA integration while the preserved ontology continues to declare version `2.0`.
+A preservation release may add OAK examples, distributions, SHACL profiles, rules, decisions, semantic projections, UX examples, or ESKA integration while the preserved ontology continues to declare version `2.0`.
 
 See [Versioning and Release Model](docs/versioning-release-model.md). The first preservation release is tracked by [issue #7](https://github.com/GerhardBalz/pizza-ontology/issues/7).
 
@@ -339,7 +327,7 @@ The ontology belongs to the historical Manchester / Protégé OWL tutorial tradi
 
 The upstream ontology declares **Creative Commons Attribution 3.0 (CC BY 3.0)**.
 
-This repository currently acts as a preservation, migration, engineering, and learning environment derived from that historical artifact. It does not claim to be the original authority or source repository of the Pizza ontology.
+This repository acts as a preservation, migration, engineering, and learning environment derived from that historical artifact. It does not claim to be the original authority or source repository of the Pizza ontology.
 
 For the detailed lineage and authority analysis, see [docs/pizza-provenance.md](docs/pizza-provenance.md).
 
@@ -353,11 +341,14 @@ pizza-ontology/
 │   ├── manifest.ttl
 │   ├── verify_consumer_contract.py
 │   ├── reasoning/
-│   │   ├── spicy-pizza.ofn
-│   │   ├── provenance.ttl
 │   │   └── ...
-│   └── validation/
-│       ├── pizza-instance-shapes.ttl
+│   ├── validation/
+│   │   └── ...
+│   ├── rules/
+│   │   └── ...
+│   └── decisions/
+│       ├── pizza-dietary-suitability.dmn
+│       ├── decision-vocabulary.ttl
 │       ├── data/
 │       └── ...
 ├── docs/
@@ -369,108 +360,108 @@ pizza-ontology/
 ├── LICENSES/
 │   └── MIT.txt
 ├── src/
-│   ├── ontology/
-│   │   ├── pizza-edit.owl
-│   │   ├── pizza-odk.yaml
-│   │   ├── pizza.Makefile
-│   │   └── ...
-│   ├── scripts/
-│   └── sparql/
+│   └── ontology/
+│       ├── pizza-edit.owl
+│       ├── pizza-odk.yaml
+│       └── pizza.Makefile
 ├── CONTRIBUTING.md
 ├── LICENSE.md
 ├── NOTICE.md
 └── README.md
 ```
 
-Additional examples will be introduced as the API/projection, UX, knowledge-graph, and executable-knowledge tracks are developed.
-
 ## Working with the Ontology
 
 ### ODK lifecycle and QC
 
-The project uses ODK containers. With [ODK Runner](https://github.com/INCATools/odkrunner) installed:
+With [ODK Runner](https://github.com/INCATools/odkrunner) installed:
 
 ```bash
 cd src/ontology
 odkrun make test
 ```
 
-The test suite includes a Pizza-specific semantic regression test that verifies the two intentionally unsatisfiable tutorial classes.
-
 ### OAK access
-
-Install the pinned OAK dependencies and run the first access slice:
 
 ```bash
 python -m pip install -r examples/oak/requirements.txt
 bash examples/oak/run.sh
 ```
 
-See [`examples/oak/README.md`](examples/oak/README.md) for the CLI, Python API, prefix, multilingual-label, and adapter-capability details.
+See [`examples/oak/README.md`](examples/oak/README.md).
 
 ### OWL reasoning artifact
-
-Run the canonical coherent reasoning module:
 
 ```bash
 bash artifacts/reasoning/run.sh
 ```
 
-The regression proves that `AmericanHot SubClassOf SpicyPizza` is not asserted, is inferred by HermiT, and can be explained. See [`artifacts/reasoning/README.md`](artifacts/reasoning/README.md).
+The regression proves that `AmericanHot SubClassOf SpicyPizza` is not asserted, is inferred by HermiT, and can be explained.
 
 ### SHACL validation artifact
-
-Install the pinned validator and test both explicit data cases:
 
 ```bash
 python -m pip install -r artifacts/validation/requirements.txt
 python artifacts/validation/validate_examples.py
 ```
 
-The conforming graph must pass; the non-conforming graph must fail on the expected `hasBase` and `hasTopping` paths. See [`artifacts/validation/README.md`](artifacts/validation/README.md).
+### SPARQL rule evaluation artifact
+
+```bash
+python -m pip install -r artifacts/rules/requirements.txt
+python artifacts/rules/evaluate_rule.py
+```
+
+The rule derives a vegetarian warning from explicit meat-topping data while leaving the vegetable control unmatched.
+
+### DMN decision artifact
+
+```bash
+python artifacts/decisions/evaluate_decision.py
+```
+
+The canonical DMN 1.5 `UNIQUE` table maps explicit `containsMeat` / `containsFish` contexts to semantic dietary-suitability outcomes:
+
+```text
+meatyPizza       → NotVegetarian
+fishPizza        → PescatarianOnly
+vegetarianPizza  → Vegetarian
+```
+
+The included evaluator is a regression harness for the exact supported DMN subset, not a general-purpose DMN engine.
 
 ### Semantic artifact consumer contract
-
-The same validation dependency set provides `rdflib`, which is used to verify the machine-readable downstream contract:
 
 ```bash
 python -m pip install -r artifacts/validation/requirements.txt
 python artifacts/verify_consumer_contract.py
 ```
 
-The verifier requires the manifest to publish exactly the expected reasoning, SHACL, conforming-data, and non-conforming-data artifacts; checks their formats, provenance, and license metadata; and fails if a declared repository-relative path no longer resolves.
+The verifier requires the manifest to publish exactly the expected **ten** distributions and checks their paths, formats, dependencies, provenance, conformance metadata, and license boundaries.
 
-Consumers should pair those stable artifact roles/paths with an immutable Git commit or preservation release rather than bind to mutable `main` content.
+Consumers should pair the stable artifact role/path contract with an immutable Git commit or preservation release rather than bind to mutable `main` content.
 
-## Architecture Documents
+## CI Concerns
 
-### Ontology Identity and Publication Model
+The repository currently verifies six independent concerns:
 
-[`docs/identity-publication-model.md`](docs/identity-publication-model.md)
+```text
+ODK      → preserve / engineer / ontology QC
+OAK      → access / navigate
+HermiT   → reason / infer
+SHACL    → validate / conform
+SPARQL   → evaluate rule / derive
+DMN      → decide / select outcome
+```
 
-Defines the generic concepts used by this project, including ontology and entity identity, versioning, releases, distributions, source repositories, provenance, authority, stewardship, hosting, and rights.
-
-### Pizza Ontology Provenance
-
-[`docs/pizza-provenance.md`](docs/pizza-provenance.md)
-
-Applies the generic model to the historical Pizza ontology and documents its lineage, upstream source, contributors, hosting, authority uncertainty, migration provenance, and preservation-versus-successor analysis.
-
-### Versioning and Release Model
-
-[`docs/versioning-release-model.md`](docs/versioning-release-model.md)
-
-Defines the adopted distinction between the immutable historical Pizza Ontology 2.0 semantic baseline, repository preservation releases, artifact/distribution types, toolchain versions, and a possible separate successor ontology lineage.
+Keeping these jobs separate makes the architectural boundaries executable rather than merely descriptive.
 
 ## Roadmap
-
-The repository will evolve incrementally rather than attempting to demonstrate every concept at once.
 
 - [x] Establish Pizza 2.0 preservation baseline
 - [x] Migrate the ontology into ODK
 - [x] Establish semantic regression tests
-- [x] Document ontology identity and publication concepts
-- [x] Document Pizza provenance
+- [x] Document ontology identity and Pizza provenance
 - [x] Establish preservation/repository versioning model
 - [x] Establish repository licensing and attribution boundary
 - [ ] Cut the first `preservation-v0.1.0` repository release
@@ -478,7 +469,9 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 - [x] Add first OAK access vertical slice
 - [x] Add canonical coherent reasoning and SHACL validation artifacts
 - [x] Publish the machine-readable semantic artifact consumer contract
-- [x] Integrate stable Pizza semantic artifacts with ESKA through an immutable source binding
+- [x] Add source-owned SPARQL rule-evaluation artifacts
+- [x] Add source-owned DMN decision artifacts
+- [x] Integrate stable Pizza semantic artifacts with ESKA through immutable source bindings
 - [ ] Add broader ontology exploration and query examples
 - [ ] Add alternative distributions such as Turtle
 - [ ] Explore semantic projections into schemas and APIs
@@ -490,7 +483,7 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 
 The ontology used by this repository is derived from the classic Pizza ontology and its Manchester / Protégé tutorial tradition.
 
-This engineering repository uses the [Ontology Development Kit (ODK)](https://github.com/INCATools/ontology-development-kit), [ROBOT](https://robot.obolibrary.org/), [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/), HermiT, SHACL, and pySHACL across their respective tracks.
+This engineering repository uses ODK, ROBOT, OAK, HermiT, SHACL/pySHACL, RDFLib/SPARQL, and DMN across their respective tracks.
 
 ## License
 
