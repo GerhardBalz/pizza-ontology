@@ -1,0 +1,58 @@
+@prefix art: <urn:pizza-ontology:artifact:> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+art:PizzaSemanticArtifactSet
+    a dcat:Dataset, prov:Entity ;
+    dcterms:title "Pizza semantic artifact set"@en ;
+    dcterms:description "Repository-owned Pizza semantic artifacts intended for commit- or release-pinned downstream consumption. Relative identifiers are stable repository paths; consumers choose the immutable Git commit or preservation release that binds those paths to bytes."@en ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> ;
+    dcat:distribution
+        art:SpicyPizzaReasoningModule,
+        art:PizzaInstanceShapes,
+        art:ConformingPizzaData,
+        art:NonConformingPizzaData .
+
+art:SpicyPizzaReasoningModule
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza SpicyPizza coherent reasoning module"@en ;
+    dcterms:description "Coherent OWL module derived from Pizza Ontology 2.0 for representative reasoning and explanation."@en ;
+    dcterms:identifier "artifacts/reasoning/spicy-pizza.ofn" ;
+    dcterms:format "application/owl-functional" ;
+    dcterms:license <https://creativecommons.org/licenses/by/3.0/> ;
+    prov:wasDerivedFrom art:Pizza2SourceBlob .
+
+art:PizzaInstanceShapes
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza instance SHACL profile"@en ;
+    dcterms:description "Repository-authored SHACL validation profile for explicit Pizza instance data."@en ;
+    dcterms:identifier "artifacts/validation/pizza-instance-shapes.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:ConformingPizzaData
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Conforming Pizza validation data"@en ;
+    dcterms:description "Repository-authored RDF example expected to conform to the Pizza instance SHACL profile."@en ;
+    dcterms:identifier "artifacts/validation/data/conforming.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:conformsTo art:PizzaInstanceShapes .
+
+art:NonConformingPizzaData
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Non-conforming Pizza validation data"@en ;
+    dcterms:description "Repository-authored RDF example intentionally expected not to conform to the Pizza instance SHACL profile."@en ;
+    dcterms:identifier "artifacts/validation/data/non-conforming.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation art:PizzaInstanceShapes .
+
+art:Pizza2SourceBlob
+    a prov:Entity ;
+    dcterms:title "Preserved Pizza Ontology 2.0 source snapshot"@en ;
+    dcterms:identifier "git-blob:397492e484de5560f8a7e048ce8999b707d94388" ;
+    dcterms:license <https://creativecommons.org/licenses/by/3.0/> ;
+    dcterms:source <https://github.com/GerhardBalz/pizza-ontology/blob/079e80da896315483cad611dd0f3439449dfa722/src/ontology/pizza-edit.owl> .
