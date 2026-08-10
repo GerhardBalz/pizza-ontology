@@ -31,14 +31,14 @@ def require(condition: bool, message: str) -> None:
 def main() -> None:
     graph = Graph().parse(MANIFEST, format="turtle")
 
-    distributions = set(graph.objects(ART.PizzaSemanticArtifactSet, DCAT.distribution))
+    distributions = set(graph.objects(ART.PizzaSemanticArtifactSet, DCAT["distribution"]))
     require(len(distributions) == 4, f"expected four published distributions, got {len(distributions)}")
 
     paths: set[str] = set()
     for distribution in distributions:
-        identifier = graph.value(distribution, DCTERMS.identifier)
-        media_type = graph.value(distribution, DCTERMS.format)
-        license_iri = graph.value(distribution, DCTERMS.license)
+        identifier = graph.value(distribution, DCTERMS["identifier"])
+        media_type = graph.value(distribution, DCTERMS["format"])
+        license_iri = graph.value(distribution, DCTERMS["license"])
 
         require(identifier is not None, f"{distribution}: missing dcterms:identifier")
         require(media_type is not None, f"{distribution}: missing dcterms:format")
@@ -53,17 +53,17 @@ def main() -> None:
 
     reasoning = ART.SpicyPizzaReasoningModule
     require(
-        (reasoning, DCTERMS.license, URIRef("https://creativecommons.org/licenses/by/3.0/")) in graph,
+        (reasoning, DCTERMS["license"], URIRef("https://creativecommons.org/licenses/by/3.0/")) in graph,
         "reasoning module must retain CC BY 3.0",
     )
     require(
-        any(graph.objects(reasoning, PROV.wasDerivedFrom)),
+        any(graph.objects(reasoning, PROV["wasDerivedFrom"])),
         "reasoning module must retain explicit derivation provenance",
     )
 
     for authored in (ART.PizzaInstanceShapes, ART.ConformingPizzaData, ART.NonConformingPizzaData):
         require(
-            (authored, DCTERMS.license, URIRef("https://opensource.org/license/mit")) in graph,
+            (authored, DCTERMS["license"], URIRef("https://opensource.org/license/mit")) in graph,
             f"{authored}: repository-authored engineering artifact must identify the MIT license",
         )
 
