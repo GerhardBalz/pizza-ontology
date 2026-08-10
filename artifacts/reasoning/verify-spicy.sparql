@@ -1,0 +1,10 @@
+PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?problem
+WHERE {
+  BIND("Missing inferred AmericanHot SubClassOf SpicyPizza classification" AS ?problem)
+  FILTER NOT EXISTS {
+    pizza:AmericanHot rdfs:subClassOf pizza:SpicyPizza .
+  }
+}
