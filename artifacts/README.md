@@ -13,14 +13,15 @@ src/ontology/pizza-edit.owl
             ├── rules/
             ├── decisions/
             ├── calculations/
-            └── mappings/
+            ├── mappings/
+            └── workflows/
 ```
 
 ## Consumer contract
 
 [`manifest.ttl`](manifest.ttl) is the machine-readable catalog for semantic artifacts intended for downstream consumption. Consumers bind the stable repository-relative artifact paths to an immutable Git commit or preservation release.
 
-The manifest currently publishes **17 distributions**:
+The manifest currently publishes **23 distributions**:
 
 | Concern | Published artifacts |
 | --- | --- |
@@ -30,8 +31,9 @@ The manifest currently publishes **17 distributions**:
 | decision evaluation | DMN decision + outcome vocabulary + decision cases |
 | calculation | OpenMath formula + calculation vocabulary + numeric cases |
 | semantic mapping | SPARQL mapping + Menu target vocabulary + source RDF + expected target RDF |
+| workflow execution | BPMN process + workflow vocabulary + valid/invalid inputs + expected target + case contract |
 
-The reasoning module reproduces selected historical Pizza semantic content and retains the upstream CC BY 3.0 boundary. Repository-authored SHACL, rule, decision, calculation, mapping, vocabulary, and example-data artifacts are MIT-licensed engineering material unless stated otherwise.
+The reasoning module reproduces selected historical Pizza semantic content and retains the upstream CC BY 3.0 boundary. Repository-authored SHACL, rule, decision, calculation, mapping, workflow, vocabulary, and example-data artifacts are MIT-licensed engineering material unless stated otherwise.
 
 `verify_consumer_contract.py` verifies the catalog, metadata, dependencies, licensing, and repository-relative paths.
 
@@ -44,6 +46,7 @@ Rule        → evaluate
 Decision    → decide
 Calculation → calculate
 Mapping     → transform
+Workflow    → execute
 ```
 
 ### Reasoning
@@ -84,7 +87,25 @@ Mapping
     target semantic model
 ```
 
-The mapping example publishes the source graph, target Menu vocabulary, mapping query, and expected target graph separately so downstream architecture can distinguish **source**, **mapping**, and **target** semantic roles.
+### Workflow execution
+
+[`workflows/`](workflows/) contains a BPMN 2.0.2 process that composes the existing validation and mapping semantics:
+
+```text
+Start
+  ↓
+Validate Pizza RDF
+  ↓
+conforms?
+  ├── false → Rejected
+  └── true
+        ↓
+Transform Pizza → Menu
+        ↓
+      Published
+```
+
+The BPMN model owns orchestration only. `workflow-vocabulary.ttl` binds semantic workflow operations to existing artifact roles, so the workflow does not duplicate SHACL constraints or SPARQL mapping logic. The valid and invalid cases verify ordered execution, intermediate state, conditional branching, and suppression of the mapping step on rejection.
 
 ## Downstream use
 
