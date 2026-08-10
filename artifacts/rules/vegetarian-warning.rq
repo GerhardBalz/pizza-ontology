@@ -1,0 +1,11 @@
+PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>
+PREFIX rule: <urn:pizza-ontology:rule:>
+
+CONSTRUCT {
+  ?pizza rule:requiresVegetarianWarning true .
+}
+WHERE {
+  ?pizza a pizza:Pizza ;
+         pizza:hasTopping ?topping .
+  ?topping a pizza:MeatTopping .
+}
