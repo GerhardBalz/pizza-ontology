@@ -23,15 +23,15 @@ printf '\n1/4 Python OAK access example...\n'
 python "${HERE}/access_pizza.py" "${OAK_INPUT}" | tee "${RESULTS}/python-access.txt"
 
 printf '\n2/4 OAK CLI entity lookup...\n'
-runoak --prefix "pizza=${PIZZA_NS}" -l en -i "${OAK_INPUT}" info pizza:AmericanHot | tee "${RESULTS}/info.txt"
-grep -qi "American.*Hot" "${RESULTS}/info.txt"
+runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" info pizza:AmericanHot | tee "${RESULTS}/info.txt"
+grep -q "pizza:AmericanHot" "${RESULTS}/info.txt"
 
 printf '\n3/4 OAK CLI relationship projection...\n'
-runoak --prefix "pizza=${PIZZA_NS}" -l en -i "${OAK_INPUT}" relationships pizza:AmericanHot | tee "${RESULTS}/relationships.txt"
+runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" relationships pizza:AmericanHot | tee "${RESULTS}/relationships.txt"
 grep -q "pizza:JalapenoPepperTopping" "${RESULTS}/relationships.txt"
 
 printf '\n4/4 OAK CLI is-a traversal...\n'
-runoak --prefix "pizza=${PIZZA_NS}" -l en -i "${OAK_INPUT}" ancestors -p i pizza:AmericanHot | tee "${RESULTS}/ancestors.txt"
+runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" ancestors -p i pizza:AmericanHot | tee "${RESULTS}/ancestors.txt"
 grep -q "pizza:NamedPizza" "${RESULTS}/ancestors.txt"
 
-printf '\nSUCCESS: OAK CLI and Python examples access the repository-owned Pizza semantic model.\n'
+printf '\nSUCCESS: OAK CLI and Python examples access the repository-owned Pizza semantic model without assuming multilingual label order.\n'

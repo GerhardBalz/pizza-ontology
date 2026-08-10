@@ -104,9 +104,9 @@ Use the [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-
 - ontology metadata where supported by the selected adapter,
 - use from scripts and applications.
 
-The first executable OAK slice is implemented in [`examples/oak`](examples/oak). Starting from `pizza:AmericanHot`, it demonstrates English label lookup, explicit Pizza CURIE-prefix registration, projected OWL relationships, and is-a ancestry through both the OAK Python API and CLI.
+The first executable OAK slice is implemented in [`examples/oak`](examples/oak). Starting from `pizza:AmericanHot`, it demonstrates preserved multilingual label access, explicit Pizza CURIE-prefix registration, projected OWL relationships, and is-a ancestry through both the OAK Python API and CLI.
 
-The example also makes an important OAK boundary visible: the common interface spans multiple adapters, but individual backends do not necessarily implement every operation. The local Functional-Syntax adapter used by the first slice supports the selected entity/relationship/traversal operations but does not currently implement ontology enumeration/metadata access. That capability is therefore recorded as backend-dependent rather than treated as a Pizza-data defect.
+The example also makes important OAK backend boundaries visible: the common interface spans multiple adapters, but individual backends do not necessarily implement every operation or optional behavior. The local Functional-Syntax `FunOwlImplementation` supports the selected label/relationship/traversal operations, but its `label(..., lang=...)` implementation does not currently enforce language filtering, and ontology enumeration/metadata access is not implemented. Those are recorded as adapter capabilities rather than treated as Pizza-data defects.
 
 ### 4. Reason and Validate
 
@@ -228,7 +228,32 @@ ESKA
     services, agents, verification, and provenance
 ```
 
-The repository-owned artifacts under [`artifacts/`](artifacts/) establish the source side of that boundary. ESKA integration remains a separate Track 8 step so the executable architecture can consume these artifacts instead of maintaining independent Pizza-domain copies.
+That boundary is now executable rather than merely documented. [`artifacts/manifest.ttl`](artifacts/manifest.ttl) publishes the machine-readable consumer contract for the canonical reasoning module, SHACL profile, and validation data. ESKA pins this repository to immutable commit:
+
+```text
+613ff0b6e615cbb2eac7cd92358eca9f885fbc7d
+```
+
+and runtime-materializes the declared artifacts instead of maintaining independent Pizza-domain semantic copies.
+
+```text
+pizza-ontology
+    owns semantic artifacts
+        ↓ artifacts/manifest.ttl
+    immutable commit 613ff0...
+        ↓
+ESKA
+    runtime materializes semantic inputs
+        ↓
+    Capability / Execution / Service / Agent /
+    Verification / Provenance
+```
+
+The ESKA integration was completed in ESKA PR #19, merged as `7dbbdf0a1ae39a7bdb3c9af0fb410d5899acbc5a`. Both repositories verify their side of the contract in CI: this repository verifies the published artifact paths and metadata, while ESKA verifies the immutable source binding, forbids reintroduction of its former semantic copies, and executes reasoning, validation, Service, and Agent behavior over the source-owned artifacts.
+
+Track 8 is therefore complete. The key principle is:
+
+> **Execution must not sever semantics — and execution architecture should not become the accidental owner of domain semantics.**
 
 ### 9. Architect — Semantic Modeling
 
@@ -325,6 +350,8 @@ pizza-ontology/
 ├── .github/
 │   └── workflows/
 ├── artifacts/
+│   ├── manifest.ttl
+│   ├── verify_consumer_contract.py
 │   ├── reasoning/
 │   │   ├── spicy-pizza.ofn
 │   │   ├── provenance.ttl
@@ -379,7 +406,7 @@ python -m pip install -r examples/oak/requirements.txt
 bash examples/oak/run.sh
 ```
 
-See [`examples/oak/README.md`](examples/oak/README.md) for the CLI, Python API, prefix, language, and adapter-capability details.
+See [`examples/oak/README.md`](examples/oak/README.md) for the CLI, Python API, prefix, multilingual-label, and adapter-capability details.
 
 ### OWL reasoning artifact
 
@@ -401,6 +428,19 @@ python artifacts/validation/validate_examples.py
 ```
 
 The conforming graph must pass; the non-conforming graph must fail on the expected `hasBase` and `hasTopping` paths. See [`artifacts/validation/README.md`](artifacts/validation/README.md).
+
+### Semantic artifact consumer contract
+
+The same validation dependency set provides `rdflib`, which is used to verify the machine-readable downstream contract:
+
+```bash
+python -m pip install -r artifacts/validation/requirements.txt
+python artifacts/verify_consumer_contract.py
+```
+
+The verifier requires the manifest to publish exactly the expected reasoning, SHACL, conforming-data, and non-conforming-data artifacts; checks their formats, provenance, and license metadata; and fails if a declared repository-relative path no longer resolves.
+
+Consumers should pair those stable artifact roles/paths with an immutable Git commit or preservation release rather than bind to mutable `main` content.
 
 ## Architecture Documents
 
@@ -437,11 +477,12 @@ The repository will evolve incrementally rather than attempting to demonstrate e
 - [ ] Refine publication and distribution strategy
 - [x] Add first OAK access vertical slice
 - [x] Add canonical coherent reasoning and SHACL validation artifacts
+- [x] Publish the machine-readable semantic artifact consumer contract
+- [x] Integrate stable Pizza semantic artifacts with ESKA through an immutable source binding
 - [ ] Add broader ontology exploration and query examples
 - [ ] Add alternative distributions such as Turtle
 - [ ] Explore semantic projections into schemas and APIs
 - [ ] Explore ontology-informed user experience
-- [ ] Integrate stable Pizza semantic artifacts with ESKA
 - [ ] Relate the case study to broader Semantic Modeling concepts
 - [ ] Evaluate a separate successor Pizza ontology when semantic modernization is required
 

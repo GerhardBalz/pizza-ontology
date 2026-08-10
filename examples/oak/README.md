@@ -6,9 +6,9 @@ The goal is deliberately small:
 
 ```text
 pizza:AmericanHot
-    │ lookup / English label
+    │ lookup / label access
     ▼
-American Hot
+multilingual rdfs:label
     │ relationships
     ├── rdfs:subClassOf → pizza:NamedPizza
     └── pizza:hasTopping → pizza:JalapenoPepperTopping
@@ -58,17 +58,28 @@ pizza = http://www.co-ode.org/ontologies/pizza/pizza.owl#
 
 This changes only how the OAK client refers to entities. It does **not** change the Pizza ontology IRIs.
 
-## Multilingual labels
+## Multilingual labels and adapter behavior
 
-Pizza 2.0 contains multilingual labels. The examples explicitly request English (`en`) rather than relying on an arbitrary first label.
-
-That makes the access contract clear:
+Pizza 2.0 contains multilingual `rdfs:label` values. For `pizza:AmericanHot`, the preserved ontology contains both:
 
 ```text
-pizza:AmericanHot
-    ├── English → American Hot
-    └── other language labels remain in the ontology
+AmericanHot       @en
+AmericanaPicante  @pt
 ```
+
+The current OAK `FunOwlImplementation` exposes the common `label(curie, lang=...)` signature, but its implementation does not apply the language argument when selecting among multiple `rdfs:label` values. It returns the first value supplied by the underlying OWL representation, and that order is not a stable language-selection contract.
+
+The example therefore verifies **label access without assuming label order**. Either preserved `rdfs:label` is accepted for this backend, while the entity CURIE/IRI and semantic relationships remain deterministic.
+
+```text
+common OAK label interface
+        │
+        └── FunOwl local adapter
+              ├── label access       ✓
+              └── language filtering not enforced by label()
+```
+
+A later example can use a backend with explicit language-aware label selection if that becomes a concrete requirement. The historical multilingual annotations should not be changed merely to make this adapter deterministic.
 
 ## Run
 
@@ -88,7 +99,6 @@ Entity lookup:
 ```bash
 runoak \
   --prefix 'pizza=http://www.co-ode.org/ontologies/pizza/pizza.owl#' \
-  -l en \
   -i examples/oak/.work/pizza-edit.ofn \
   info pizza:AmericanHot
 ```
@@ -98,7 +108,6 @@ Projected relationships:
 ```bash
 runoak \
   --prefix 'pizza=http://www.co-ode.org/ontologies/pizza/pizza.owl#' \
-  -l en \
   -i examples/oak/.work/pizza-edit.ofn \
   relationships pizza:AmericanHot
 ```
@@ -108,12 +117,11 @@ Is-a ancestors:
 ```bash
 runoak \
   --prefix 'pizza=http://www.co-ode.org/ontologies/pizza/pizza.owl#' \
-  -l en \
   -i examples/oak/.work/pizza-edit.ofn \
   ancestors -p i pizza:AmericanHot
 ```
 
-The global prefix, language, and input options intentionally appear **before** the command.
+The global prefix and input options intentionally appear **before** the command.
 
 ## Python API
 
@@ -125,23 +133,30 @@ The global prefix, language, and input options intentionally appear **before** t
 - `relationships(...)`
 - `ancestors(...)`
 
-The example verifies that OAK can access the English Pizza entity label, its asserted superclass, the `hasTopping some JalapenoPepperTopping` relationship projection, and is-a ancestry without embedding those domain facts as application rules.
+The example verifies that OAK can access a preserved Pizza label, its asserted superclass, the `hasTopping some JalapenoPepperTopping` relationship projection, and is-a ancestry without embedding those domain facts as application rules.
 
-## Adapter capability boundary
+## Adapter capability boundaries
 
-OAK defines common interfaces across multiple adapters, but not every backend implements every operation.
+OAK defines common interfaces across multiple adapters, but not every backend implements every operation or every optional behavior.
 
-For the local Functional-Syntax adapter used by this first slice, ontology enumeration / ontology-metadata access is not implemented. The Python example records this capability boundary explicitly instead of treating it as a Pizza-data failure.
+For the local Functional-Syntax adapter used by this first slice:
+
+- entity labels are accessible, but deterministic language filtering is not implemented by `label()`;
+- relationship projection and ancestry are supported for the selected OWL constructs;
+- ontology enumeration / ontology-metadata access is not implemented.
+
+The Python example records these capability boundaries explicitly instead of treating them as Pizza-data failures.
 
 ```text
 common OAK interface
         │
-        ├── labels / relationships / ancestry  ✓ local adapter
-        │
-        └── ontology metadata                 backend-dependent
+        ├── labels                         ✓ local adapter
+        ├── relationships / ancestry       ✓ local adapter
+        ├── label language filtering       backend-dependent
+        └── ontology metadata              backend-dependent
 ```
 
-A later access/distribution example can introduce a metadata-capable backend when that capability has a concrete use case.
+A later access/distribution example can introduce a richer backend when one of those capabilities has a concrete use case.
 
 ## Architectural boundary
 
