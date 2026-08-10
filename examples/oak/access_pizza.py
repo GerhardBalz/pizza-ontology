@@ -19,11 +19,16 @@ AMERICAN_HOT = "pizza:AmericanHot"
 NAMED_PIZZA = "pizza:NamedPizza"
 HAS_TOPPING = "pizza:hasTopping"
 JALAPENO = "pizza:JalapenoPepperTopping"
+PREFERRED_LANGUAGE = "en"
 
 
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def english_label(adapter, entity: str) -> str | None:
+    return adapter.label(entity, lang=PREFERRED_LANGUAGE)
 
 
 def main() -> None:
@@ -40,9 +45,11 @@ def main() -> None:
     # the OAK interface while retaining the historical IRIs in the ontology.
     adapter.prefix_map()["pizza"] = PIZZA_NS
 
-    label = adapter.label(AMERICAN_HOT)
-    require(label is not None, "OAK could not resolve the AmericanHot label")
-    require("American" in label and "Hot" in label, f"unexpected AmericanHot label: {label!r}")
+    # Pizza 2.0 contains multilingual rdfs:label values. Ask OAK explicitly
+    # for English instead of relying on whichever label occurs first.
+    label = english_label(adapter, AMERICAN_HOT)
+    require(label is not None, "OAK could not resolve the English AmericanHot label")
+    require("American" in label and "Hot" in label, f"unexpected English AmericanHot label: {label!r}")
 
     relationships = list(adapter.relationships([AMERICAN_HOT]))
     require(relationships, "OAK returned no relationships for AmericanHot")
@@ -81,18 +88,19 @@ def main() -> None:
         "ontology": str(ontology_path),
         "entity": AMERICAN_HOT,
         "entityIri": adapter.curie_to_uri(AMERICAN_HOT),
+        "preferredLanguage": PREFERRED_LANGUAGE,
         "label": label,
         "relationships": [
             {
                 "subject": str(subject),
                 "predicate": str(predicate),
                 "object": str(obj),
-                "objectLabel": adapter.label(obj),
+                "objectLabel": english_label(adapter, obj),
             }
             for subject, predicate, obj in relationships
         ],
         "isAAncestors": [
-            {"id": str(ancestor), "label": adapter.label(ancestor)}
+            {"id": str(ancestor), "label": english_label(adapter, ancestor)}
             for ancestor in ancestors
         ],
         "ontologyMetadata": {str(key): value for key, value in metadata.items()},
