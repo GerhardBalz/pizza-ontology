@@ -3,7 +3,8 @@
 
 This example deliberately reads the repository-owned ontology artifact rather
 than copying Pizza knowledge into application code. It demonstrates lookup,
-OWL-to-graph relationship projection, ancestry, and ontology metadata access.
+OWL-to-graph relationship projection, ancestry, and adapter capability
+boundaries.
 """
 
 from __future__ import annotations
@@ -29,6 +30,41 @@ def require(condition: bool, message: str) -> None:
 
 def english_label(adapter, entity: str) -> str | None:
     return adapter.label(entity, lang=PREFERRED_LANGUAGE)
+
+
+def ontology_metadata_capability(adapter) -> dict[str, object]:
+    """Report metadata support without assuming every OAK adapter implements it."""
+    try:
+        ontologies = list(adapter.ontologies())
+        if not ontologies:
+            return {
+                "supported": True,
+                "ontologyIds": [],
+                "metadata": {},
+                "note": "The adapter implements ontology enumeration but returned no ontology identifier.",
+            }
+
+        metadata = {
+            str(ontology): {
+                str(key): value
+                for key, value in adapter.ontology_metadata_map(ontology).items()
+            }
+            for ontology in ontologies
+        }
+        return {
+            "supported": True,
+            "ontologyIds": [str(ontology) for ontology in ontologies],
+            "metadata": metadata,
+        }
+    except NotImplementedError:
+        return {
+            "supported": False,
+            "adapter": type(adapter).__name__,
+            "note": (
+                "This local Functional-Syntax adapter does not implement OAK ontology "
+                "enumeration/metadata access. Use a metadata-capable backend for that operation."
+            ),
+        }
 
 
 def main() -> None:
@@ -81,16 +117,9 @@ def main() -> None:
         "NamedPizza must be reachable as an is-a ancestor of AmericanHot",
     )
 
-    ontologies = list(adapter.ontologies())
-    require(ontologies, "OAK did not expose an ontology identifier for the Pizza source")
-    require(len(ontologies) == 1, f"expected one Pizza ontology, got {ontologies!r}")
-    ontology_id = ontologies[0]
-    metadata = adapter.ontology_metadata_map(ontology_id)
-    require(metadata is not None, "OAK ontology metadata access returned no result")
-
     result = {
         "ontology": str(ontology_path),
-        "ontologyId": str(ontology_id),
+        "adapter": type(adapter).__name__,
         "entity": AMERICAN_HOT,
         "entityIri": adapter.curie_to_uri(AMERICAN_HOT),
         "preferredLanguage": PREFERRED_LANGUAGE,
@@ -108,11 +137,14 @@ def main() -> None:
             {"id": str(ancestor), "label": english_label(adapter, ancestor)}
             for ancestor in ancestors
         ],
-        "ontologyMetadata": {str(key): value for key, value in metadata.items()},
+        "ontologyMetadataCapability": ontology_metadata_capability(adapter),
     }
 
     print(json.dumps(result, indent=2, default=str, sort_keys=True))
-    print("SUCCESS: OAK accessed Pizza labels, projected OWL relationships, ancestry, and ontology metadata.")
+    print(
+        "SUCCESS: OAK accessed Pizza labels, projected OWL relationships, ancestry, "
+        "and reported the selected adapter's metadata capability."
+    )
 
 
 if __name__ == "__main__":
