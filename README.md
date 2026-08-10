@@ -4,7 +4,7 @@
 
 A modern **ontology engineering and executable knowledge reference project** based on the classic Pizza OWL ontology.
 
-The Pizza domain is deliberately small and understandable. It provides one stable semantic subject for exploring ontology modeling, engineering, access, reasoning, validation, publication, rules, decisions, calculations, mappings, projections, user experience, and executable semantic knowledge.
+The Pizza domain is deliberately small and understandable. It provides one stable semantic subject for exploring ontology modeling, engineering, access, reasoning, validation, publication, rules, decisions, calculations, mappings, workflows, projections, user experience, and executable semantic knowledge.
 
 ## Why Pizza?
 
@@ -40,16 +40,16 @@ The **ontology is the semantic center**. Tools and executable artifacts remain s
                               ▼
                     Semantic Knowledge
                               │
- ┌──────────┬──────────┬──────┼───────┬────────────┬───────────┐
- ▼          ▼          ▼      ▼       ▼            ▼           ▼
-Reasoning Validation Rules Decisions Calculations Mappings Projections
- │          │          │      │       │            │           │
- └──────────┴──────────┴──────┴───────┴────────────┴─────┬─────┘
-                                                         ▼
-                                              Executable Knowledge
-                                                         │
-                                                         ▼
-                                    Executable Semantic Knowledge Architecture
+ ┌─────────┬─────────┬──────┬─┼──────┬──────────┬────────┬───────────┐
+ ▼         ▼         ▼      ▼        ▼          ▼        ▼           ▼
+Reasoning Validation Rules Decisions Calculations Mappings Workflows Projections
+ │         │         │      │        │          │        │           │
+ └─────────┴─────────┴──────┴────────┴──────────┴────────┴─────┬─────┘
+                                                               ▼
+                                                    Executable Knowledge
+                                                               │
+                                                               ▼
+                                          Executable Semantic Knowledge Architecture
 ```
 
 ## Nine Tracks
@@ -143,7 +143,7 @@ ESKA
     Results, Verification, provenance, Services and Agents
 ```
 
-[`artifacts/manifest.ttl`](artifacts/manifest.ttl) is the machine-readable consumer contract. It currently publishes **seventeen semantic distributions** covering six execution semantics:
+[`artifacts/manifest.ttl`](artifacts/manifest.ttl) is the machine-readable consumer contract. It currently publishes **twenty-three semantic distributions** covering seven execution semantics:
 
 ```text
 Ontology    → reason
@@ -152,6 +152,7 @@ Rule        → evaluate
 Decision    → decide
 Calculation → calculate
 Mapping     → transform
+Workflow    → execute
 ```
 
 The published set contains:
@@ -161,7 +162,8 @@ The published set contains:
 - one SPARQL rule, rule-result vocabulary, and RDF rule data;
 - one DMN 1.5 decision table, decision vocabulary, and decision cases;
 - one OpenMath area formula, calculation vocabulary, and calculation cases;
-- one SPARQL semantic mapping, target Menu vocabulary, source RDF graph, and expected target RDF graph.
+- one SPARQL semantic mapping, target Menu vocabulary, source RDF graph, and expected target RDF graph;
+- one BPMN 2.0.2 workflow, workflow semantic vocabulary, valid/invalid workflow inputs, expected valid Menu graph, and workflow case contract.
 
 The Mapping artifact is deliberately different from the Rule artifact even though both use SPARQL `CONSTRUCT`:
 
@@ -179,19 +181,37 @@ Mapping
     transformed target graph
 ```
 
-ESKA pins the semantic artifact contract to immutable source commit:
+The Workflow artifact is different again: it owns orchestration rather than the semantics of its steps.
 
 ```text
-ef05531c5a362d8d1454e94e59a44f750515dd1c
+Start
+  ↓
+Validate Pizza RDF                 existing SHACL semantics
+  ↓
+conforms?
+  ├── false → Rejected
+  └── true
+        ↓
+Transform Pizza → Menu             existing Mapping semantics
+        ↓
+      Published
 ```
 
-and materializes declared artifacts at runtime rather than maintaining independent Pizza-domain semantic copies.
+The valid case executes both semantic steps; the invalid case stops after validation and never executes Mapping.
+
+ESKA pins the semantic artifact contract to the corrected immutable source commit:
+
+```text
+715f0460a43abacb5258eedd3d722da219a25a43
+```
+
+and materializes declared artifacts at runtime rather than maintaining independent Pizza-domain semantic copies. This corrected commit also resolves the workflow Mapping-artifact identifier mismatch detected by independent ESKA consumption.
 
 > **Execution must not sever semantics — and execution architecture should not become the accidental owner of domain semantics.**
 
 ### 9. Architect — Semantic Modeling
 
-Use the project as a case study for semantic identity, provenance, authority/stewardship, lifecycle, semantic projections, executable artifacts, source/target semantic roles, knowledge-driven systems, and the relationship between conceptual, semantic, logical, and executable models.
+Use the project as a case study for semantic identity, provenance, authority/stewardship, lifecycle, semantic projections, executable artifacts, source/target semantic roles, composite semantic execution, knowledge-driven systems, and the relationship between conceptual, semantic, logical, and executable models.
 
 ## Preservation Baseline
 
@@ -227,7 +247,7 @@ Repository preservation release
 
 The planned first repository release is `preservation-v0.1.0`, tracked by [issue #7](https://github.com/GerhardBalz/pizza-ontology/issues/7).
 
-A preservation release can add engineering, access, validation, rule, decision, calculation, mapping, projection, UX, or integration artifacts while the preserved ontology continues to declare version `2.0`.
+A preservation release can add engineering, access, validation, rule, decision, calculation, mapping, workflow, projection, UX, or integration artifacts while the preserved ontology continues to declare version `2.0`.
 
 ### Possible successor ontology
 
@@ -256,7 +276,8 @@ pizza-ontology/
 │   ├── rules/
 │   ├── decisions/
 │   ├── calculations/
-│   └── mappings/
+│   ├── mappings/
+│   └── workflows/
 ├── docs/
 ├── examples/oak/
 ├── LICENSES/
@@ -325,7 +346,19 @@ python -m pip install -r artifacts/mappings/requirements.txt
 python artifacts/mappings/evaluate_mapping.py
 ```
 
-The mapping transforms explicit Pizza RDF into the repository-owned Menu target vocabulary and verifies the result against the canonical target graph.
+BPMN workflow evaluation:
+
+```bash
+python -m pip install -r artifacts/workflows/requirements.txt
+python artifacts/workflows/evaluate_workflow.py
+```
+
+The workflow regression proves both execution paths:
+
+```text
+valid-publication   → validation → mapping → Published
+invalid-rejection   → validation → Rejected
+```
 
 Semantic artifact consumer contract:
 
@@ -334,11 +367,11 @@ python -m pip install -r artifacts/validation/requirements.txt
 python artifacts/verify_consumer_contract.py
 ```
 
-The verifier requires exactly the expected **seventeen** distributions and checks their paths, formats, dependencies, provenance/conformance metadata, and licensing boundaries.
+The verifier requires exactly the expected **twenty-three** distributions and checks their paths, formats, dependencies, provenance/conformance metadata, and licensing boundaries.
 
 ## CI Concerns
 
-Eight independent concerns remain intentionally separate:
+Nine independent concerns remain intentionally separate:
 
 ```text
 ODK        → preserve / engineer / ontology QC
@@ -349,6 +382,7 @@ SPARQL     → evaluate rule / derive
 DMN        → decide / select outcome
 OpenMath   → calculate / numeric result
 Mapping    → transform / target graph
+BPMN       → execute / conditional composition
 ```
 
 ## Roadmap
@@ -368,6 +402,7 @@ Mapping    → transform / target graph
 - [x] Add source-owned DMN decision artifacts
 - [x] Add source-owned OpenMath calculation artifacts
 - [x] Add source-owned semantic Mapping artifacts
+- [x] Add source-owned BPMN Workflow artifacts
 - [x] Integrate stable Pizza semantic artifacts with ESKA through immutable source bindings
 - [ ] Add broader ontology exploration and query examples
 - [ ] Add alternative distributions such as Turtle
@@ -378,7 +413,7 @@ Mapping    → transform / target graph
 
 ## Acknowledgements
 
-The ontology is derived from the classic Pizza ontology and its Manchester / Protégé tutorial tradition. This engineering repository uses ODK, ROBOT, OAK, HermiT, SHACL/pySHACL, RDFLib/SPARQL, DMN, OpenMath, and SPARQL-based semantic transformation across their respective tracks.
+The ontology is derived from the classic Pizza ontology and its Manchester / Protégé tutorial tradition. This engineering repository uses ODK, ROBOT, OAK, HermiT, SHACL/pySHACL, RDFLib/SPARQL, DMN, OpenMath, SPARQL-based semantic transformation, and BPMN across their respective tracks.
 
 ## License
 
