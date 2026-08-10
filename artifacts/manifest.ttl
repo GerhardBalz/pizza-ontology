@@ -15,7 +15,10 @@ art:PizzaSemanticArtifactSet
         art:NonConformingPizzaData,
         art:PizzaVegetarianWarningRule,
         art:PizzaRuleVocabulary,
-        art:PizzaRuleData .
+        art:PizzaRuleData,
+        art:PizzaDietarySuitabilityDecision,
+        art:PizzaDecisionVocabulary,
+        art:PizzaDecisionCases .
 
 art:SpicyPizzaReasoningModule
     a dcat:Distribution, prov:Entity ;
@@ -81,6 +84,35 @@ art:PizzaRuleData
     dcterms:license <https://opensource.org/license/mit> ;
     dcterms:requires art:PizzaRuleVocabulary ;
     dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaDietarySuitabilityDecision
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza dietary suitability DMN decision"@en ;
+    dcterms:description "Repository-authored DMN 1.5 UNIQUE decision table that selects one dietary-suitability outcome from explicit containsMeat and containsFish decision inputs."@en ;
+    dcterms:identifier "artifacts/decisions/pizza-dietary-suitability.dmn" ;
+    dcterms:format "application/xml" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:conformsTo <https://www.omg.org/spec/DMN/1.5/> ;
+    dcterms:requires art:PizzaDecisionVocabulary ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaDecisionVocabulary
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza decision outcome vocabulary"@en ;
+    dcterms:description "Repository-authored RDF vocabulary defining the dietary-suitability result relation and semantic outcome identifiers used by the Pizza DMN decision."@en ;
+    dcterms:identifier "artifacts/decisions/decision-vocabulary.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> .
+
+art:PizzaDecisionCases
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza dietary-suitability decision cases"@en ;
+    dcterms:description "Repository-authored JSON decision-input cases exercising NotVegetarian, PescatarianOnly, and Vegetarian outcomes."@en ;
+    dcterms:identifier "artifacts/decisions/data/cases.json" ;
+    dcterms:format "application/json" ;
+    dcterms:license <https://opensource.org/license/mit> ;
+    dcterms:requires art:PizzaDietarySuitabilityDecision, art:PizzaDecisionVocabulary .
 
 art:Pizza2SourceBlob
     a prov:Entity ;
