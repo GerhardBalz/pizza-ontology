@@ -1,0 +1,26 @@
+@prefix menu: <urn:pizza-ontology:menu:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<urn:pizza-ontology:menu:model>
+    a owl:Ontology ;
+    dcterms:title "Pizza Menu Projection Vocabulary"@en ;
+    dcterms:description "Repository-authored target semantic model for a deliberately small menu projection of Pizza RDF data."@en .
+
+menu:MenuItem
+    a owl:Class ;
+    rdfs:label "Menu item"@en .
+
+menu:displayName
+    a owl:DatatypeProperty ;
+    rdfs:domain menu:MenuItem ;
+    rdfs:range rdf:langString ;
+    rdfs:label "display name"@en .
+
+menu:ingredientName
+    a owl:DatatypeProperty ;
+    rdfs:domain menu:MenuItem ;
+    rdfs:range rdf:langString ;
+    rdfs:label "ingredient name"@en .

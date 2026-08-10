@@ -1,0 +1,12 @@
+@prefix mapdata: <urn:pizza-ontology:mapping:data:> .
+@prefix menu: <urn:pizza-ontology:menu:> .
+
+mapdata:americanHotMenuPizza
+    a menu:MenuItem ;
+    menu:displayName "American Hot"@en ;
+    menu:ingredientName "Jalapeno Pepper"@en .
+
+mapdata:margheritaMenuPizza
+    a menu:MenuItem ;
+    menu:displayName "Margherita"@en ;
+    menu:ingredientName "Mozzarella"@en .
