@@ -10,7 +10,9 @@ pub:PizzaPreservationCatalog
     dcterms:relation <http://www.co-ode.org/ontologies/pizza> ;
     dcterms:source <https://protege.stanford.edu/ontologies/pizza/pizza.owl> ;
     dcat:landingPage <https://github.com/GerhardBalz/pizza-ontology> ;
-    dcat:dataset pub:PreservationV010 .
+    dcat:dataset
+        pub:PreservationV010,
+        pub:PreservationV020 .
 
 pub:PreservationV010
     a dcat:Dataset, prov:Entity ;
@@ -26,3 +28,56 @@ pub:PreservationV010
     prov:wasDerivedFrom <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
     dcat:landingPage <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0> ;
     dcat:accessURL <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0> .
+
+pub:PreservationV020
+    a dcat:Dataset, prov:Entity ;
+    dcterms:title "pizza-ontology preservation-v0.2.0 repository release"@en ;
+    dcterms:description "Second repository preservation release. It preserves Pizza Ontology 2.0 unchanged while publishing the first governed Functional Syntax and Turtle preservation distributions together with their checksum manifest."@en ;
+    dcterms:identifier "preservation-v0.2.0" ;
+    dcterms:relation
+        <http://www.co-ode.org/ontologies/pizza>,
+        <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    dcterms:source
+        <https://github.com/GerhardBalz/pizza-ontology/blob/preservation-v0.2.0/src/ontology/pizza-edit.owl>,
+        <https://github.com/GerhardBalz/pizza-ontology/blob/3bd6e3817e2cdc44e77899a2e603878a85845e9d/src/ontology/pizza-edit.owl>,
+        <https://protege.stanford.edu/ontologies/pizza/pizza.owl> ;
+    prov:wasDerivedFrom <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    dcat:landingPage <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0> ;
+    dcat:accessURL <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0> ;
+    dcat:distribution
+        pub:PreservationV020FunctionalSyntax,
+        pub:PreservationV020Turtle,
+        pub:PreservationV020Checksums .
+
+pub:PreservationV020FunctionalSyntax
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza Ontology 2.0 preserved OWL Functional Syntax distribution"@en ;
+    dcterms:identifier "pizza-2.0-preserved.ofn" ;
+    dcterms:format "OWL Functional Syntax" ;
+    dcterms:license <https://creativecommons.org/licenses/by/3.0/> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    prov:wasDerivedFrom <https://github.com/GerhardBalz/pizza-ontology/blob/3bd6e3817e2cdc44e77899a2e603878a85845e9d/src/ontology/pizza-edit.owl> ;
+    dcat:accessURL <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0> ;
+    dcat:downloadURL <https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ofn> .
+
+pub:PreservationV020Turtle
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "Pizza Ontology 2.0 preserved Turtle distribution"@en ;
+    dcterms:identifier "pizza-2.0-preserved.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:license <https://creativecommons.org/licenses/by/3.0/> ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    prov:wasDerivedFrom <https://github.com/GerhardBalz/pizza-ontology/blob/3bd6e3817e2cdc44e77899a2e603878a85845e9d/src/ontology/pizza-edit.owl> ;
+    dcat:accessURL <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0> ;
+    dcat:downloadURL <https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ttl> .
+
+pub:PreservationV020Checksums
+    a dcat:Distribution, prov:Entity ;
+    dcterms:title "preservation-v0.2.0 SHA-256 checksum manifest"@en ;
+    dcterms:identifier "SHA256SUMS" ;
+    dcterms:format "text/plain" ;
+    dcterms:relation
+        pub:PreservationV020FunctionalSyntax,
+        pub:PreservationV020Turtle ;
+    dcat:accessURL <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0> ;
+    dcat:downloadURL <https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/SHA256SUMS> .
