@@ -44,14 +44,15 @@ def require(condition: bool, message: str) -> None:
 
 
 def request_bytes(url: str, *, accept: str | None = None) -> bytes:
-    headers = {
-        "User-Agent": "pizza-ontology-publication-verifier",
-    }
+    headers = {"User-Agent": "pizza-ontology-publication-verifier"}
     if accept:
         headers["Accept"] = accept
 
+    # Use the workflow token only for GitHub API calls. Public raw/download
+    # URLs are intentionally exercised the same way an unauthenticated external
+    # consumer would reach them.
     token = os.environ.get("GITHUB_TOKEN")
-    if token and "github" in urllib.parse.urlparse(url).hostname.lower():
+    if token and url.startswith("https://api.github.com/"):
         headers["Authorization"] = f"Bearer {token}"
 
     request = urllib.request.Request(url, headers=headers)
