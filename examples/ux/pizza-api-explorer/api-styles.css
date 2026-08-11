@@ -1,0 +1,88 @@
+.architecture-chain {
+  margin-top: 18px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: #f6f6f3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+}
+
+.api-control-grid {
+  grid-template-columns: minmax(220px, 1.2fr) minmax(220px, 1fr) auto;
+}
+
+.contract-link,
+.detail-button,
+.detail-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #bfc4c2;
+  border-radius: 9px;
+  background: #fff;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contract-link:hover,
+.detail-button:hover,
+.detail-close:hover {
+  background: #f1f2ef;
+}
+
+.concept-summary {
+  display: grid;
+  gap: 18px;
+}
+
+.api-summary-text {
+  margin: 0;
+  color: #68737c;
+}
+
+.detail-button {
+  justify-self: start;
+}
+
+.detail-panel[hidden] {
+  display: none;
+}
+
+.detail-heading-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.detail-intro {
+  color: #68737c;
+}
+
+.detail-panel .traceability {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+@media (max-width: 760px) {
+  .api-control-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contract-link {
+    justify-self: stretch;
+  }
+
+  .detail-heading-row {
+    display: grid;
+  }
+
+  .detail-close {
+    justify-self: start;
+  }
+}
