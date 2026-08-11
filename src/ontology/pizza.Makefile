@@ -74,8 +74,9 @@ preservation_distribution_test: preservation_identity_test
   diff_status=0; \
   $(ROBOT) diff --left $(SRC) --right $(PRESERVATION_TURTLE) --output $(PRESERVATION_DIFF) >"$$diff_log" 2>&1 || diff_status=$$?; \
   cat "$$diff_log"; \
-  if grep -Fq 'Ontologies are identical' "$$diff_log"; then \
-    :; \
+  if grep -Fq 'Ontologies are identical' "$$diff_log" || \
+     { [ -f $(PRESERVATION_DIFF) ] && grep -Fq 'Ontologies are identical' $(PRESERVATION_DIFF); }; then \
+    echo 'ROBOT confirms source and Turtle ontologies are identical.'; \
   elif [ "$$diff_status" -ne 0 ]; then \
     rm -f "$$diff_log" $(PRESERVATION_DIFF); \
     echo 'ERROR: ROBOT could not verify the Turtle distribution against the preserved source ontology.'; \
