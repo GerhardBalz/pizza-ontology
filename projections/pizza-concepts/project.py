@@ -3,7 +3,7 @@
 
 The source ontology remains authoritative. This script deliberately projects only
 selected graph-shaped semantics and verifies the checked-in JSON representation
-against the current repository-owned Pizza source through OAK.
+against the current repository-owned Pizza source through the shared OAK boundary.
 """
 
 from __future__ import annotations
@@ -11,114 +11,25 @@ from __future__ import annotations
 import argparse
 import difflib
 import json
-import shutil
-import tempfile
+import sys
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
-from oaklib import get_adapter
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-SOURCE = ROOT / "src" / "ontology" / "pizza-edit.owl"
+sys.path.insert(0, str(HERE.parent))
+
+from common.pizza_source import extract_selected_concepts, load_json, require  # noqa: E402
+
 CONFIG_PATH = HERE / "projection-config.json"
 SCHEMA_PATH = HERE / "projection.schema.json"
 GOLDEN_PATH = HERE / "pizza-concepts.json"
 
-RDFS_SUBCLASS = "rdfs:subClassOf"
-HAS_TOPPING = "pizza:hasTopping"
-
-
-def require(condition: bool, message: str) -> None:
-    if not condition:
-        raise AssertionError(message)
-
-
-def load_json(path: Path) -> dict:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def entity_reference(adapter, curie: str) -> dict[str, str]:
-    iri = adapter.curie_to_uri(curie)
-    require(iri is not None, f"OAK could not expand CURIE: {curie}")
-    return {"id": curie, "iri": str(iri)}
-
 
 def build_projection() -> dict:
     config = load_json(CONFIG_PATH)
-    require(SOURCE.is_file(), f"Pizza source ontology not found: {SOURCE}")
-
-    namespace = config["sourceEntityNamespace"]
-
-    # The ODK editor ontology is Functional Syntax with a historical .owl file
-    # name. Give the local OAK adapter an explicit .ofn syntax hint using a
-    # byte-identical temporary copy, just as the established OAK access slice does.
-    with tempfile.TemporaryDirectory(prefix="pizza-projection-") as temp_dir:
-        oak_input = Path(temp_dir) / "pizza-edit.ofn"
-        shutil.copyfile(SOURCE, oak_input)
-        require(
-            SOURCE.read_bytes() == oak_input.read_bytes(),
-            "temporary OAK input must be byte-identical to the repository source",
-        )
-
-        adapter = get_adapter(str(oak_input))
-        adapter.prefix_map()["pizza"] = namespace
-
-        concepts: list[dict] = []
-        for requested in config["concepts"]:
-            entity = requested["id"]
-            entity_ref = entity_reference(adapter, entity)
-            require(
-                entity_ref["iri"].startswith(namespace),
-                f"projected entity is outside the historical Pizza namespace: {entity_ref['iri']}",
-            )
-
-            relationships = list(adapter.relationships([entity]))
-            require(relationships, f"OAK returned no relationships for {entity}")
-
-            direct_superclasses = sorted(
-                {
-                    str(obj)
-                    for subject, predicate, obj in relationships
-                    if str(subject) == entity and str(predicate) == RDFS_SUBCLASS
-                }
-            )
-            required_toppings = sorted(
-                {
-                    str(obj)
-                    for subject, predicate, obj in relationships
-                    if str(subject) == entity and str(predicate) == HAS_TOPPING
-                }
-            )
-
-            require(
-                direct_superclasses,
-                f"projection expects at least one asserted named superclass for {entity}",
-            )
-            require(
-                required_toppings,
-                f"projection expects at least one hasTopping existential relationship for {entity}",
-            )
-
-            concepts.append(
-                {
-                    "id": entity,
-                    "iri": entity_ref["iri"],
-                    "displayLabel": requested["displayLabel"],
-                    "displayLabelSource": "projection-config",
-                    "directSuperClasses": [
-                        entity_reference(adapter, curie) for curie in direct_superclasses
-                    ],
-                    "requiredToppings": [
-                        entity_reference(adapter, curie) for curie in required_toppings
-                    ],
-                    "traceability": {
-                        "sourceEntityIri": entity_ref["iri"],
-                        "superclassSemantics": "asserted named rdfs:subClassOf projected by OAK",
-                        "toppingSemantics": "OWL hasTopping existential restrictions flattened by OAK graph projection",
-                    },
-                }
-            )
+    source_slice = extract_selected_concepts(config)
 
     return {
         "$schema": "./projection.schema.json",
@@ -127,13 +38,7 @@ def build_projection() -> dict:
             "type": "PizzaConceptCatalog",
             "version": config["projectionVersion"],
         },
-        "sourceSemanticModel": {
-            "ontologyIri": config["sourceOntologyIri"],
-            "versionIri": config["sourceVersionIri"],
-            "entityNamespace": namespace,
-            "repositoryPath": "src/ontology/pizza-edit.owl",
-            "accessLayer": "OAK graph projection",
-        },
+        "sourceSemanticModel": source_slice["sourceSemanticModel"],
         "projectionPolicy": {
             "preserved": [
                 "historical Pizza entity IRIs",
@@ -157,7 +62,7 @@ def build_projection() -> dict:
                 "ontology annotations not required by this projection",
             ],
         },
-        "concepts": concepts,
+        "concepts": source_slice["concepts"],
     }
 
 
@@ -210,7 +115,7 @@ def main() -> None:
         check_golden(projection)
         print(
             "SUCCESS: checked-in JSON projection matches selected Pizza OWL semantics "
-            "through the OAK graph-projection boundary."
+            "through the shared OAK source boundary."
         )
     else:
         print(canonical_json(projection), end="")
