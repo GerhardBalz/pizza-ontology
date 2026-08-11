@@ -232,3 +232,8 @@ jobs:
 
       - name: Verify publication metadata contract
         run: python metadata/verify_publication_metadata.py
+
+      - name: Verify published preservation-v0.2.0 externally
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python metadata/verify_published_release.py
