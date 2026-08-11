@@ -25,6 +25,9 @@ jobs:
       - name: Build and verify preservation-safe distributions
         run: cd src/ontology && make preservation_release_artifact
 
+      - name: Verify governed preservation release bundle
+        run: bash scripts/verify_preservation_release_bundle.sh target/preservation-release
+
   oak_access:
     runs-on: ubuntu-latest
 
