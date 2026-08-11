@@ -1,0 +1,28 @@
+@prefix pub: <urn:pizza-ontology:publication:> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+pub:PizzaPreservationCatalog
+    a dcat:Catalog, prov:Entity ;
+    dcterms:title "Pizza Ontology preservation publication catalog"@en ;
+    dcterms:description "Machine-readable publication metadata for the GerhardBalz/pizza-ontology preservation line. Repository and release locations are kept distinct from the historical Pizza ontology, version, and entity identifiers."@en ;
+    dcterms:relation <http://www.co-ode.org/ontologies/pizza> ;
+    dcterms:source <https://protege.stanford.edu/ontologies/pizza/pizza.owl> ;
+    dcat:landingPage <https://github.com/GerhardBalz/pizza-ontology> ;
+    dcat:dataset pub:PreservationV010 .
+
+pub:PreservationV010
+    a dcat:Dataset, prov:Entity ;
+    dcterms:title "pizza-ontology preservation-v0.1.0 repository release"@en ;
+    dcterms:description "First repository preservation release. It preserves Pizza Ontology 2.0 but is not a new semantic Pizza ontology version. No ontology release-asset downloadURL is asserted because the later multi-format preservation distribution set was not part of this release."@en ;
+    dcterms:identifier "preservation-v0.1.0" ;
+    dcterms:relation
+        <http://www.co-ode.org/ontologies/pizza>,
+        <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    dcterms:source
+        <https://github.com/GerhardBalz/pizza-ontology/tree/preservation-v0.1.0/src/ontology/pizza-edit.owl>,
+        <https://protege.stanford.edu/ontologies/pizza/pizza.owl> ;
+    prov:wasDerivedFrom <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    dcat:landingPage <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0> ;
+    dcat:accessURL <https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0> .
