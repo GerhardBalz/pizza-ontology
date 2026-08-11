@@ -292,7 +292,7 @@ Repository preservation release
 
 The first repository release, [`preservation-v0.1.0`](https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0), establishes the conservative preservation baseline.
 
-The verified Functional Syntax + Turtle distribution workflow was added after that release, so `preservation-v0.1.0` remains unchanged. A later preservation release can attach the verified multi-format distribution set as immutable assets.
+The verified Functional Syntax + Turtle distribution workflow was added after that release, so `preservation-v0.1.0` remains unchanged. The next planned repository release, `preservation-v0.2.0`, is the first intended to publish the verified multi-format distribution set as immutable release assets.
 
 ### Possible successor ontology
 
@@ -329,6 +329,8 @@ pizza-ontology/
 │   ├── common/
 │   ├── pizza-concepts/
 │   └── pizza-openapi/
+├── scripts/
+│   └── verify_preservation_release_bundle.sh
 ├── src/ontology/
 │   ├── pizza-edit.owl
 │   ├── pizza-odk.yaml
@@ -348,6 +350,24 @@ pizza-ontology/
 cd src/ontology
 odkrun make test
 ```
+
+### Governed preservation release candidate
+
+The manual **Publish preservation release** GitHub Actions workflow builds `preservation-v0.2.0` from the exact selected `main` commit.
+
+Its default mode is verification-only. It runs preservation QC, builds the governed three-file release bundle, verifies checksums, and uploads the candidate as a temporary Actions artifact.
+
+To publish, re-run the same workflow from `main` with **Publish preservation-v0.2.0 after verification** checked. The workflow refuses to overwrite an existing preservation release and creates the tag/release against the exact verified workflow commit.
+
+The release asset contract is:
+
+```text
+pizza-2.0-preserved.ofn
+pizza-2.0-preserved.ttl
+SHA256SUMS
+```
+
+After publication, machine-readable `dcat:downloadURL` metadata is added only in a follow-up change once those direct release-asset URLs actually exist.
 
 ### OAK access
 
@@ -444,6 +464,8 @@ mapping_evaluation       transform / target graph
 workflow_evaluation      execute / conditional composition
 ```
 
+The `ontology_qc` job also verifies the governed three-file preservation release bundle contract after generating the preservation-safe distributions.
+
 A separate **Modeling reference** workflow verifies that the OWL teaching guide remains anchored to representative axioms in the preserved source ontology.
 
 ## Roadmap
@@ -454,6 +476,7 @@ A separate **Modeling reference** workflow verifies that the OWL teaching guide 
 - [x] Document ontology identity, provenance, modeling patterns, and licensing boundaries
 - [x] Establish preservation/repository versioning and publication model
 - [x] Cut `preservation-v0.1.0`
+- [ ] Publish `preservation-v0.2.0` with verified `.ofn`, `.ttl`, and checksum release assets — #65
 - [x] Add preservation-safe Functional Syntax + Turtle distributions
 - [x] Add first OAK access vertical slice
 - [x] Add broader OAK ontology exploration and query examples — #60
