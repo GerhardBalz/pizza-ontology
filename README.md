@@ -116,6 +116,9 @@ See:
 - [Ontology Identity and Publication Model](docs/identity-publication-model.md)
 - [Pizza Ontology Provenance](docs/pizza-provenance.md)
 - [Versioning and Release Model](docs/versioning-release-model.md)
+- [Preservation-Safe Distributions](docs/preservation-distributions.md)
+- [Publication and Distribution Policy](docs/publication-distribution-policy.md)
+- [Machine-Readable Publication Catalog](metadata/publication.ttl)
 - [Licensing](LICENSE.md)
 - [Attribution and Provenance Notice](NOTICE.md)
 
@@ -245,7 +248,9 @@ Repository preservation release
     preservation-v0.x.y
 ```
 
-The planned first repository release is `preservation-v0.1.0`, tracked by [issue #7](https://github.com/GerhardBalz/pizza-ontology/issues/7).
+The first repository release, [`preservation-v0.1.0`](https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0), establishes the conservative preservation baseline.
+
+The verified multi-format Functional Syntax and Turtle distribution workflow was added after that release. `preservation-v0.1.0` remains unchanged; a subsequent preservation release can publish the verified distribution set as immutable release assets.
 
 A preservation release can add engineering, access, validation, rule, decision, calculation, mapping, workflow, projection, UX, or integration artifacts while the preserved ontology continues to declare version `2.0`.
 
@@ -280,6 +285,9 @@ pizza-ontology/
 │   └── workflows/
 ├── docs/
 ├── examples/oak/
+├── metadata/
+│   ├── publication.ttl
+│   └── verify_publication_metadata.py
 ├── LICENSES/
 ├── src/ontology/
 │   ├── pizza-edit.owl
@@ -367,7 +375,13 @@ python -m pip install -r artifacts/validation/requirements.txt
 python artifacts/verify_consumer_contract.py
 ```
 
-The verifier requires exactly the expected **twenty-three** distributions and checks their paths, formats, dependencies, provenance/conformance metadata, and licensing boundaries.
+Publication metadata contract:
+
+```bash
+python metadata/verify_publication_metadata.py
+```
+
+The semantic-artifact verifier requires exactly the expected **twenty-three** distributions and checks their paths, formats, dependencies, provenance/conformance metadata, and licensing boundaries. The publication verifier independently checks that release locations remain distinct from historical semantic identifiers and that `preservation-v0.1.0` does not claim later distribution assets.
 
 ## CI Concerns
 
@@ -393,8 +407,8 @@ BPMN       → execute / conditional composition
 - [x] Document ontology identity and Pizza provenance
 - [x] Establish preservation/repository versioning model
 - [x] Establish repository licensing and attribution boundary
-- [ ] Cut the first `preservation-v0.1.0` repository release
-- [ ] Refine publication and distribution strategy
+- [x] Cut the first `preservation-v0.1.0` repository release
+- [x] Refine publication and distribution strategy
 - [x] Add first OAK access vertical slice
 - [x] Add canonical coherent reasoning and SHACL validation artifacts
 - [x] Publish the machine-readable semantic artifact consumer contract
@@ -405,7 +419,7 @@ BPMN       → execute / conditional composition
 - [x] Add source-owned BPMN Workflow artifacts
 - [x] Integrate stable Pizza semantic artifacts with ESKA through immutable source bindings
 - [ ] Add broader ontology exploration and query examples
-- [ ] Add alternative distributions such as Turtle
+- [x] Add alternative distributions such as Turtle
 - [ ] Explore semantic projections into schemas and APIs
 - [ ] Explore ontology-informed user experience
 - [ ] Relate the case study to broader Semantic Modeling concepts
