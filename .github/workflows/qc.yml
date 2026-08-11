@@ -59,6 +59,23 @@ jobs:
       - name: Verify Pizza concept semantic projection
         run: python projections/pizza-concepts/project.py --check
 
+  ontology_informed_ux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check browser JavaScript syntax
+        run: node --check examples/ux/pizza-explorer/app.js
+
+      - name: Verify Pizza ontology-informed UX
+        run: python examples/ux/pizza-explorer/verify_ux.py
+
   reasoning_artifact:
     runs-on: ubuntu-latest
 
