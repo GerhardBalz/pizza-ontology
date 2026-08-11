@@ -83,11 +83,9 @@ The historical Pizza 2.0 ontology has been migrated into the ODK editor ontology
 
 The [Ontology Access Kit (OAK)](https://incatools.github.io/ontology-access-kit/) provides programmatic access to identifiers, labels, relationships, and ancestry.
 
-The executable slice under [`examples/oak/`](examples/oak/) starts at `pizza:AmericanHot` and demonstrates CURIE registration, preserved label access, selected OWL relationships, and is-a ancestry through the OAK Python API and CLI.
+The executable reference under [`examples/oak/`](examples/oak/) includes both the original `pizza:AmericanHot` vertical slice and a broader query specimen covering entity identity/labels, direct versus transitive hierarchy, projected `hasTopping` relationships, descendant traversal, and backend-dependent lexical-search capability probing through the OAK Python API and CLI.
 
 OAK is an access layer over the semantic source. It is not a replacement ontology and graph traversal is not a substitute for OWL reasoning.
-
-Broader exploration/query examples are tracked in issue #60.
 
 ### 4. Reason and Validate
 
@@ -358,6 +356,8 @@ python -m pip install -r examples/oak/requirements.txt
 bash examples/oak/run.sh
 ```
 
+The runner covers both the minimal access slice and broader entity/hierarchy/relationship/descendant/search-capability queries.
+
 ### JSON semantic projection
 
 ```bash
@@ -430,18 +430,18 @@ The main `CI` workflow currently contains **13 independent jobs**:
 
 ```text
 ontology_qc              preserve / engineer / ontology QC
- oak_access               access / navigate
- semantic_projection      JSON Implementation Projection
- openapi_projection       OpenAPI Implementation Projection
- ontology_informed_ux     direct projection → UX
- openapi_application_ux   projections → Application → UX
- reasoning_artifact       reason / infer
- shacl_validation         validate / contracts / publication metadata
- rule_evaluation          evaluate rule / derive
- decision_evaluation      decide / select outcome
- calculation_evaluation   calculate / numeric result
- mapping_evaluation       transform / target graph
- workflow_evaluation      execute / conditional composition
+oak_access               access / navigate / query
+semantic_projection      JSON Implementation Projection
+openapi_projection       OpenAPI Implementation Projection
+ontology_informed_ux     direct projection → UX
+openapi_application_ux   projections → Application → UX
+reasoning_artifact       reason / infer
+shacl_validation         validate / contracts / publication metadata
+rule_evaluation          evaluate rule / derive
+decision_evaluation      decide / select outcome
+calculation_evaluation   calculate / numeric result
+mapping_evaluation       transform / target graph
+workflow_evaluation      execute / conditional composition
 ```
 
 A separate **Modeling reference** workflow verifies that the OWL teaching guide remains anchored to representative axioms in the preserved source ontology.
@@ -456,7 +456,7 @@ A separate **Modeling reference** workflow verifies that the OWL teaching guide 
 - [x] Cut `preservation-v0.1.0`
 - [x] Add preservation-safe Functional Syntax + Turtle distributions
 - [x] Add first OAK access vertical slice
-- [ ] Add broader OAK ontology exploration and query examples — #60
+- [x] Add broader OAK ontology exploration and query examples — #60
 - [x] Add reasoning and SHACL validation references
 - [x] Publish the machine-readable semantic artifact consumer contract
 - [x] Add Rule, Decision, Calculation, Mapping, and Workflow semantic artifacts
