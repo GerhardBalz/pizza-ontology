@@ -121,17 +121,19 @@ A toolchain upgrade can result in a new repository preservation release without 
 
 Tool versions should be pinned or recorded where reproducibility requires it.
 
-## 5. First Preservation Release
+## 5. Published and Planned Preservation Releases
 
-The initial planned repository release is:
+### preservation-v0.1.0 — published baseline
+
+The first repository preservation release is published as:
 
 ```text
 preservation-v0.1.0
 ```
 
-The release should establish the preservation baseline rather than claim new Pizza semantics.
+It established the conservative preservation baseline rather than claiming new Pizza semantics.
 
-Minimum scope:
+Its scope includes:
 
 - Pizza Ontology 2.0 preserved as the semantic baseline;
 - ODK-managed editor ontology;
@@ -142,7 +144,29 @@ Minimum scope:
 - clear attribution and licensing boundaries as defined in [LICENSE.md](../LICENSE.md) and [NOTICE.md](../NOTICE.md);
 - release notes that explicitly distinguish repository release version from ontology version.
 
-Later preservation releases can add OAK examples, alternative distributions, SHACL shapes, semantic projections, UX examples, and ESKA integration without changing the historical ontology version.
+The release remains historically immutable. Engineering capabilities and distributions added after its source snapshot must not be retrofitted and presented as though they were part of `preservation-v0.1.0`.
+
+### preservation-v0.2.0 — next preservation release
+
+The next planned MINOR release is:
+
+```text
+preservation-v0.2.0
+```
+
+It is justified by backward-compatible engineering/reference additions since v0.1.0, including OAK access/query examples, executable semantic artifacts, implementation projections, application/UX references, and broader architecture/governance documentation while retaining Pizza Ontology 2.0 unchanged.
+
+It is also the first release intended to publish the verified multi-format preservation distribution set as immutable release assets:
+
+```text
+pizza-2.0-preserved.ofn
+pizza-2.0-preserved.ttl
+SHA256SUMS
+```
+
+The generated artifacts must correspond to the exact tagged repository source revision and pass preservation identity, semantic-equivalence, and checksum verification before publication.
+
+Later preservation releases may add further engineering capabilities, distributions, examples, or contracts without changing the historical ontology version.
 
 ## 6. Successor Ontology Lineage
 
@@ -211,4 +235,4 @@ A future successor ontology may coexist with this preservation line. Creating su
 
 Licensing follows the same separation of concerns as versioning: historical Pizza semantic content retains its upstream license, while newly authored repository software and documentation use separately declared licenses. See [LICENSE.md](../LICENSE.md).
 
-The versioning strategy is tracked in GitHub issue #3. The first release checklist is tracked in issue #7.
+The versioning strategy was established through GitHub issue #3. The first release was tracked through #7; preparation/publication of `preservation-v0.2.0` is tracked through #65.
