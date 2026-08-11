@@ -1,2 +1,4 @@
--r ../pizza-concepts/requirements.txt
+oaklib==0.7.1
+pronto==2.7.3
+jsonschema==4.26.0
 openapi-spec-validator==0.9.0
