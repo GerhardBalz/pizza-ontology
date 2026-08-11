@@ -74,17 +74,19 @@ preservation_distribution_test: preservation_identity_test
   diff_status=0; \
   $(ROBOT) diff --left $(SRC) --right $(PRESERVATION_TURTLE) --output $(PRESERVATION_DIFF) >"$$diff_log" 2>&1 || diff_status=$$?; \
   cat "$$diff_log"; \
-  if [ "$$diff_status" -ne 0 ] && ! grep -Fq 'Ontologies are identical' "$$diff_log"; then \
+  if grep -Fq 'Ontologies are identical' "$$diff_log"; then \
+    :; \
+  elif [ "$$diff_status" -ne 0 ]; then \
     rm -f "$$diff_log" $(PRESERVATION_DIFF); \
     echo 'ERROR: ROBOT could not verify the Turtle distribution against the preserved source ontology.'; \
     exit "$$diff_status"; \
-  fi; \
-  rm -f "$$diff_log"; \
-  if [ -s $(PRESERVATION_DIFF) ]; then \
+  elif [ -s $(PRESERVATION_DIFF) ]; then \
     cat $(PRESERVATION_DIFF); \
+    rm -f "$$diff_log" $(PRESERVATION_DIFF); \
     echo 'ERROR: Turtle distribution is not semantically equivalent to the preserved source ontology.'; \
     exit 1; \
   fi; \
+  rm -f "$$diff_log" $(PRESERVATION_DIFF); \
   grep -Fq 'http://www.co-ode.org/ontologies/pizza' $(PRESERVATION_TURTLE) || { \
     echo 'ERROR: historical Pizza ontology identity is missing from Turtle distribution.'; exit 1; }; \
   grep -Fq 'http://www.co-ode.org/ontologies/pizza/2.0.0' $(PRESERVATION_TURTLE) || { \
@@ -94,7 +96,6 @@ preservation_distribution_test: preservation_identity_test
   if grep -Fq 'http://purl.obolibrary.org/obo/pizza' $(PRESERVATION_TURTLE); then \
     echo 'ERROR: unowned OBO Pizza release IRI found in Turtle distribution.'; exit 1; \
   fi; \
-  rm -f $(PRESERVATION_DIFF); \
   echo 'Preservation-safe Turtle distribution is graph-equivalent to the source ontology.'
 
 .PHONY: preservation_release_artifact
