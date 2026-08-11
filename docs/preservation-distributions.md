@@ -78,7 +78,7 @@ The checks include:
 1. the preserved source ontology passes the historical identity invariant;
 2. ROBOT converts the source ontology to Turtle;
 3. ROBOT `diff` compares the source ontology with the Turtle distribution at the ontology/axiom level;
-4. the diff must be empty;
+4. ROBOT must explicitly report that the ontologies are identical; an actual diff or ROBOT error fails the build;
 5. the historical ontology IRI, Pizza 2.0 version IRI, and entity namespace must remain present;
 6. the unowned OBO Pizza namespace must not appear;
 7. SHA-256 checksums are generated for both preservation distributions.
@@ -109,7 +109,7 @@ A future toolchain upgrade should be treated as an explicit engineering change a
 
 This document defines **what** a preservation-safe distribution is and how it is verified.
 
-Issue #15 separately defines **where** distributions should be published and how locations, download URLs, repository releases, ontology identifiers, and authority should be represented.
+[`publication-distribution-policy.md`](publication-distribution-policy.md) defines **where** distributions are published and how locations, download URLs, repository releases, ontology identifiers, and authority remain distinct.
 
 The distinction is intentional:
 
