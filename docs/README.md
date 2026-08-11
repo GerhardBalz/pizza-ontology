@@ -10,6 +10,7 @@ This directory contains the architectural, modeling, preservation, publication, 
 
 - [Cross-Track Pizza Semantic Architecture](semantic-architecture.md) — boundaries and traceability across modeling, engineering, access, validation, publication, projections, UX, and executable semantic knowledge.
 - [Semantic Modeling Concept Harvest](semantic-modeling-concept-harvest.md) — post-implementation reassessment of `SemanticModel`, `SemanticArtifact`, `Projection`, semantic-model roles, and the evidence threshold for a future reusable Semantic Modeling vocabulary.
+- [Semantic Modeling Vocabulary Decision](semantic-modeling-vocabulary-decision.md) — decision after two implementation projections: `SemanticModel` and `ImplementationProjection` are conceptually mature, while publication of a new vocabulary remains deferred pending ESKA namespace governance.
 - [Ontology Identity and Publication Model](identity-publication-model.md) — conceptual distinctions among ontology identity, versions, releases, distributions, repositories, authority, stewardship, hosting, and provenance.
 
 ## Preservation and publication
