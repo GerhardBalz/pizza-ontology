@@ -70,7 +70,16 @@ preservation_distribution_test: preservation_identity_test
 >@set -eu; \
   mkdir -p $(PRESERVATION_RELEASE_DIR); \
   $(ROBOT) convert --input $(SRC) --format ttl --output $(PRESERVATION_TURTLE); \
-  $(ROBOT) diff --left $(SRC) --right $(PRESERVATION_TURTLE) --output $(PRESERVATION_DIFF); \
+  diff_log=$$(mktemp); \
+  diff_status=0; \
+  $(ROBOT) diff --left $(SRC) --right $(PRESERVATION_TURTLE) --output $(PRESERVATION_DIFF) >"$$diff_log" 2>&1 || diff_status=$$?; \
+  cat "$$diff_log"; \
+  if [ "$$diff_status" -ne 0 ] && ! grep -Fq 'Ontologies are identical' "$$diff_log"; then \
+    rm -f "$$diff_log" $(PRESERVATION_DIFF); \
+    echo 'ERROR: ROBOT could not verify the Turtle distribution against the preserved source ontology.'; \
+    exit "$$diff_status"; \
+  fi; \
+  rm -f "$$diff_log"; \
   if [ -s $(PRESERVATION_DIFF) ]; then \
     cat $(PRESERVATION_DIFF); \
     echo 'ERROR: Turtle distribution is not semantically equivalent to the preserved source ontology.'; \
