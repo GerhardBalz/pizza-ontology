@@ -76,6 +76,26 @@ jobs:
       - name: Verify Pizza OpenAPI semantic projection
         run: python projections/pizza-openapi/project.py --check
 
+  openapi_application_ux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install application contract dependencies
+        run: python -m pip install -r examples/application/pizza-catalog-api/requirements.txt
+
+      - name: Check API-backed browser JavaScript syntax
+        run: node --check examples/ux/pizza-api-explorer/app.js
+
+      - name: Verify OpenAPI application and API-backed UX
+        run: python examples/application/pizza-catalog-api/verify_application.py
+
   ontology_informed_ux:
     runs-on: ubuntu-latest
 
