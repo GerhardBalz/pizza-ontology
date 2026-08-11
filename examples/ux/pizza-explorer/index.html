@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pizza Semantic Explorer</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="shell">
+      <p class="eyebrow">Track 7 · Experience — Ontology-Informed UX</p>
+      <div class="hero-row">
+        <div>
+          <h1>Pizza Semantic Explorer</h1>
+          <p class="lede">
+            A small application view over the verified Pizza concept projection.
+            The browser consumes JSON; it does not parse or reinterpret the OWL ontology.
+          </p>
+        </div>
+        <span class="status-badge">Projection-backed</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="boundary" aria-labelledby="boundary-heading">
+      <div>
+        <p class="section-kicker">Semantic boundary</p>
+        <h2 id="boundary-heading">Meaning stays upstream</h2>
+        <p>
+          Pizza Ontology 2.0 remains the semantic source. OAK verifies the selected
+          relationships in the checked-in projection; this UI only renders that projection.
+        </p>
+      </div>
+      <dl class="source-facts" id="source-facts" aria-label="Projection source information">
+        <div><dt>Projection</dt><dd id="projection-id">Loading…</dd></div>
+        <div><dt>Ontology</dt><dd id="ontology-iri">Loading…</dd></div>
+        <div><dt>Version</dt><dd id="version-iri">Loading…</dd></div>
+      </dl>
+    </section>
+
+    <section class="controls" aria-labelledby="explore-heading">
+      <div>
+        <p class="section-kicker">Explore</p>
+        <h2 id="explore-heading">Projected Pizza concepts</h2>
+      </div>
+      <div class="control-grid">
+        <label>
+          <span>Search concepts and toppings</span>
+          <input id="search" type="search" autocomplete="off" placeholder="Search by label, CURIE, or topping">
+        </label>
+        <label>
+          <span>Required topping</span>
+          <select id="topping-filter">
+            <option value="">All projected concepts</option>
+          </select>
+        </label>
+        <label class="checkbox-label">
+          <input id="show-traceability" type="checkbox">
+          <span>Show semantic traceability</span>
+        </label>
+      </div>
+      <p id="result-status" class="result-status" aria-live="polite">Loading projection…</p>
+    </section>
+
+    <section id="concept-grid" class="concept-grid" aria-label="Pizza concepts"></section>
+
+    <section class="semantic-note" aria-labelledby="required-heading">
+      <p class="section-kicker">Interpretation</p>
+      <h2 id="required-heading">“Required topping” is deliberately precise</h2>
+      <p>
+        In this projection, a required topping represents an OWL existential
+        <code>hasTopping some X</code> condition. It means at least one such topping is
+        required; it is <strong>not</strong> a closed list of every topping the Pizza may have.
+      </p>
+      <p>
+        Human-friendly names derived from CURIE local names are presentation conveniences only.
+        Semantic identity is carried by the CURIE and full IRI from the projection.
+      </p>
+    </section>
+  </main>
+
+  <template id="concept-template">
+    <article class="concept-card">
+      <div class="card-heading">
+        <div>
+          <p class="concept-kind">Projected OWL class</p>
+          <h3 class="concept-label"></h3>
+          <code class="concept-id"></code>
+        </div>
+        <span class="topping-count"></span>
+      </div>
+
+      <div class="card-section">
+        <h4>Direct superclass</h4>
+        <ul class="superclasses semantic-list"></ul>
+      </div>
+
+      <div class="card-section">
+        <h4>Existentially required toppings</h4>
+        <ul class="toppings semantic-list"></ul>
+      </div>
+
+      <details class="traceability">
+        <summary>Semantic traceability</summary>
+        <dl>
+          <div><dt>Entity IRI</dt><dd><code class="entity-iri"></code></dd></div>
+          <div><dt>Superclass semantics</dt><dd class="superclass-semantics"></dd></div>
+          <div><dt>Topping semantics</dt><dd class="topping-semantics"></dd></div>
+        </dl>
+      </details>
+    </article>
+  </template>
+
+  <footer class="shell footer">
+    <p>
+      UI-specific layout, filtering, wording, and display formatting live here in the experience layer.
+      They do not become Pizza ontology semantics.
+    </p>
+  </footer>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
