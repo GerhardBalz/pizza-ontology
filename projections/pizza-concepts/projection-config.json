@@ -1,0 +1,17 @@
+{
+  "projectionId": "urn:pizza-ontology:projection:pizza-concepts:v1",
+  "projectionVersion": "1.0.0",
+  "sourceOntologyIri": "http://www.co-ode.org/ontologies/pizza",
+  "sourceVersionIri": "http://www.co-ode.org/ontologies/pizza/2.0.0",
+  "sourceEntityNamespace": "http://www.co-ode.org/ontologies/pizza/pizza.owl#",
+  "concepts": [
+    {
+      "id": "pizza:AmericanHot",
+      "displayLabel": "American Hot"
+    },
+    {
+      "id": "pizza:Margherita",
+      "displayLabel": "Margherita"
+    }
+  ]
+}
