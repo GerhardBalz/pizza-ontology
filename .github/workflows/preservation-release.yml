@@ -1,0 +1,179 @@
+name: Publish preservation release
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish preservation-v0.2.0 after verification"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+env:
+  PRESERVATION_TAG: preservation-v0.2.0
+  RELEASE_DIR: target/preservation-release
+  RELEASE_NOTES: docs/releases/preservation-v0.2.0.md
+
+jobs:
+  verify_and_publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Guard release source and notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF}" != "refs/heads/main" ]]; then
+            echo "ERROR: preservation releases must be dispatched from main, got ${GITHUB_REF}."
+            exit 1
+          fi
+          if [[ "$(git rev-parse HEAD)" != "${GITHUB_SHA}" ]]; then
+            echo "ERROR: checkout does not match the workflow target SHA."
+            exit 1
+          fi
+          test -s "${RELEASE_NOTES}" || {
+            echo "ERROR: release notes not found: ${RELEASE_NOTES}"
+            exit 1
+          }
+          grep -Fq "# ${PRESERVATION_TAG}" "${RELEASE_NOTES}" || {
+            echo "ERROR: release notes do not identify ${PRESERVATION_TAG}."
+            exit 1
+          }
+          echo "Release candidate source: ${GITHUB_SHA}"
+          echo "Release tag: ${PRESERVATION_TAG}"
+
+      - name: Build and verify preservation release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/work" \
+            -w /work/src/ontology \
+            --entrypoint bash \
+            obolibrary/odkfull:v1.6.1 \
+            -lc "make ROBOT_ENV='ROBOT_JAVA_ARGS=-Xmx6G' test IMP=false PAT=false MIR=false && make preservation_release_artifact"
+
+      - name: Verify release bundle contract
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          expected=(
+            "pizza-2.0-preserved.ofn"
+            "pizza-2.0-preserved.ttl"
+            "SHA256SUMS"
+          )
+
+          for asset in "${expected[@]}"; do
+            test -s "${RELEASE_DIR}/${asset}" || {
+              echo "ERROR: required release asset missing or empty: ${asset}"
+              exit 1
+            }
+          done
+
+          mapfile -t actual < <(find "${RELEASE_DIR}" -maxdepth 1 -type f -printf '%f\n' | sort)
+          mapfile -t wanted < <(printf '%s\n' "${expected[@]}" | sort)
+
+          if [[ "${#actual[@]}" -ne "${#wanted[@]}" ]] || \
+             [[ "$(printf '%s\n' "${actual[@]}")" != "$(printf '%s\n' "${wanted[@]}")" ]]; then
+            echo "ERROR: release bundle must contain exactly the governed asset set."
+            echo "Expected:"
+            printf '  %s\n' "${wanted[@]}"
+            echo "Actual:"
+            printf '  %s\n' "${actual[@]}"
+            exit 1
+          fi
+
+          test "$(wc -l < "${RELEASE_DIR}/SHA256SUMS")" -eq 2 || {
+            echo "ERROR: SHA256SUMS must contain exactly two ontology-distribution entries."
+            exit 1
+          }
+
+          (
+            cd "${RELEASE_DIR}"
+            sha256sum -c SHA256SUMS
+          )
+
+          echo "Verified release bundle from ${GITHUB_SHA}:"
+          ls -l "${RELEASE_DIR}"
+          cat "${RELEASE_DIR}/SHA256SUMS"
+
+      - name: Upload verified release candidate
+        uses: actions/upload-artifact@v7
+        with:
+          name: preservation-v0.2.0-release-candidate
+          path: |
+            target/preservation-release/pizza-2.0-preserved.ofn
+            target/preservation-release/pizza-2.0-preserved.ttl
+            target/preservation-release/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Refuse release overwrite
+        if: ${{ inputs.publish }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if gh release view "${PRESERVATION_TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "ERROR: release ${PRESERVATION_TAG} already exists; this workflow never overwrites preservation releases."
+            exit 1
+          fi
+
+      - name: Publish preservation-v0.2.0
+        if: ${{ inputs.publish }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          gh release create "${PRESERVATION_TAG}" \
+            "${RELEASE_DIR}/pizza-2.0-preserved.ofn" \
+            "${RELEASE_DIR}/pizza-2.0-preserved.ttl" \
+            "${RELEASE_DIR}/SHA256SUMS" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --target "${GITHUB_SHA}" \
+            --title "${PRESERVATION_TAG}" \
+            --notes-file "${RELEASE_NOTES}" \
+            --fail-on-no-commits
+
+          mapfile -t published_assets < <(
+            gh release view "${PRESERVATION_TAG}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --json assets \
+              --jq '.assets[].name' | sort
+          )
+          mapfile -t expected_assets < <(
+            printf '%s\n' \
+              pizza-2.0-preserved.ofn \
+              pizza-2.0-preserved.ttl \
+              SHA256SUMS | sort
+          )
+
+          if [[ "$(printf '%s\n' "${published_assets[@]}")" != "$(printf '%s\n' "${expected_assets[@]}")" ]]; then
+            echo "ERROR: published release assets do not match the governed asset set."
+            printf 'Published: %s\n' "${published_assets[@]}"
+            exit 1
+          fi
+
+          gh release view "${PRESERVATION_TAG}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --json tagName,targetCommitish,isDraft,isPrerelease,url \
+            --jq '{tag: .tagName, target: .targetCommitish, draft: .isDraft, prerelease: .isPrerelease, url: .url}'
+
+      - name: Release-mode summary
+        shell: bash
+        run: |
+          if [[ "${{ inputs.publish }}" == "true" ]]; then
+            echo "Published ${PRESERVATION_TAG} from verified commit ${GITHUB_SHA}."
+          else
+            echo "Verification-only run complete for ${PRESERVATION_TAG} candidate ${GITHUB_SHA}."
+            echo "Re-run this workflow from main with Publish checked to create the GitHub Release."
+          fi
