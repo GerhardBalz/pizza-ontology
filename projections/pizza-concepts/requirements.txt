@@ -1,0 +1,3 @@
+oaklib==0.7.1
+pronto==2.7.3
+jsonschema==4.25.1
