@@ -155,3 +155,6 @@ jobs:
 
       - name: Verify semantic artifact consumer contract
         run: python artifacts/verify_consumer_contract.py
+
+      - name: Verify publication metadata contract
+        run: python metadata/verify_publication_metadata.py
