@@ -90,19 +90,20 @@ The canonical publication record for a repository preservation release is its Gi
 https://github.com/GerhardBalz/pizza-ontology/releases/tag/<PRESERVATION-TAG>
 ```
 
-For example:
+Published examples are:
 
 ```text
 https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0
+https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0
 ```
 
 A GitHub Release page identifies a **repository preservation release**. It is not the Pizza ontology IRI or Pizza ontology version IRI.
 
 ## 5. Preservation distribution location policy
 
-Beginning with the first preservation release that actually contains the generated multi-format distribution set, preservation-safe ontology distributions should be attached to the corresponding GitHub Release as immutable release assets.
+Preservation-safe ontology distributions are attached to the corresponding GitHub Release as immutable release assets once that release actually contains the governed distribution set.
 
-The expected asset set is:
+`preservation-v0.2.0` is the first preservation release that publishes the complete multi-format set:
 
 ```text
 pizza-2.0-preserved.ofn
@@ -110,9 +111,17 @@ pizza-2.0-preserved.ttl
 SHA256SUMS
 ```
 
+The direct distribution locations are:
+
+```text
+https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ofn
+https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ttl
+https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/SHA256SUMS
+```
+
 Additional verified serializations may be added in later repository releases without changing the historical Pizza 2.0 semantic version.
 
-The release asset pattern is:
+The general release asset pattern is:
 
 ```text
 https://github.com/GerhardBalz/pizza-ontology/releases/download/<PRESERVATION-TAG>/<ASSET>
@@ -124,11 +133,11 @@ A direct release-asset URL is a **distribution location**. It must not be embedd
 
 `preservation-v0.1.0` established the conservative source-snapshot baseline before the preservation-safe Turtle distribution was added to the engineering workflow.
 
-The release should therefore remain historically accurate and immutable.
+The release therefore remains historically accurate and immutable.
 
 The repository must **not** attach a newly generated Turtle artifact from a later source revision to `preservation-v0.1.0` and present it as though it formed part of that release.
 
-Instead, a subsequent preservation release should publish the verified Functional Syntax and Turtle distributions together with their checksums.
+`preservation-v0.2.0` is the later release that publishes the verified Functional Syntax and Turtle distributions together with their checksums from one exact governed source revision.
 
 This preserves the invariant:
 
@@ -186,6 +195,8 @@ prov:wasRevisionOf revision relation where applicable
 
 Use `dcat:downloadURL` only when the referenced file **actually exists as a published immutable release asset**.
 
+That condition is satisfied for the three `preservation-v0.2.0` assets and the catalog records their concrete download URLs. It is intentionally not satisfied for any retrofitted v0.1.0 multi-format assets because no such assets are part of that release.
+
 Do not mint speculative download URLs for planned releases or distributions.
 
 ### `dcat:accessURL` and `dcat:landingPage`
@@ -202,17 +213,18 @@ It must not be used to imply that the repository owns the historical Pizza names
 
 ## 9. Current machine-readable publication catalog
 
-`metadata/publication.ttl` records the current repository publication facts that actually exist:
+`metadata/publication.ttl` records repository publication facts that actually exist:
 
 - the preservation repository/catalog;
 - the historical Pizza ontology relation;
 - the Stanford upstream source;
-- the published `preservation-v0.1.0` release landing page;
-- the tag-pinned release source location.
+- the published `preservation-v0.1.0` release landing/access page without retrofitted multi-format distributions;
+- the published `preservation-v0.2.0` release landing/access page;
+- the v0.2.0 tag-pinned and exact commit-pinned source locations;
+- `dcat:Distribution` resources for the published Functional Syntax, Turtle, and checksum assets;
+- real `dcat:downloadURL` values for those immutable v0.2.0 assets.
 
-It intentionally does **not** claim `dcat:downloadURL` values for ontology release assets that were not part of `preservation-v0.1.0`.
-
-When a subsequent repository preservation release publishes the verified `.ofn`, `.ttl`, and checksum assets, that release's metadata can add corresponding `dcat:Distribution` resources and real `dcat:downloadURL` values.
+The publication metadata contract verifies those distinctions locally. A separate external-consumer verifier uses GitHub's public release/tag APIs and direct download URLs to verify that the published asset set, checksums, tag binding, source bytes, and historical identity anchors continue to agree with the catalog.
 
 ## 10. Publication flow for future preservation releases
 
@@ -229,11 +241,13 @@ identity + semantic-equivalence checks green
         ↓
 SHA256SUMS generated
         ↓
-repository tag created
+exact release bundle verified
         ↓
-GitHub Release created
+repository tag + GitHub Release created from that source revision
         ↓
 verified assets attached
+        ↓
+public release/assets verified from an external consumer path
         ↓
 machine-readable publication metadata records actual asset URLs
 ```
