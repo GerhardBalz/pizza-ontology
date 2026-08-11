@@ -43,7 +43,7 @@ def projection_policy() -> dict[str, list[str]]:
         ],
         "transformed": [
             "OWL class identifiers are exposed as CURIE plus full IRI",
-            "selected OWL relationships are represented as OpenAPI response-schema fields and source-backed examples",
+            "selected OWL relationships are represented as OpenAPI response-schema fields",
             "OWL hasTopping existential restrictions are flattened to requiredToppings references",
         ],
         "introduced": [
@@ -79,14 +79,6 @@ def build_openapi() -> tuple[dict, dict]:
         }
     )
 
-    concept_examples = {
-        concept["id"].split(":", 1)[-1]: {
-            "summary": concept["displayLabel"],
-            "value": concept,
-        }
-        for concept in concepts
-    }
-
     document = {
         "openapi": "3.1.0",
         "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
@@ -112,6 +104,7 @@ def build_openapi() -> tuple[dict, dict]:
             },
             "sourceSemanticModel": source_slice["sourceSemanticModel"],
             "sourceSelectionConfig": api_config["sourceSelectionConfig"],
+            "selectedSourceConceptIds": concept_ids,
             "projectionPolicy": projection_policy(),
         },
         "paths": {
@@ -144,16 +137,7 @@ def build_openapi() -> tuple[dict, dict]:
                             "description": "Projected Pizza concepts matching the API-level filters.",
                             "content": {
                                 "application/json": {
-                                    "schema": ref("PizzaConceptCollection"),
-                                    "examples": {
-                                        "selectedProjection": {
-                                            "summary": "Current selected source-backed projection",
-                                            "value": {
-                                                "count": len(concepts),
-                                                "items": concepts,
-                                            },
-                                        }
-                                    },
+                                    "schema": ref("PizzaConceptCollection")
                                 }
                             },
                         }
@@ -179,8 +163,7 @@ def build_openapi() -> tuple[dict, dict]:
                             "description": "One source-backed projected Pizza concept.",
                             "content": {
                                 "application/json": {
-                                    "schema": ref("PizzaConcept"),
-                                    "examples": concept_examples,
+                                    "schema": ref("PizzaConcept")
                                 }
                             },
                         },
@@ -188,7 +171,7 @@ def build_openapi() -> tuple[dict, dict]:
                             "description": "The requested concept is not present in this selected API projection.",
                             "content": {
                                 "application/json": {
-                                    "schema": ref("Error"),
+                                    "schema": ref("Error")
                                 }
                             },
                         },
@@ -334,6 +317,10 @@ def validate_projection(document: dict, source_slice: dict) -> None:
         }
     )
     require(
+        extension["selectedSourceConceptIds"] == concept_ids,
+        "OpenAPI projection must identify the selected source concepts",
+    )
+    require(
         schemas["PizzaConceptId"]["enum"] == concept_ids,
         "OpenAPI concept-id enum must match the selected source concepts",
     )
@@ -342,9 +329,9 @@ def validate_projection(document: dict, source_slice: dict) -> None:
         "OpenAPI topping-id enum must match projected existential targets",
     )
 
-    item_examples = document["paths"]["/concepts/{conceptId}"]["get"]["responses"]["200"]["content"]["application/json"]["examples"]
-    example_ids = sorted(example["value"]["id"] for example in item_examples.values())
-    require(example_ids == sorted(concept_ids), "OpenAPI item examples must cover every selected source concept")
+    for concept in source_slice["concepts"]:
+        require(concept["directSuperClasses"], f"{concept['id']} must retain projected superclass semantics")
+        require(concept["requiredToppings"], f"{concept['id']} must retain projected existential topping semantics")
 
     policy = extension["projectionPolicy"]
     require(
