@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pizza API Explorer</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/api-styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="shell">
+      <p class="eyebrow">Tracks 6 → 7 · OpenAPI → Application → UX</p>
+      <div class="hero-row">
+        <div>
+          <h1>Pizza API Explorer</h1>
+          <p class="lede">
+            An application-mediated view over selected Pizza semantics. The browser calls the
+            reference application API; it does not load the JSON projection or parse OWL directly.
+          </p>
+        </div>
+        <span class="status-badge">Application-mediated</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="boundary" aria-labelledby="boundary-heading">
+      <div>
+        <p class="section-kicker">Application boundary</p>
+        <h2 id="boundary-heading">Two projections, one application</h2>
+        <p>
+          The application uses the JSON implementation projection as projected content and the
+          OpenAPI 3.1 implementation projection as its interface contract. This UX consumes only
+          HTTP responses from that application.
+        </p>
+        <p class="architecture-chain">
+          Semantic Model → Implementation Projections → Application → UX
+        </p>
+      </div>
+      <dl class="source-facts" aria-label="OpenAPI projection source information">
+        <div><dt>OpenAPI projection</dt><dd id="projection-id">Loading…</dd></div>
+        <div><dt>Contract version</dt><dd id="contract-version">Loading…</dd></div>
+        <div><dt>Ontology</dt><dd id="ontology-iri">Loading…</dd></div>
+        <div><dt>Ontology version</dt><dd id="version-iri">Loading…</dd></div>
+      </dl>
+    </section>
+
+    <section class="controls" aria-labelledby="explore-heading">
+      <div>
+        <p class="section-kicker">Application query</p>
+        <h2 id="explore-heading">Projected Pizza concepts through the API</h2>
+      </div>
+      <div class="control-grid api-control-grid">
+        <label>
+          <span>Search</span>
+          <input id="search" type="search" autocomplete="off" placeholder="Search projected labels or identifiers">
+        </label>
+        <label>
+          <span>Required topping</span>
+          <select id="topping-filter">
+            <option value="">All projected concepts</option>
+          </select>
+        </label>
+        <a class="contract-link" href="/openapi.json" target="_blank" rel="noreferrer">Inspect OpenAPI contract</a>
+      </div>
+      <p id="result-status" class="result-status" aria-live="polite">Loading application data…</p>
+    </section>
+
+    <section id="concept-grid" class="concept-grid" aria-label="Pizza concepts returned by the application"></section>
+
+    <section id="concept-detail" class="boundary detail-panel" aria-labelledby="detail-heading" hidden>
+      <div>
+        <p class="section-kicker">Item endpoint</p>
+        <div class="detail-heading-row">
+          <div>
+            <h2 id="detail-heading">Concept detail</h2>
+            <p class="detail-intro">Loaded through <code>GET /concepts/{conceptId}</code>.</p>
+          </div>
+          <button id="close-detail" class="detail-close" type="button">Close</button>
+        </div>
+        <h3 id="detail-label"></h3>
+        <code id="detail-id" class="concept-id"></code>
+
+        <div class="card-section">
+          <h4>Direct superclass</h4>
+          <ul id="detail-superclasses" class="semantic-list"></ul>
+        </div>
+        <div class="card-section">
+          <h4>Existentially required topping</h4>
+          <ul id="detail-toppings" class="semantic-list"></ul>
+        </div>
+      </div>
+
+      <details class="traceability" open>
+        <summary>Semantic traceability</summary>
+        <dl>
+          <div><dt>Source entity IRI</dt><dd id="detail-source-iri"></dd></div>
+          <div><dt>Superclass semantics</dt><dd id="detail-superclass-semantics"></dd></div>
+          <div><dt>Topping semantics</dt><dd id="detail-topping-semantics"></dd></div>
+        </dl>
+      </details>
+    </section>
+
+    <section class="semantic-note" aria-labelledby="required-heading">
+      <p class="section-kicker">Interpretation</p>
+      <h2 id="required-heading">The application transports projected meaning; it does not recreate it</h2>
+      <p>
+        <code>requiredToppings</code> represents projected OWL restrictions of the form
+        <code>hasTopping some X</code>: at least one topping of type <code>X</code> is required.
+        It is not a complete recipe. Filtering by required topping is application behavior over
+        that projected fact, not a new ontology statement.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <p>Reference path: Pizza semantic model → JSON + OpenAPI implementation projections → deterministic application → API-backed UX.</p>
+    </div>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
