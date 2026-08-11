@@ -121,7 +121,7 @@ A toolchain upgrade can result in a new repository preservation release without 
 
 Tool versions should be pinned or recorded where reproducibility requires it.
 
-## 5. Published and Planned Preservation Releases
+## 5. Published Preservation Releases
 
 ### preservation-v0.1.0 — published baseline
 
@@ -146,17 +146,29 @@ Its scope includes:
 
 The release remains historically immutable. Engineering capabilities and distributions added after its source snapshot must not be retrofitted and presented as though they were part of `preservation-v0.1.0`.
 
-### preservation-v0.2.0 — next preservation release
+### preservation-v0.2.0 — published multi-format/reference release
 
-The next planned MINOR release is:
+The second repository MINOR release is published as:
 
 ```text
 preservation-v0.2.0
 ```
 
-It is justified by backward-compatible engineering/reference additions since v0.1.0, including OAK access/query examples, executable semantic artifacts, implementation projections, application/UX references, and broader architecture/governance documentation while retaining Pizza Ontology 2.0 unchanged.
+Release page:
 
-It is also the first release intended to publish the verified multi-format preservation distribution set as immutable release assets:
+```text
+https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0
+```
+
+The release tag resolves to the governed source commit:
+
+```text
+3bd6e3817e2cdc44e77899a2e603878a85845e9d
+```
+
+The release captures backward-compatible engineering/reference additions since v0.1.0, including OAK access/query examples, executable semantic artifacts, implementation projections, application/UX references, and broader architecture/governance documentation while retaining Pizza Ontology 2.0 unchanged.
+
+It is also the first release to publish the verified multi-format preservation distribution set as immutable release assets:
 
 ```text
 pizza-2.0-preserved.ofn
@@ -164,7 +176,7 @@ pizza-2.0-preserved.ttl
 SHA256SUMS
 ```
 
-The generated artifacts must correspond to the exact tagged repository source revision and pass preservation identity, semantic-equivalence, and checksum verification before publication.
+The publication contract requires those released artifacts to correspond to the exact tagged repository source revision and remain verifiable through preservation identity, semantic-equivalence, and checksum checks. The machine-readable publication catalog records the concrete release distributions and direct download locations only after publication.
 
 Later preservation releases may add further engineering capabilities, distributions, examples, or contracts without changing the historical ontology version.
 
@@ -235,4 +247,4 @@ A future successor ontology may coexist with this preservation line. Creating su
 
 Licensing follows the same separation of concerns as versioning: historical Pizza semantic content retains its upstream license, while newly authored repository software and documentation use separately declared licenses. See [LICENSE.md](../LICENSE.md).
 
-The versioning strategy was established through GitHub issue #3. The first release was tracked through #7; preparation/publication of `preservation-v0.2.0` is tracked through #65.
+The versioning strategy was established through GitHub issue #3. The first release was tracked through #7; preparation/publication and post-publication verification of `preservation-v0.2.0` are tracked through #65.
