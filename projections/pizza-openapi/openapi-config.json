@@ -1,0 +1,9 @@
+{
+  "projectionId": "urn:pizza-ontology:projection:pizza-concepts-openapi:v1",
+  "projectionVersion": "1.0.0",
+  "sourceSelectionConfig": "../pizza-concepts/projection-config.json",
+  "apiTitle": "Pizza Concept API",
+  "apiVersion": "1.0.0",
+  "collectionPath": "/concepts",
+  "itemPath": "/concepts/{conceptId}"
+}
