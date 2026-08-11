@@ -19,19 +19,28 @@ rm -f "${RESULTS}"/*
 cp "${SOURCE}" "${OAK_INPUT}"
 cmp "${SOURCE}" "${OAK_INPUT}"
 
-printf '\n1/4 Python OAK access example...\n'
+printf '\n1/6 Minimal Python OAK access slice...\n'
 python "${HERE}/access_pizza.py" "${OAK_INPUT}" | tee "${RESULTS}/python-access.txt"
 
-printf '\n2/4 OAK CLI entity lookup...\n'
+printf '\n2/6 Broader Python OAK exploration/query example...\n'
+python "${HERE}/query_pizza.py" "${OAK_INPUT}" | tee "${RESULTS}/python-query.txt"
+grep -q "broader OAK exploration verified" "${RESULTS}/python-query.txt"
+
+printf '\n3/6 OAK CLI entity lookup...\n'
 runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" info pizza:AmericanHot | tee "${RESULTS}/info.txt"
 grep -q "pizza:AmericanHot" "${RESULTS}/info.txt"
 
-printf '\n3/4 OAK CLI relationship projection...\n'
+printf '\n4/6 OAK CLI relationship projection...\n'
 runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" relationships pizza:AmericanHot | tee "${RESULTS}/relationships.txt"
 grep -q "pizza:JalapenoPepperTopping" "${RESULTS}/relationships.txt"
 
-printf '\n4/4 OAK CLI is-a traversal...\n'
+printf '\n5/6 OAK CLI is-a ancestor traversal...\n'
 runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" ancestors -p i pizza:AmericanHot | tee "${RESULTS}/ancestors.txt"
 grep -q "pizza:NamedPizza" "${RESULTS}/ancestors.txt"
 
-printf '\nSUCCESS: OAK CLI and Python examples access the repository-owned Pizza semantic model without assuming multilingual label order.\n'
+printf '\n6/6 OAK CLI is-a descendant traversal...\n'
+runoak --prefix "pizza=${PIZZA_NS}" -i "${OAK_INPUT}" descendants -p i pizza:NamedPizza | tee "${RESULTS}/descendants.txt"
+grep -q "pizza:AmericanHot" "${RESULTS}/descendants.txt"
+grep -q "pizza:Margherita" "${RESULTS}/descendants.txt"
+
+printf '\nSUCCESS: OAK Python and CLI examples access labels, relationships, ancestor/descendant graph traversal, and explicit adapter capability boundaries over the repository-owned Pizza semantic model.\n'
