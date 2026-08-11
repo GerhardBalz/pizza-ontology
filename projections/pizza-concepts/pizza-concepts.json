@@ -1,0 +1,106 @@
+{
+  "$schema": "./projection.schema.json",
+  "projection": {
+    "id": "urn:pizza-ontology:projection:pizza-concepts:v1",
+    "type": "PizzaConceptCatalog",
+    "version": "1.0.0"
+  },
+  "sourceSemanticModel": {
+    "ontologyIri": "http://www.co-ode.org/ontologies/pizza",
+    "versionIri": "http://www.co-ode.org/ontologies/pizza/2.0.0",
+    "entityNamespace": "http://www.co-ode.org/ontologies/pizza/pizza.owl#",
+    "repositoryPath": "src/ontology/pizza-edit.owl",
+    "accessLayer": "OAK graph projection"
+  },
+  "projectionPolicy": {
+    "preserved": [
+      "historical Pizza entity IRIs",
+      "selected asserted named superclass relationships",
+      "selected hasTopping existential relationship targets"
+    ],
+    "transformed": [
+      "OWL class identifiers are exposed as CURIE plus full IRI",
+      "OWL hasTopping existential restrictions are flattened to requiredToppings references"
+    ],
+    "introduced": [
+      "displayLabel is an application-facing projection choice from projection-config.json",
+      "JSON object and array structure is an implementation representation"
+    ],
+    "omitted": [
+      "universal topping closure restrictions",
+      "country-of-origin restrictions",
+      "inferred classifications",
+      "disjointness axioms",
+      "object-property characteristics and broader OWL axioms",
+      "ontology annotations not required by this projection"
+    ]
+  },
+  "concepts": [
+    {
+      "id": "pizza:AmericanHot",
+      "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#AmericanHot",
+      "displayLabel": "American Hot",
+      "displayLabelSource": "projection-config",
+      "directSuperClasses": [
+        {
+          "id": "pizza:NamedPizza",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#NamedPizza"
+        }
+      ],
+      "requiredToppings": [
+        {
+          "id": "pizza:HotGreenPepperTopping",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#HotGreenPepperTopping"
+        },
+        {
+          "id": "pizza:JalapenoPepperTopping",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#JalapenoPepperTopping"
+        },
+        {
+          "id": "pizza:MozzarellaTopping",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#MozzarellaTopping"
+        },
+        {
+          "id": "pizza:PeperoniSausageTopping",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#PeperoniSausageTopping"
+        },
+        {
+          "id": "pizza:TomatoTopping",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#TomatoTopping"
+        }
+      ],
+      "traceability": {
+        "sourceEntityIri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#AmericanHot",
+        "superclassSemantics": "asserted named rdfs:subClassOf projected by OAK",
+        "toppingSemantics": "OWL hasTopping existential restrictions flattened by OAK graph projection"
+      }
+    },
+    {
+      "id": "pizza:Margherita",
+      "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#Margherita",
+      "displayLabel": "Margherita",
+      "displayLabelSource": "projection-config",
+      "directSuperClasses": [
+        {
+          "id": "pizza:NamedPizza",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#NamedPizza"
+        }
+      ],
+      "requiredToppings": [
+        {
+          "id": "pizza:MozzarellaTopping",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#MozzarellaTopping"
+        },
+        {
+          "id": "pizza:TomatoTopping",
+          "iri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#TomatoTopping"
+        }
+      ],
+      "traceability": {
+        "sourceEntityIri": "http://www.co-ode.org/ontologies/pizza/pizza.owl#Margherita",
+        "superclassSemantics": "asserted named rdfs:subClassOf projected by OAK",
+        "toppingSemantics": "OWL hasTopping existential restrictions flattened by OAK graph projection"
+      }
+    }
+  ]
+}
