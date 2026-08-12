@@ -1,0 +1,15 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smo: <https://w3id.org/smo#> .
+
+<http://www.co-ode.org/ontologies/pizza/2.0.0>
+    a smo:SemanticModel , prov:Entity ;
+    rdfs:label "Preserved Pizza Ontology 2.0 semantic source"@en .
+
+<urn:pizza-ontology:projection:pizza-concepts-openapi:v1>
+    a smo:ImplementationProjection , prov:Entity ;
+    rdfs:label "Pizza concept OpenAPI implementation projection v1"@en ;
+    dct:identifier "projections/pizza-openapi/pizza-concepts.openapi.json" ;
+    dct:source <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    prov:wasDerivedFrom <http://www.co-ode.org/ontologies/pizza/2.0.0> .
