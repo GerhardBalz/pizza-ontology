@@ -1,0 +1,46 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix eska: <https://w3id.org/eska#> .
+@prefix prof: <http://www.w3.org/ns/dx/prof/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://www.co-ode.org/ontologies/pizza/2.0.0>
+    a eska:SemanticModel , prov:Entity ;
+    rdfs:label "Preserved Pizza Ontology 2.0 semantic source"@en .
+
+<urn:pizza-ontology:projection:pizza-concepts:v1>
+    a eska:Result , prov:Entity ;
+    rdfs:label "Pizza concept JSON projection v1"@en ;
+    dct:conformsTo <urn:pizza-ontology:profile:pizza-concepts-preservation:v1> ;
+    prov:wasDerivedFrom <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    prov:wasGeneratedBy <urn:pizza-ontology:activity:pizza-concepts-projection:v1> .
+
+<urn:pizza-ontology:artifact:pizza-concepts-projector:v1>
+    a eska:ExecutableSemanticKnowledgeArtifact ;
+    rdfs:label "Pizza concept OAK projection implementation"@en ;
+    eska:usesSemanticModel <http://www.co-ode.org/ontologies/pizza/2.0.0> .
+
+<urn:pizza-ontology:activity:pizza-concepts-projection:v1>
+    a eska:Execution ;
+    rdfs:label "Pizza concept projection execution"@en ;
+    eska:usesSemanticModel <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    eska:usesExecutableArtifact <urn:pizza-ontology:artifact:pizza-concepts-projector:v1> ;
+    eska:generatesResult <urn:pizza-ontology:projection:pizza-concepts:v1> ;
+    prov:used <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    prov:generated <urn:pizza-ontology:projection:pizza-concepts:v1> .
+
+<urn:pizza-ontology:artifact:pizza-concepts-profile-verifier:v1>
+    a eska:ExecutableSemanticKnowledgeArtifact ;
+    rdfs:label "Pizza concept projection-profile verifier"@en .
+
+<urn:pizza-ontology:verification:pizza-concepts-profile:v1>
+    a eska:Verification ;
+    rdfs:label "Pizza concept projection/preservation profile verification"@en ;
+    eska:usesSemanticModel <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+    eska:usesExecutableArtifact <urn:pizza-ontology:artifact:pizza-concepts-profile-verifier:v1> ;
+    eska:verifiesExecution <urn:pizza-ontology:activity:pizza-concepts-projection:v1> ;
+    eska:verifiesResult <urn:pizza-ontology:projection:pizza-concepts:v1> ;
+    prov:used
+        <http://www.co-ode.org/ontologies/pizza/2.0.0> ,
+        <urn:pizza-ontology:projection:pizza-concepts:v1> ,
+        <urn:pizza-ontology:profile:pizza-concepts-preservation:v1> .

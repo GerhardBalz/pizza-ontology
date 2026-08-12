@@ -1,0 +1,41 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix prof: <http://www.w3.org/ns/dx/prof/> .
+@prefix role: <http://www.w3.org/ns/dx/prof/role/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<urn:pizza-ontology:profile:pizza-concepts-preservation:v1>
+    a prof:Profile ;
+    dct:title "Pizza concept projection/preservation profile v1"@en ;
+    dct:description "Explicit contract for the selected semantics preserved, transformed, omitted, and introduced by the non-authoritative Pizza concept JSON projection."@en ;
+    prof:hasToken "pizza-concepts-preservation-v1" ;
+    prof:hasResource
+        <urn:pizza-ontology:profile-resource:pizza-concepts-specification:v1> ,
+        <urn:pizza-ontology:profile-resource:pizza-concepts-preservation-contract:v1> ,
+        <urn:pizza-ontology:profile-resource:pizza-concepts-json-schema:v1> ,
+        <urn:pizza-ontology:profile-resource:pizza-concepts-shacl-validation:v1> .
+
+<urn:pizza-ontology:profile-resource:pizza-concepts-specification:v1>
+    a prof:ResourceDescriptor ;
+    rdfs:label "Human-readable projection profile specification"@en ;
+    prof:hasRole role:specification ;
+    prof:hasArtifact <README.md> .
+
+<urn:pizza-ontology:profile-resource:pizza-concepts-preservation-contract:v1>
+    a prof:ResourceDescriptor ;
+    rdfs:label "Machine-readable preservation contract"@en ;
+    prof:hasRole role:constraints ;
+    prof:hasArtifact <preservation-contract.json> .
+
+<urn:pizza-ontology:profile-resource:pizza-concepts-json-schema:v1>
+    a prof:ResourceDescriptor ;
+    rdfs:label "Pizza concept JSON representation schema"@en ;
+    prof:hasRole role:schema , role:constraints ;
+    prof:hasArtifact <../projection.schema.json> .
+
+<urn:pizza-ontology:profile-resource:pizza-concepts-shacl-validation:v1>
+    a prof:ResourceDescriptor ;
+    rdfs:label "Projection evidence SHACL validation"@en ;
+    dct:conformsTo <https://www.w3.org/TR/shacl/> ;
+    dct:format <https://w3id.org/mediatype/text/turtle> ;
+    prof:hasRole role:validation , role:constraints ;
+    prof:hasArtifact <shapes.ttl> .
