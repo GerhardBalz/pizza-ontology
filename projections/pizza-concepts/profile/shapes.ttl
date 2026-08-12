@@ -3,6 +3,7 @@
 @prefix prof: <http://www.w3.org/ns/dx/prof/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix smo: <https://w3id.org/smo#> .
 @prefix pcp: <urn:pizza-ontology:projection-profile:pizza-concepts:v1#> .
 
 pcp:ProfileShape
@@ -24,12 +25,14 @@ pcp:SourceSemanticModelShape
     a sh:NodeShape ;
     sh:targetNode <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
     sh:class eska:SemanticModel ;
+    sh:class smo:SemanticModel ;
     sh:class prov:Entity .
 
 pcp:ProjectionClaimShape
     a sh:NodeShape ;
     sh:targetNode <urn:pizza-ontology:projection:pizza-concepts:v1> ;
     sh:class eska:Result ;
+    sh:class smo:ImplementationProjection ;
     sh:class prov:Entity ;
     sh:property [
         sh:path dct:conformsTo ;

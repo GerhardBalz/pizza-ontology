@@ -3,13 +3,14 @@
 @prefix prof: <http://www.w3.org/ns/dx/prof/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smo: <https://w3id.org/smo#> .
 
 <http://www.co-ode.org/ontologies/pizza/2.0.0>
-    a eska:SemanticModel , prov:Entity ;
+    a eska:SemanticModel , smo:SemanticModel , prov:Entity ;
     rdfs:label "Preserved Pizza Ontology 2.0 semantic source"@en .
 
 <urn:pizza-ontology:projection:pizza-concepts:v1>
-    a eska:Result , prov:Entity ;
+    a eska:Result , smo:ImplementationProjection , prov:Entity ;
     rdfs:label "Pizza concept JSON projection v1"@en ;
     dct:conformsTo <urn:pizza-ontology:profile:pizza-concepts-preservation:v1> ;
     prov:wasDerivedFrom <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
