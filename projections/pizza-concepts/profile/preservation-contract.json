@@ -1,0 +1,75 @@
+{
+  "profileId": "urn:pizza-ontology:profile:pizza-concepts-preservation:v1",
+  "projectionId": "urn:pizza-ontology:projection:pizza-concepts:v1",
+  "sourceVersionIri": "http://www.co-ode.org/ontologies/pizza/2.0.0",
+  "selectedConcepts": [
+    "pizza:AmericanHot",
+    "pizza:Margherita"
+  ],
+  "mustPreserve": [
+    {
+      "id": "historical-entity-identity",
+      "projectionPolicyText": "historical Pizza entity IRIs",
+      "projectionFields": ["id", "iri"],
+      "description": "Selected Pizza class identities remain traceable to the historical Pizza entity IRIs."
+    },
+    {
+      "id": "selected-direct-superclasses",
+      "projectionPolicyText": "selected asserted named superclass relationships",
+      "projectionFields": ["directSuperClasses"],
+      "description": "Selected asserted named superclass relationships are preserved in graph-shaped JSON form."
+    },
+    {
+      "id": "selected-existential-topping-targets",
+      "projectionPolicyText": "selected hasTopping existential relationship targets",
+      "projectionFields": ["requiredToppings"],
+      "description": "Selected hasTopping existential restriction targets are preserved after the documented flattening transformation."
+    }
+  ],
+  "mayTransform": [
+    {
+      "id": "curie-plus-iri",
+      "projectionPolicyText": "OWL class identifiers are exposed as CURIE plus full IRI"
+    },
+    {
+      "id": "flatten-existential-restrictions",
+      "projectionPolicyText": "OWL hasTopping existential restrictions are flattened to requiredToppings references"
+    }
+  ],
+  "mayIntroduce": [
+    {
+      "id": "projection-display-label",
+      "projectionPolicyText": "displayLabel is an application-facing projection choice from projection-config.json"
+    },
+    {
+      "id": "json-representation-structure",
+      "projectionPolicyText": "JSON object and array structure is an implementation representation"
+    }
+  ],
+  "mayOmit": [
+    {
+      "id": "universal-topping-closure",
+      "projectionPolicyText": "universal topping closure restrictions"
+    },
+    {
+      "id": "country-origin-restrictions",
+      "projectionPolicyText": "country-of-origin restrictions"
+    },
+    {
+      "id": "inferred-classifications",
+      "projectionPolicyText": "inferred classifications"
+    },
+    {
+      "id": "disjointness",
+      "projectionPolicyText": "disjointness axioms"
+    },
+    {
+      "id": "property-characteristics",
+      "projectionPolicyText": "object-property characteristics and broader OWL axioms"
+    },
+    {
+      "id": "unrelated-annotations",
+      "projectionPolicyText": "ontology annotations not required by this projection"
+    }
+  ]
+}
