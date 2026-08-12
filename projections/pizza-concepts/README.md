@@ -31,6 +31,7 @@ They are intentionally small but useful enough to exercise hierarchy and topping
 
 ```text
 projections/pizza-concepts/
+├── profile/
 ├── projection-config.json
 ├── projection.schema.json
 ├── pizza-concepts.json
@@ -46,6 +47,8 @@ projections/pizza-concepts/
 `pizza-concepts.json` is the checked-in projection.
 
 `project.py` regenerates the projection from the repository-owned Pizza source through OAK and verifies the checked-in JSON against current source semantics.
+
+`profile/` defines and executes the explicit projection/preservation profile for this non-authoritative implementation projection.
 
 ## Projection rules
 
@@ -110,6 +113,28 @@ python projections/pizza-concepts/project.py --write
 ```
 
 A changed generated JSON file is therefore an explicit projection change requiring review; it is not silently treated as an ontology change.
+
+## Projection/preservation profile
+
+The optional machine-readable preservation evidence for this projection lives in `profile/`.
+
+It makes the existing projection policy executable without changing `pizza-concepts.json`. The profile explicitly separates:
+
+- selected OWL semantics that must be preserved;
+- transformations that are permitted;
+- source semantics that may be omitted;
+- implementation information that may be introduced;
+- JSON representation validation;
+- RDF evidence-graph validation and provenance.
+
+Run the full profile proving ground with:
+
+```bash
+python -m pip install -r projections/pizza-concepts/profile/requirements.txt
+python projections/pizza-concepts/profile/verify_profile.py
+```
+
+See `profile/README.md` for the PROF, DCTERMS, SHACL, ESKA, and PROV-O responsibility boundaries and the required negative control.
 
 ## Architectural evidence
 
