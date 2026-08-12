@@ -1,0 +1,67 @@
+{
+  "inventoryVersion": 1,
+  "scope": "Pizza-specific HTTP(S) semantic identifiers, source/publication locations, release distributions, documentation references, and UX links used by this preservation/reference project.",
+  "policy": {
+    "historicalSemanticIdentifiersRemainIdentifiers": true,
+    "actionableProjectUrlsMustResolve": true,
+    "historicalNonResolvingIrisAreNotPublicationPromises": true
+  },
+  "pizzaSpecificPrefixes": [
+    "http://www.co-ode.org/ontologies/pizza",
+    "http://owl.cs.manchester.ac.uk/publications/talks-and-tutorials/protg-owl-tutorial",
+    "https://protege.stanford.edu/ontologies/pizza/",
+    "https://github.com/GerhardBalz/pizza-ontology",
+    "https://raw.githubusercontent.com/GerhardBalz/pizza-ontology/",
+    "https://gerhardbalz.github.io/pizza-ontology/"
+  ],
+  "classificationRules": [
+    {"id":"historical-entity-iri","match":"prefix","value":"http://www.co-ode.org/ontologies/pizza/pizza.owl#","role":"semantic_identifier","actionable":false,"controlledByProject":false},
+    {"id":"historical-version-iri","match":"exact","value":"http://www.co-ode.org/ontologies/pizza/2.0.0","role":"semantic_identifier","actionable":false,"controlledByProject":false},
+    {"id":"historical-default-prefix","match":"prefix","value":"http://www.co-ode.org/ontologies/pizza#","role":"semantic_identifier","actionable":false,"controlledByProject":false},
+    {"id":"historical-ontology-iri","match":"exact","value":"http://www.co-ode.org/ontologies/pizza","role":"semantic_identifier","actionable":false,"controlledByProject":false},
+    {"id":"historical-tutorial-reference","match":"prefix","value":"http://owl.cs.manchester.ac.uk/publications/talks-and-tutorials/protg-owl-tutorial","role":"historical_source_reference","actionable":false,"controlledByProject":false},
+    {"id":"stanford-upstream-source","match":"prefix","value":"https://protege.stanford.edu/ontologies/pizza/","role":"current_source_location","actionable":true,"controlledByProject":false},
+    {"id":"github-release-download","match":"prefix","value":"https://github.com/GerhardBalz/pizza-ontology/releases/download/","role":"download_url","actionable":true,"controlledByProject":true},
+    {"id":"github-release-page","match":"prefix","value":"https://github.com/GerhardBalz/pizza-ontology/releases/tag/","role":"publication_landing_page","actionable":true,"controlledByProject":true},
+    {"id":"github-source-location","match":"prefix","value":"https://github.com/GerhardBalz/pizza-ontology/blob/","role":"current_source_location","actionable":true,"controlledByProject":true},
+    {"id":"github-raw-source-location","match":"prefix","value":"https://raw.githubusercontent.com/GerhardBalz/pizza-ontology/","role":"current_source_location","actionable":true,"controlledByProject":true},
+    {"id":"github-project-reference","match":"prefix","value":"https://github.com/GerhardBalz/pizza-ontology","role":"documentation_reference_url","actionable":true,"controlledByProject":true},
+    {"id":"github-pages-ux","match":"prefix","value":"https://gerhardbalz.github.io/pizza-ontology/","role":"application_ux_link","actionable":true,"controlledByProject":true}
+  ],
+  "canonicalReferences": [
+    {"id":"pizza-2.0-ontology-iri","value":"http://www.co-ode.org/ontologies/pizza","classificationRule":"historical-ontology-iri","verification":{"mode":"none"}},
+    {"id":"pizza-2.0-version-iri","value":"http://www.co-ode.org/ontologies/pizza/2.0.0","classificationRule":"historical-version-iri","verification":{"mode":"none"}},
+    {"id":"pizza-2.0-entity-namespace","value":"http://www.co-ode.org/ontologies/pizza/pizza.owl#","classificationRule":"historical-entity-iri","verification":{"mode":"none"}},
+    {"id":"pizza-2.0-default-prefix","value":"http://www.co-ode.org/ontologies/pizza#","classificationRule":"historical-default-prefix","verification":{"mode":"none"}},
+    {"id":"historical-pizza-tutorial-reference","value":"http://owl.cs.manchester.ac.uk/publications/talks-and-tutorials/protg-owl-tutorial","classificationRule":"historical-tutorial-reference","verification":{"mode":"none"}},
+    {"id":"stanford-upstream-pizza-source","value":"https://protege.stanford.edu/ontologies/pizza/pizza.owl","classificationRule":"stanford-upstream-source","verification":{"mode":"http","url":"https://protege.stanford.edu/ontologies/pizza/pizza.owl"}},
+    {"id":"preservation-repository","value":"https://github.com/GerhardBalz/pizza-ontology","classificationRule":"github-project-reference","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology"}},
+    {"id":"preservation-v0.1.0-release","value":"https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.1.0","classificationRule":"github-release-page","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology/releases/tags/preservation-v0.1.0"}},
+    {"id":"preservation-v0.2.0-release","value":"https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0","classificationRule":"github-release-page","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology/releases/tags/preservation-v0.2.0"}},
+    {"id":"preservation-v0.2.0-tag-source","value":"https://github.com/GerhardBalz/pizza-ontology/blob/preservation-v0.2.0/src/ontology/pizza-edit.owl","classificationRule":"github-source-location","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology/contents/src/ontology/pizza-edit.owl?ref=preservation-v0.2.0"}},
+    {"id":"preservation-v0.2.0-commit-source","value":"https://github.com/GerhardBalz/pizza-ontology/blob/3bd6e3817e2cdc44e77899a2e603878a85845e9d/src/ontology/pizza-edit.owl","classificationRule":"github-source-location","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology/contents/src/ontology/pizza-edit.owl?ref=3bd6e3817e2cdc44e77899a2e603878a85845e9d"}},
+    {"id":"preservation-v0.2.0-functional-syntax","value":"https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ofn","classificationRule":"github-release-download","verification":{"mode":"existing_verifier","path":"metadata/verify_published_release.py"}},
+    {"id":"preservation-v0.2.0-turtle","value":"https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ttl","classificationRule":"github-release-download","verification":{"mode":"existing_verifier","path":"metadata/verify_published_release.py"}},
+    {"id":"preservation-v0.2.0-checksums","value":"https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/SHA256SUMS","classificationRule":"github-release-download","verification":{"mode":"existing_verifier","path":"metadata/verify_published_release.py"}},
+    {"id":"publication-catalog-source","value":"https://github.com/GerhardBalz/pizza-ontology/blob/main/metadata/publication.ttl","classificationRule":"github-source-location","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology/contents/metadata/publication.ttl?ref=main"}},
+    {"id":"provenance-documentation","value":"https://github.com/GerhardBalz/pizza-ontology/blob/main/docs/pizza-provenance.md","classificationRule":"github-source-location","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology/contents/docs/pizza-provenance.md?ref=main"}},
+    {"id":"publication-policy-documentation","value":"https://github.com/GerhardBalz/pizza-ontology/blob/main/docs/publication-distribution-policy.md","classificationRule":"github-source-location","verification":{"mode":"http","url":"https://api.github.com/repos/GerhardBalz/pizza-ontology/contents/docs/publication-distribution-policy.md?ref=main"}},
+    {"id":"pizza-semantic-explorer","value":"https://gerhardbalz.github.io/pizza-ontology/examples/ux/pizza-explorer/","classificationRule":"github-pages-ux","verification":{"mode":"http","url":"https://gerhardbalz.github.io/pizza-ontology/examples/ux/pizza-explorer/"}}
+  ],
+  "persistentReferencePlan": {
+    "namespace": "https://w3id.org/pizza-ontology/",
+    "status": "proposed",
+    "semanticRole": "preservation/reference namespace owned by this project; not a replacement Pizza ontology, version, or entity namespace",
+    "routes": [
+      {"path":"","role":"publication_landing_page","target":"https://github.com/GerhardBalz/pizza-ontology"},
+      {"path":"2.0/source","role":"current_source_location","target":"https://protege.stanford.edu/ontologies/pizza/pizza.owl"},
+      {"path":"2.0/preservation","role":"publication_landing_page","target":"https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0"},
+      {"path":"2.0/preserved.ofn","role":"download_url","target":"https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ofn"},
+      {"path":"2.0/preserved.ttl","role":"download_url","target":"https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ttl"},
+      {"path":"2.0/SHA256SUMS","role":"download_url","target":"https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/SHA256SUMS"},
+      {"path":"publication","role":"documentation_reference_url","target":"https://raw.githubusercontent.com/GerhardBalz/pizza-ontology/main/metadata/publication.ttl"},
+      {"path":"provenance","role":"documentation_reference_url","target":"https://github.com/GerhardBalz/pizza-ontology/blob/main/docs/pizza-provenance.md"}
+    ],
+    "entityRoutes": {"status":"deferred","reason":"Entity aliases are not introduced until an explicit mapping/authority contract is designed; historical Pizza entity IRIs remain identifiers."}
+  }
+}

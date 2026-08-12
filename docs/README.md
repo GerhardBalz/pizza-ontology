@@ -17,6 +17,7 @@ This directory contains the architectural, modeling, preservation, publication, 
 
 - [Preservation-Safe Distributions](preservation-distributions.md) — verified Functional Syntax and Turtle distributions that retain historical Pizza 2.0 identity.
 - [Publication and Distribution Policy](publication-distribution-policy.md) — canonical versus convenient locations, release assets, DCAT metadata, and authority boundaries.
+- [Pizza URL/IRI Resolution Inventory](url-iri-resolution-inventory.md) — executable classification of historical semantic identifiers versus resolvable source, publication, distribution, documentation, and UX locations, plus the proposed W3ID preservation/reference routes.
 - [Versioning and Release Model](versioning-release-model.md) — separation of the historical Pizza semantic version from repository preservation releases.
 
 ## Provenance
@@ -54,6 +55,12 @@ metadata/publication.ttl
         ↓
 metadata/verify_publication_metadata.py
 metadata/verify_published_release.py
+
+Pizza-specific URL/IRI surface
+        ↓ role classification
+metadata/url-iri-inventory.json
+        ↓
+metadata/verify_url_iri_inventory.py
 ```
 
-The modeling-reference verifier checks the preserved source for the representative axioms used by the guide. The publication verifiers keep release/distribution metadata distinct from historical semantic identity and verify the published v0.2.0 asset contract from an external-consumer path.
+The modeling-reference verifier checks the preserved source for the representative axioms used by the guide. The publication verifiers keep release/distribution metadata distinct from historical semantic identity and verify the published v0.2.0 asset contract from an external-consumer path. The URL/IRI verifier additionally protects the identifier-versus-location boundary and verifies canonical actionable references.

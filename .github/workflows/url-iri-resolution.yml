@@ -1,0 +1,27 @@
+# Pizza URL / IRI resolution contract
+
+name: URL / IRI Resolution
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  url_iri_resolution:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify Pizza URL/IRI classification and actionable references
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python metadata/verify_url_iri_inventory.py --check-http

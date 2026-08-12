@@ -4,6 +4,8 @@
 
 It keeps repository preservation releases and their concrete distributions separate from the historical Pizza semantic identifiers.
 
+`url-iri-inventory.json` is the machine-readable classification and resolution contract for Pizza-specific HTTP(S) identifiers and locations. It distinguishes semantic identifiers from source, publication, download, documentation, and UX URLs and contains the proposed W3ID preservation/reference route plan.
+
 ## Current published releases
 
 ```text
@@ -20,12 +22,38 @@ preservation-v0.2.0
 
 The v0.2.0 release distributions have concrete `dcat:downloadURL` values because those immutable GitHub Release assets now exist. The historical ontology IRI, version IRI, and entity IRIs remain semantic identifiers and are not given repository-owned download/landing semantics.
 
+## URL/IRI resolution contract
+
+The operational rule is:
+
+```text
+historical semantic identifier
+    ≠
+current Web location
+```
+
+Canonical actionable URLs are recorded with an explicit verification path. Historical Pizza IRIs are recorded as non-actionable semantic identifiers rather than being treated as failed publication URLs.
+
+See [Pizza URL/IRI Resolution Inventory](../docs/url-iri-resolution-inventory.md).
+
 ## Verification
 
 Local RDF publication contract:
 
 ```bash
 python metadata/verify_publication_metadata.py
+```
+
+URL/IRI classification and historical-identity contract:
+
+```bash
+python metadata/verify_url_iri_inventory.py
+```
+
+URL/IRI contract plus live checks for canonical actionable URLs:
+
+```bash
+python metadata/verify_url_iri_inventory.py --check-http
 ```
 
 External published-release contract:
