@@ -19,6 +19,18 @@ All changes must go through a branch and pull request. Do not commit or push cha
 
 Keep branches and pull requests small enough to review comfortably.
 
+## Documentation convention
+
+Pizza adopts the shared [Semantic Knowledge Engineering Semantic Markdown convention](https://github.com/GerhardBalz/semantic-knowledge-engineering/blob/main/conventions/semantic-markdown.md):
+
+- use ordered Markdown lists when order or procedure is part of the meaning;
+- use unordered Markdown lists for non-sequential collections;
+- reserve fenced blocks for code, commands, literal syntax, identifiers, diagrams, aligned specimens, or output where preformatted layout carries meaning.
+
+Do not mechanically convert semantic architecture diagrams, ontology expressions, execution traces, formulas, identifier blocks, command examples, or other literal/preformatted specimens into lists merely because they contain multiple lines.
+
+This convention was promoted to SKE after review feedback from @TallTed on `perma-id/w3id.org#6530` and is shared with ESKA and SMO.
+
 ## Validation
 
 For ontology, ODK, build, or semantic-test changes, run from `src/ontology`:
