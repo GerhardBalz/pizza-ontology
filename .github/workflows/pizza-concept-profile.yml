@@ -6,12 +6,20 @@ on:
       - "src/ontology/pizza-edit.owl"
       - "projections/common/**"
       - "projections/pizza-concepts/**"
+      - "projections/pizza-openapi/evidence.ttl"
+      - "projections/pizza-openapi/openapi-config.json"
+      - "projections/pizza-openapi/pizza-concepts.openapi.json"
+      - "projections/verify_smo_alignment.py"
       - ".github/workflows/pizza-concept-profile.yml"
   pull_request:
     paths:
       - "src/ontology/pizza-edit.owl"
       - "projections/common/**"
       - "projections/pizza-concepts/**"
+      - "projections/pizza-openapi/evidence.ttl"
+      - "projections/pizza-openapi/openapi-config.json"
+      - "projections/pizza-openapi/pizza-concepts.openapi.json"
+      - "projections/verify_smo_alignment.py"
       - ".github/workflows/pizza-concept-profile.yml"
   workflow_dispatch:
 
@@ -39,3 +47,6 @@ jobs:
 
       - name: Verify projection/preservation profile
         run: python projections/pizza-concepts/profile/verify_profile.py
+
+      - name: Verify reviewed SMO alignment boundary
+        run: python projections/verify_smo_alignment.py
