@@ -1,0 +1,29 @@
+# Pizza Ontology preservation/reference namespace
+# Point of contact: Gerhard Balz — GitHub @GerhardBalz
+# Canonical preservation project: https://github.com/GerhardBalz/pizza-ontology
+#
+# This namespace publishes preservation/reference resources governed by the
+# GerhardBalz/pizza-ontology project. It is NOT the historical Pizza Ontology 2.0
+# ontology IRI, version IRI, or entity namespace and makes no authority claim over
+# http://www.co-ode.org/ontologies/pizza or its entity IRIs.
+#
+# Historical Pizza semantic identity remains unchanged. Versioned preservation
+# routes below point only to the immutable preservation-v0.2.0 tag/release.
+
+Options +FollowSymLinks -Indexes
+RewriteEngine On
+
+# Current preservation/reference project landing page.
+RewriteRule ^$ https://github.com/GerhardBalz/pizza-ontology [R=303,NE,L]
+
+# Immutable preservation release landing and artifacts for preserved Pizza 2.0.
+RewriteRule ^preservation/2\.0/?$ https://github.com/GerhardBalz/pizza-ontology/releases/tag/preservation-v0.2.0 [R=303,NE,L]
+RewriteRule ^preservation/2\.0/source/?$ https://github.com/GerhardBalz/pizza-ontology/blob/preservation-v0.2.0/src/ontology/pizza-edit.owl [R=303,NE,L]
+RewriteRule ^preservation/2\.0/turtle/?$ https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ttl [R=303,NE,L]
+RewriteRule ^preservation/2\.0/functional/?$ https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/pizza-2.0-preserved.ofn [R=303,NE,L]
+RewriteRule ^preservation/2\.0/checksums/?$ https://github.com/GerhardBalz/pizza-ontology/releases/download/preservation-v0.2.0/SHA256SUMS [R=303,NE,L]
+
+# Current project documentation/reference resources. These are navigation routes,
+# not immutable historical semantic identifiers.
+RewriteRule ^provenance/?$ https://github.com/GerhardBalz/pizza-ontology/blob/main/docs/pizza-provenance.md [R=303,NE,L]
+RewriteRule ^publication/?$ https://github.com/GerhardBalz/pizza-ontology/blob/main/metadata/publication.ttl [R=303,NE,L]

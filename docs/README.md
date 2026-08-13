@@ -15,6 +15,7 @@ This directory contains the architectural, modeling, preservation, publication, 
 
 ## Preservation and publication
 
+- [Pizza Preservation/Reference Resolution](pizza-reference-resolution.md) — distinguishes historical Pizza 2.0 semantic identifiers from actionable Web locations, defines the machine inventory/resolution contract, and stages the non-authoritative `w3id.org/pizza-ontology/` preservation-reference namespace.
 - [Preservation-Safe Distributions](preservation-distributions.md) — verified Functional Syntax and Turtle distributions that retain historical Pizza 2.0 identity.
 - [Publication and Distribution Policy](publication-distribution-policy.md) — canonical versus convenient locations, release assets, DCAT metadata, and authority boundaries.
 - [Versioning and Release Model](versioning-release-model.md) — separation of the historical Pizza semantic version from repository preservation releases.
@@ -56,4 +57,16 @@ metadata/verify_publication_metadata.py
 metadata/verify_published_release.py
 ```
 
-The modeling-reference verifier checks the preserved source for the representative axioms used by the guide. The publication verifiers keep release/distribution metadata distinct from historical semantic identity and verify the published v0.2.0 asset contract from an external-consumer path.
+Reference-resolution path:
+
+```text
+tracked Pizza-specific HTTP(S) references
+        ↓
+metadata/reference-resolution-policy.json
+        ↓
+scripts/verify_pizza_references.py
+        ↓
+classified identity/location inventory + network evidence
+```
+
+The modeling-reference verifier checks the preserved source for the representative axioms used by the guide. The publication verifiers keep release/distribution metadata distinct from historical semantic identity and verify the published v0.2.0 asset contract from an external-consumer path. The reference-resolution verifier additionally protects the historical source bytes, classifies Pizza-specific identifiers versus locations, and checks repository-promised actionable URLs without treating historical `co-ode.org` IRIs as broken links.
