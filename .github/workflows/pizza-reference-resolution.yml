@@ -1,0 +1,39 @@
+name: Pizza reference resolution
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-reference-resolution:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Inventory Pizza references and verify current resolution promises
+        run: >-
+          python scripts/verify_pizza_references.py
+          --check-network
+          --output pizza-reference-inventory.json
+
+      - name: Verify staged Pizza W3ID configuration
+        run: python scripts/verify_pizza_w3id_config.py
+
+      - name: Upload reference inventory evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pizza-reference-inventory
+          path: pizza-reference-inventory.json
+          if-no-files-found: error
+          retention-days: 14
