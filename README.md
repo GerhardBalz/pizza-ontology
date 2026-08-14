@@ -257,8 +257,10 @@ See:
 - [Cross-Track Pizza Semantic Architecture](docs/semantic-architecture.md)
 - [Semantic Modeling Concept Harvest](docs/semantic-modeling-concept-harvest.md)
 - [Semantic Modeling Vocabulary Decision](docs/semantic-modeling-vocabulary-decision.md)
+- [Semantic Modeling Ontology (SMO)](https://github.com/GerhardBalz/semantic-modeling-ontology)
+- [Semantic Modeling Pizza](https://github.com/GerhardBalz/semantic-modeling-pizza)
 
-The conceptual extraction threshold has passed, but a separate Semantic Modeling namespace/repository is intentionally deferred while ESKA's permanent W3ID namespace activation is still unresolved. ESKA issue #57 will reassess ownership of `SemanticModel` after that governance step.
+The reusable semantic-modeling boundary is now governed by SMO rather than by this preservation repository. Governed SMO v0.1 owns `smo:SemanticModel` and `smo:ImplementationProjection`; the companion Semantic Modeling Pizza repository carries the Pizza-specific reference-example evidence. ESKA core 0.2.0 is aligned with `smo:SemanticModel`, and its permanent/immutable publication routes are active. This repository remains authoritative only for its preservation/reference engineering and repository-authored Pizza evidence; it does not mint a second semantic-modeling vocabulary or acquire authority over the historical Pizza namespace.
 
 ## Preservation baseline
 
@@ -503,7 +505,8 @@ A separate **Modeling reference** workflow verifies that the OWL teaching guide 
 - [x] Add OpenAPI-backed deterministic application and API-backed UX
 - [x] Harvest broader Semantic Modeling concepts from implemented evidence
 - [x] Adopt `SemanticModel + ImplementationProjection` as the conceptual reusable pair
-- [ ] Revisit a separate Semantic Modeling namespace/repository after ESKA W3ID governance stabilizes
+- [x] Establish SMO and the separate Semantic Modeling Pizza reference repository; keep reusable semantic-modeling vocabulary governance outside the preservation line
+- [ ] Complete the preservation/reference identifier lifecycle after external stewardship/provenance feedback is received and assessed — #72
 - [ ] Evaluate a separate successor Pizza ontology only when semantic modernization is required — #4
 
 ## Acknowledgements
